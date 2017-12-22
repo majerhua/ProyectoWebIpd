@@ -1,0 +1,120 @@
+
+prueba_nombre:
+  path: /nombre/{nPila} 
+  defaults: { _controller: PruebaBundle:Default:nombre}
+
+prueba_register:
+  path: /register 
+  defaults: { _controller: PruebaBundle:Default:register}
+
+prueba_usuarios:
+  path: /usuarios 
+  defaults: { _controller: PruebaBundle:Default:usuarios}
+
+prueba_getajaxarea:
+  path: /ajax/area 
+  defaults: { _controller: PruebaBundle:Default:getareajax}
+  methods:  [GET,POST]
+
+
+prueba_postuserjax:
+  path: /post/user 
+  defaults: { _controller: PruebaBundle:Default:postuserjax}
+  methods:  [GET,POST]
+
+
+prueba_login:
+  path: /login 
+  defaults: { _controller: PruebaBundle:Default:login}
+
+prueba_logout:
+  path: /logout
+
+
+prueba_form:
+  path: /form
+  defaults: { _controller: PruebaBundle:Post:formPost }
+
+
+prueba_insertar:
+  path: /insert/post
+  defaults: { _controller: PruebaBundle:Post:insertPost}
+
+
+
+
+
+prueba_formIndicador:
+  path: /indicador
+  defaults: { _controller: PruebaBundle:Indicador:formIndicador }
+
+
+prueba_indicadorajaxIndicador:
+  path: /ajax/indicador
+  defaults: { _controller: PruebaBundle:Indicador:indicadorajax }
+
+
+prueba_postTotalIndicadorAjax:
+  path: /ajax/totalindicador
+  defaults: { _controller: PruebaBundle:DetalleIndicador:postTotalIndicadorAjax }
+  methods:  [GET,POST]
+
+
+
+prueba_formLeyenda:
+  path: /leyenda
+  defaults: { _controller: PruebaBundle:Leyenda:formLeyenda }
+
+
+
+prueba_postLeyendaAjax:
+  path: /leyenda/ajax/post
+  defaults: { _controller: PruebaBundle:Leyenda:postLeyendaAjax }  
+  methods:  [GET,POST]
+
+prueba_getLeyendaAjax:
+  path: /leyenda/ajax/get
+  defaults: { _controller: PruebaBundle:Leyenda:getLeyendaAjax }  
+  methods:  [GET,POST]
+
+
+
+
+prueba_ajaxLeyenda:
+  path: /leyenda/pruebaajax
+  defaults: { _controller: PruebaBundle:Leyenda:ajaxLeyenda }
+  methods:  [GET,POST]
+
+prueba_formDetalleIndicador:
+  path: /formdetalleindicador
+  defaults: { _controller: PruebaBundle:DetalleIndicador:formDetalleIndicador }
+
+prueba_updateDetalleIndicador:
+  path: /updatedetalleindicador/{id}
+  defaults: { _controller: PruebaBundle:DetalleIndicador:updateDetalleIndicador }
+
+prueba_verDetalleIndicador:
+  path: /
+  defaults: { _controller: PruebaBundle:DetalleIndicador:verDetalleIndicador }
+
+prueba_postTotalAjax:
+  path: /detalleindicador/ajax/post
+  defaults: { _controller: PruebaBundle:DetalleIndicador:postTotalAjax }
+  methods:  [GET,POST]
+
+prueba_graficos:
+  path: /detalleindicador/graficos
+  defaults: { _controller: PruebaBundle:DetalleIndicador:graficos}
+
+
+
+
+prueba_postajax:
+  path: /ajax/posts
+  defaults: { _controller: PruebaBundle:DetalleIndicador:posts }
+  methods:  [GET,POST]
+
+prueba_mostrar:
+  path: /mostrar
+  defaults: { _controller: PruebaBundle:Post:mostrarPost } 
+

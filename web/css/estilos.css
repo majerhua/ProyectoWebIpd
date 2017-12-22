@@ -1,0 +1,34 @@
+.contenedor__leyenda{
+
+
+	width: 50%;
+	margin:0 auto;
+
+}
+
+.rojo{
+	width: 13px;
+	height: 13px;
+	border-radius: 100%;
+	background-color: red;
+	display: inline-block;
+
+}
+
+.amarillo{
+	width: 13px;
+	height: 13px;
+	border-radius: 100%;
+	background-color: yellow;
+	display: inline-block;
+	
+}
+
+.verde{
+	width: 13px;
+	height: 13px;
+	border-radius: 100%;
+	background-color: green;
+	display: inline-block;
+	
+}

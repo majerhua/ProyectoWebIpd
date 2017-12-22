@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Prueba Ajax</title>
+  	<link href="{{ asset('css/bootstrap.css')  }}"  rel="stylesheet" >
+    <link href="{{ asset('css/estilos.css')  }}"  rel="stylesheet" >
+</head>
+<body>
+
+        <nav class="navbar navbar-inverse">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="#">WebSite IPD</a>
+            </div>
+            <ul class="nav navbar-nav"  id="menu-inicio" >
+              <li><a href="{{path('prueba_verDetalleIndicador')}}">Tablero Control</a></li>
+              <li><a href="{{path('prueba_formIndicador')}}">Indicador</a></li>
+              <li   class="active" ><a href="{{path('prueba_formLeyenda')}}">Leyenda</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#"><span class="glyphicon glyphicon-user"></span> Carlos Javier Majerhua Nuñez</a></li>
+              <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Salir</a></li>
+            </ul>
+
+          </div>
+</nav>
+
+	
+<div  style="width:300px; margin:40px;">
+
+	<h3>Formulario Leyenda</h3>
+
+
+<form id="formulario" name="formulario" method="post">
+	<div class="form-group">
+		<label for="rojo">Rojo</label>
+		<div style="display:flex;">
+			
+			<select id="desigualdad-rojo" style="width:60px;" class="form-control">
+				<option> < </option>
+				<option> <= </option>
+				<option> > </option>
+				<option> >= </option>
+			</select>
+			<input type="number" name="rojo" id="rojo" class="form-control">
+		</div>
+	</div>
+
+
+	<div class="form-group">
+		<label>Amarillo</label>
+		<div style="display:flex;">
+		
+			<select id="desigualdad-amarillo" style="width:60px;" class="form-control">
+				<option> < </option>
+				<option> <= </option>
+				<option> > </option>
+				<option> >= </option>
+			</select>
+			<input type="number" name="amarillo" id="amarillo" class="form-control">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label>Verde</label>
+		<div style="display:flex;">
+		
+			<select  style="width:60px;" id="desigualdad-verde" class="form-control">
+				<option> > </option>
+				<option> >= </option>
+				<option> < </option>
+				<option> <= </option>
+			</select>
+			<input type="number" name="verde" id="verde" class="form-control">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label>Indicadores</label>
+		<select id="indicadores" name="indicadores" class="form-control" ></select>
+	</div>
+
+</form>
+
+	<button type="button" class="btn btn-primary" id="btn-enviar">Enviar</button>
+
+</div>
+
+	
+	<table class="table table-responsive table-bordered" >
+
+		<thead>
+			<tr>
+				<td>Id</td>
+				<td>Indicador</td>
+				<td>Rojo</td>
+				<td>Amarillo</td>
+				<td>Verde</td>
+			</tr>
+		</thead>
+
+		<tbody id="table">
+
+
+		</tbody>
+
+	</table>
+
+
+    <script  src="{{ asset('js/jquery.js') }}">
+
+    </script>
+           <script>
+
+        	$(document).ready(function(){
+        		
+        		var select_indicadores = $("#indicadores");
+        		var select_table = $("#table");
+
+
+
+        		function insertarDatosTable(data){
+        			select_table.empty();
+
+        			data.forEach(function(valor,index){
+
+			 			select_table.append('<tr>'+'<td value="'+valor.id+'" >'+valor.id+'</td>'+'<td>'+valor.indicador.nombre+'</td>'+'<td>'+valor.rojo+'<div class="rojo" ></div></td>'+'<td>'+valor.amarillo+'<div class="amarillo" ></div></td>'+'<td>'+valor.verde+'<div class="verde" ></div></td>'+'</tr>');
+			 			console.log(valor);
+			 		});
+
+        		}
+
+
+        		function insertarIndicadores(data){
+
+        			data.forEach(function(valor,index){
+        			 			select_indicadores.append('<option value='+valor.id+'>'+valor.nombre+'</option>');
+        			 			
+			 		});
+
+        		}
+
+
+
+
+
+        		function enviarLeyenda(){
+
+        				var datos={
+
+        					amarillo: String($("#amarillo").val())+" "+String($("#desigualdad-amarillo").val()),
+        					indicadores:$("#indicadores").val(),
+        					rojo:$("#rojo").val()+" "+$("#desigualdad-rojo").val(),
+        					verde:$("#verde").val()+" "+$("#desigualdad-verde").val()
+        				};
+
+	        			$.ajax({
+
+        				url: "{{ url('prueba_postLeyendaAjax') }}",
+        				type: 'POST',
+        				dataType: 'json',
+        				data: datos,
+
+        				success:function(data){
+        					var datosTable = JSON.parse(data)
+        					insertarDatosTable(datosTable);
+        					console.log(datosTable);
+        				},
+
+        				error:function(error){
+        					console.log(error);
+        				}
+
+
+        			});
+        		}
+
+        		function listaLeyendas(){
+	        			$.ajax({
+
+        				url: "{{ url('prueba_getLeyendaAjax') }}",
+        				type: 'GET',
+        				dataType: 'json',
+
+        				success:function(data){
+        					var datosTable = JSON.parse(data)
+        					insertarDatosTable(datosTable);
+        					console.log(datosTable);
+        				},
+
+        				error:function(error){
+        					console.log(error);
+        				}
+
+
+        			});
+        		}
+
+
+        		$("#btn-enviar").on('click',function(){
+        			enviarLeyenda();
+        		});
+
+
+        		listaLeyendas();
+
+        		$.ajax({
+
+        			url:"{{ url('prueba_indicadorajaxIndicador') }}",
+        			type:"GET",
+        			dataType: 'json',
+
+        			 success:function(data){
+        			 		
+        			 		var indicadores = JSON.parse(data);
+        			 		insertarIndicadores(indicadores);
+        			 },
+
+        			error: function(error){
+        				console.log("Error",error);
+        			}
+
+        		});
+
+        	});
+
+        </script>
+
+    <script>
+
+
+
+    </script>
+
+</body>
+</html>

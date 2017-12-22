@@ -1,0 +1,515 @@
+
+{% extends '::base.html.twig'  %}
+
+
+
+
+{% block body %}
+
+	
+
+	        <nav class="navbar navbar-inverse">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="#">WebSite IPD</a>
+            </div>
+            {% if is_granted('ROLE_ADMIN') %}
+            <ul class="nav navbar-nav"  id="menu-inicio" >
+              <li class="active"><a href="{{path('prueba_verDetalleIndicador')}}">Tablero Control</a></li>
+              <li><a href="{{path('prueba_formIndicador')}}">Indicador</a></li>
+              <li ><a href="{{path('prueba_ajaxLeyenda')}}">Leyenda</a></li>
+            </ul>
+
+        	{% endif %}
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#"><span class="glyphicon glyphicon-user"></span> {{app.user.username}}</a></li>
+              <li><a href="{{path('prueba_logout')}}"><span class="glyphicon glyphicon-log-in"></span> Salir</a></li>
+            </ul>
+          </div>
+        </nav>
+
+
+	<a href="/formdetalleindicador"><h2>Ingresar Nueva Fila Indicador</h2></a>
+
+	<h1>Indicadores</h1>
+	
+<div class="contenedor__leyenda">
+	<table id="example" class="table  table-responsive table-bordered" cellspacing="0" width="100%">
+
+		<thead>
+			<tr>
+				<th>Id Leyenda</th>
+				<th>Indicador</th>
+				<th>Rojo</th>
+				<th>Amarillo</th>
+				<th>Verde</th>
+			</tr>
+		</thead>
+
+		<tbody>
+		{% for leyenda in leyendas  %}
+
+			<tr>
+				<td>{{leyenda.id}}</td>
+				<td class="leyenda-indicador" >{{leyenda.indicador}}</td>
+				<td class="leyenda-rojo">{{leyenda.rojo}} <div class="rojo"></div></td>
+				<td class="leyenda-amarillo">{{leyenda.amarillo}} <div class="amarillo" ></div></td>
+				<td class="leyenda-verde" >{{leyenda.verde}} <div class="verde"></div></td>
+			</tr>
+
+
+		{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+	<table id="example2" class="table table-striped  table-responsive" cellspacing="0" width="100%" >
+
+		<thead>
+			<tr>
+				
+				<th>Indicador</th>
+				<th>Nombre</th>
+				<th>Enero</th>
+				<th>Febrero</th>
+				<th>Marzo</th>
+				<th>Abril</th>
+				<th>Mayo</th>
+				<th>Junio</th>
+				<th>Julio</th>
+				<th>Agosto</th>
+				<th>Septiemb</th>
+				<th>Octubre</th>
+				<th>Noviemb</th>
+				<th>Diciemb</th>
+				<th>Eliminar</th>
+				<th>Editar</th>
+			</tr>
+		</thead>
+
+		<tbody>
+
+		
+
+		{% set cont = 0 %}	
+
+		{% for detalleIndicador in detallesIndicador  %}
+
+				{% set cont = cont + 1 %}
+
+				<tr>
+					
+					<td>{{detalleIndicador.indicador}}</td>
+					<td>{{detalleIndicador.nombre}}</td>
+					<td>{{detalleIndicador.enero}}</td>
+					<td>{{detalleIndicador.febrero}}</td>
+					<td>{{detalleIndicador.marzo}}</td>
+					<td>{{detalleIndicador.abril}}</td>
+					<td>{{detalleIndicador.mayo}}</td>
+					<td>{{detalleIndicador.junio}}</td>
+					<td>{{detalleIndicador.julio}}</td>
+					<td>{{detalleIndicador.agosto}}</td>
+					<td>{{detalleIndicador.septiembre}}</td>
+					<td>{{detalleIndicador.octubre}}</td>
+					<td>{{detalleIndicador.noviembre}}</td>
+					<td>{{detalleIndicador.diciembre}}</td>
+					<td><button  class="btn btn-success"><a href="{{ path('prueba_updateDetalleIndicador', {id:detalleIndicador.id}) }}">Editar</a></button></td>
+					<td><button src="#" class="btn btn-danger">Eliminar</button></td>
+				</tr>						
+
+			
+				{% if cont is divisibleby(2)  %}
+    			
+					<tr class="total">
+
+					<td>{{detallesIndicador[ cont - 1 ].indicador}}</td>
+					<td>Total</td>
+
+
+					{% if detallesIndicador[ cont - 1 ].enero == 0 or detallesIndicador[ cont - 2 ].enero == 0 %}
+						<td>0% </td>
+					{% else %}
+						<td>{{ (( detallesIndicador[ cont - 1 ].enero / detallesIndicador[ cont - 2 ].enero ) * 100)|round }}% </td>
+					{% endif %}	
+
+
+
+
+					{% if detallesIndicador[ cont - 1 ].febrero == 0 or detallesIndicador[ cont - 2 ].febrero == 0 %}
+						<td>0% </td>
+					{% else %}
+					<td>{{ (( detallesIndicador[ cont - 1 ].febrero / detallesIndicador[ cont - 2 ].febrero ) * 100)|round }}%</td>
+					{% endif %}	
+
+
+					{% if detallesIndicador[ cont - 1 ].marzo == 0 or detallesIndicador[ cont - 2 ].marzo == 0 %}
+						<td>0% </td>
+					{% else %}
+					<td>{{ (( detallesIndicador[ cont - 1 ].marzo / detallesIndicador[ cont - 2 ].marzo ) * 100)|round }}%</td>
+					{% endif %}	
+					
+
+					{% if detallesIndicador[ cont - 1 ].abril == 0 or detallesIndicador[ cont - 2 ].abril == 0 %}
+						<td>0% </td>
+					{% else %}
+					<td>{{ (( detallesIndicador[ cont - 1 ].abril / detallesIndicador[ cont - 2 ].abril ) * 100)|round }}%</td>
+					{% endif %}	
+
+
+					{% if detallesIndicador[ cont - 1 ].mayo == 0 or detallesIndicador[ cont - 2 ].mayo == 0 %}
+						<td>0% </td>
+					{% else %}
+					<td>{{ (( detallesIndicador[ cont - 1 ].mayo / detallesIndicador[ cont - 2 ].mayo ) * 100)|round }}%</td>
+					{% endif %}
+
+
+					{% if detallesIndicador[ cont - 1 ].junio == 0 or detallesIndicador[ cont - 2 ].junio == 0 %}
+						<td>0% </td>
+					{% else %}
+					<td>{{ (( detallesIndicador[ cont - 1 ].junio / detallesIndicador[ cont - 2 ].junio ) * 100)|round }}%</td>
+					{% endif %}
+
+
+					{% if detallesIndicador[ cont - 1 ].julio == 0 or detallesIndicador[ cont - 2 ].julio == 0 %}
+						<td>0% </td>
+					{% else %}
+					<td>{{ (( detallesIndicador[ cont - 1 ].julio / detallesIndicador[ cont - 2 ].julio ) * 100)|round }}%</td>
+					{% endif %}
+
+					{% if detallesIndicador[ cont - 1 ].agosto == 0 or detallesIndicador[ cont - 2 ].agosto == 0 %}
+						<td>0% </td>
+					{% else %}
+					<td>{{ (( detallesIndicador[ cont - 1 ].agosto / detallesIndicador[ cont - 2 ].agosto ) * 100)|round }}%</td>
+					{% endif %}
+
+
+					{% if detallesIndicador[ cont - 1 ].septiembre == 0 or detallesIndicador[ cont - 2 ].septiembre == 0 %}
+						<td>0% </td>
+					{% else %}
+					<td>{{ (( detallesIndicador[ cont - 1 ].septiembre / detallesIndicador[ cont - 2 ].septiembre ) * 100)|round }} %</td>
+					{% endif %}
+
+					{% if detallesIndicador[ cont - 1 ].octubre == 0 or detallesIndicador[ cont - 2 ].octubre == 0 %}
+						<td>0% </td>
+					{% else %}
+					<td>{{ (( detallesIndicador[ cont - 1 ].octubre / detallesIndicador[ cont - 2 ].octubre ) * 100)|round }}%</td>
+					{% endif %}
+
+
+
+
+					{% if detallesIndicador[ cont - 1 ].noviembre == 0 or detallesIndicador[ cont - 2 ].noviembre == 0 %}
+						<td>0% </td>
+					{% else %}
+						<td>{{ (( detallesIndicador[ cont - 1 ].noviembre / detallesIndicador[ cont - 2 ].noviembre ) * 100)|round }}%</td>
+					{% endif %}	
+
+
+					{% if detallesIndicador[ cont - 1 ].diciembre == 0 or detallesIndicador[ cont - 2 ].diciembre == 0 %}
+						<td>0% </td>
+					{% else %}
+						<td>{{ (( detallesIndicador[ cont - 1 ].diciembre / detallesIndicador[ cont - 2 ].diciembre ) * 100)|round }}%</td>
+					{% endif %}	
+
+					
+
+					
+
+					<td><button class="btn btn-info" class="btn-ficha"  onclick="alertprueba('{{detallesIndicador[ cont - 1 ].indicador}}')"  data-toggle="modal" data-target="#modalGraficos" >Ver Grafico</button></td>
+					
+
+
+					</tr>							
+
+				{% endif %}
+
+			
+		{% endfor %}
+		</tbody>
+	</table>
+
+
+	<!-- Modal Graficos -->
+<div id="modalGraficos" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">}</h4>
+      </div>
+      <div class="modal-body">
+        <p>Grafico</p>
+        <canvas id="myChart"></canvas>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+	
+
+
+
+
+
+	var array=[];
+	var td ="";
+	c=0;
+
+	var total_tr = document.querySelectorAll(".total");
+	var leyenda_rojo = document.querySelectorAll(".leyenda-rojo");
+	var leyenda_amarillo = document.querySelectorAll(".leyenda-amarillo");
+	var leyenda_verde = document.querySelectorAll(".leyenda-verde");
+	var leyenda_indicador = document.querySelectorAll(".leyenda-indicador");
+	
+
+
+
+
+
+var data_total={};
+
+for(var i=0; i<total_tr.length ; i++){
+
+
+var data_numeros = [];
+
+for(var j=0; j<leyenda_indicador.length; j++){
+
+
+
+
+	if($(total_tr[i]).children("td:first-child").text() == $(leyenda_indicador[j]).text() ){
+		
+		
+
+	console.log("Rojo ==> "+$(leyenda_rojo[j]).text());
+	var arr_rojo = $(leyenda_rojo[j]).text().split(" ");
+
+	console.log("Amarillo ==> "+$(leyenda_amarillo[j]).text());
+	var arr_amarillo = $(leyenda_amarillo[j]).text().split(" ");
+
+	console.log("Verde ==> "+$(leyenda_verde[j]).text());
+	var arr_verde = $(leyenda_verde[j]).text().split(" ");
+
+
+	
+
+	$(total_tr[i]).children("td").each(function(index,element){
+
+
+
+		td = $(this).text().replace("%","");
+		
+		
+
+		if(!isNaN( parseInt(td) ) || 1==1 ){
+			c++;
+			data_numeros.push(td);
+			if(arr_rojo[1]=="<"){
+
+				if(parseInt(td) < parseInt(arr_rojo[0]) ){
+					$(this).css("backgroundColor","red");
+				}
+			}
+
+			else if(arr_rojo[1]=="<="){
+				if(parseInt(td) <= parseInt(arr_rojo[0]) ){
+					$(this).css("backgroundColor","red");
+				}
+			}	
+
+			if(arr_amarillo[1]=="<"){
+
+				if(arr_rojo[1]=="<"){
+
+					if(parseInt(td) < parseInt(arr_amarillo[0]) && parseInt(td) >= arr_rojo[0]){
+						$(this).css("backgroundColor","yellow");
+					}
+
+				}
+				else if(arr_rojo[1]=="<="){
+
+					if(parseInt(td) < parseInt(arr_amarillo[0]) && parseInt(td) > arr_rojo[0]){
+						$(this).css("backgroundColor","yellow");
+					}
+
+				}
+
+
+			}	
+
+			else if(arr_amarillo[1]=="<="){
+
+				if(arr_rojo[1]=="<"){
+
+					if(parseInt(td) <= parseInt(arr_amarillo[0]) && parseInt(td) >= arr_rojo[0]){
+						$(this).css("backgroundColor","yellow");
+					}
+
+				}
+				else if(arr_rojo[1]=="<="){
+
+					if(parseInt(td) <= parseInt(arr_amarillo[0]) && parseInt(td) > arr_rojo[0]){
+						$(this).css("backgroundColor","yellow");
+					}
+
+				}
+
+			}
+
+			if(arr_verde[1]==">"){
+
+				if(parseInt(td) > parseInt(arr_verde[0]) ){
+					$(this).css("backgroundColor","green");
+				}
+			}	
+
+			else if(arr_verde[1] == ">="){
+				if(parseInt(td) >= parseInt(arr_verde[0]) ){
+					$(this).css("backgroundColor","green");
+				}
+			}
+
+
+
+		}
+	});
+
+	}
+}
+
+	data_total[i+1] = data_numeros;
+}
+
+
+		function alertprueba(datos){
+			
+
+			$.each(data_total,function(key,value){
+
+				
+				if(value[0]==datos){
+					
+					enviarTotalAjax(value);
+					
+				}
+
+			});
+
+
+		}
+
+
+
+
+
+
+	function postTotalIndicador(datos_indicadores){
+
+			
+		$.ajax({
+
+			type:"POST",
+			url: "{{path('prueba_postTotalIndicadorAjax')}}" ,
+			data: datos_indicadores,
+			dataType: 'json',
+
+			success:function(dataTotalIndicador){
+				console.log("Data Total Indicador => "+dataTotalIndicador);
+
+			},
+
+			error: function(error){
+				console.log(error);
+			}
+		});	
+
+	}
+
+	postTotalIndicador(data_total);	
+
+
+		function enviarTotalAjax(total_graficos){
+			$.ajax({
+
+
+				type:"POST",
+				data: {'total': total_graficos},
+				url: "{{path('prueba_postTotalAjax')}}",
+				dataType:'json',
+
+				success:function(data){
+
+
+
+				            var ctx = document.getElementById('myChart').getContext('2d');
+				var chart = new Chart(ctx, {
+				    // The type of chart we want to create
+				    type: 'line',
+
+				    // The data for our dataset
+				    data: {
+				        labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio","Agosto","septiembre","Octubre","Noviembre","Diciembre"],
+				        datasets: [{
+				            label: "My First dataset",
+				            backgroundColor: 'rgba(255, 86, 44, 0.8)',
+				            borderColor: 'rgb(255, 99, 132)',
+				            data: [data[2], data[3], data[4], data[5], data[6], data[7],data[8], data[9], data[10], data[11], data[12],data[13] ],
+				        }]
+				    },
+
+				    // Configuration options go here
+				    options: {}
+				});
+
+
+					console.log(data);
+				},
+
+				error:function(error){
+					console.log(error);
+				}
+			});
+		}
+
+
+
+	
+	console.log(data_total);
+	
+</script>
+
+
+        <script src="{{asset('js/chart.js')}}"></script>
+
+        <script type="text/javascript">
+
+
+        </script>
+
+
+
+
+{% endblock %}
+

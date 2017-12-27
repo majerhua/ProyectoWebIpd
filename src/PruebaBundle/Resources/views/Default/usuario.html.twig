@@ -88,7 +88,7 @@
 
 					dataType: 'json',
 					type: 'POST',
-					url: "{{url('prueba_postuserjax')}}",
+					url: "{{url('prueba_postUser')}}",
 					data:datos,
 
 					success:function(data){
@@ -121,7 +121,7 @@
 
 			$.ajax({
 				type:"GET",
-				url:"{{ url('prueba_getajaxarea') }}",
+				url:"{{ url('prueba_getArea') }}",
 				dataType:'json',
 				success:function(data){
 					//console.log(JSON.parse(data));

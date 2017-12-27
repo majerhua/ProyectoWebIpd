@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse; 
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
@@ -23,31 +23,25 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class DefaultController extends Controller
 {
-	
-    public function indexAction()
+
+
+    public function principalAction(Request $request)
     {
-        return $this->render('PruebaBundle:Default:index.html.twig');
+        return $this->render('PruebaBundle:Base:index.html.twig');
     }
-
-
-    public function nombreAction($nPila){
-
-    	return $this->render('PruebaBundle:Default:nombre.html.twig',array('nPila'=>$nPila));
-    }
-
 
     /**
-     * @Route("/usuarios", name="usuarios")
-     */
-    public function usuariosAction(Request $request)
+    * @Security("has_role('ROLE_ADMIN')")
+    */
+
+    public function usuarioAction(Request $request)
     {
-        return $this->render('PruebaBundle:Default:index.html.twig');
+        return $this->render('PruebaBundle:Default:usuario.html.twig');
     }
 
 
 
-
-    public function postuserjaxAction(Request $request)
+    public function postUserAction(Request $request)
     {
         $jsonContent=null;
 
@@ -116,34 +110,6 @@ class DefaultController extends Controller
 
      
 
-    public function getareajaxAction(Request $request)
-    {
-        $jsonContent=null;
-
-        if($request->isXmlHttpRequest())
-        {
-
-            $post = $this->getDoctrine()->getRepository(AreaIpd::class)->findAll(); 
-
-            $encoders = array(new JsonEncoder());
-            $normalizer = new ObjectNormalizer();
-            $normalizer->setCircularReferenceLimit(1);
-            // Add Circular reference handler
-            $normalizer->setCircularReferenceHandler(function ($object) {
-                return $object->getId();
-            });
-            $normalizers = array($normalizer);
-            $serializer = new Serializer($normalizers, $encoders);
-
-            $jsonContent = $serializer->serialize($post, 'json');
-
-
-            return new JsonResponse($jsonContent);  
-
-        }
-     
-    }
-
 
     public function loginAction(Request $request){
 
@@ -163,6 +129,10 @@ class DefaultController extends Controller
 
     }
 
+
+
+
+    /*
     public function registerAction(Request $request)
     {
         // 1) build the form
@@ -199,4 +169,9 @@ class DefaultController extends Controller
         );
     }
 
+    */
+
+
 }
+
+

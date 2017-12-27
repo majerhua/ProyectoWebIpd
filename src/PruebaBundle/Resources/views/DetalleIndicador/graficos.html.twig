@@ -1,0 +1,105 @@
+
+
+
+{% extends '::base.html.twig'  %}
+
+{% block body %}
+{{id}}
+<div class="container">
+	<h1>Ficha Indicador de Gestion</h1>
+
+	<table class="table table-bordered table-responsive" border="2" >
+
+		<tbody>
+
+			<tr>
+
+				<td colspan="4">TOTAL(%) DE PLANES DE SEGURIDAD EVALUADOS</td>
+
+			</tr>
+
+			<tr>
+
+				<td>Organo o Unidad Organica</td>
+				<td colspan="3">Direccion Nacional de Seguridad Deportiva</td>
+
+			</tr>
+
+			<tr>
+				<td>Mes Reporte</td>
+				<td colspan="3"></td>
+			</tr>
+
+			<tr>
+				<td>Proceso</td>
+				<td>Estrategicos</td>
+				<td>Misional</td>
+				<td>Soporte</td>
+			</tr>
+
+
+			<tr>
+				<td>Objetivo</td>
+				<td colspan="3"></td>
+			</tr>
+
+
+			<tr>
+				<td>Forma de Calculo</td>
+				<td colspan="3"></td>
+			</tr>
+
+			<tr>
+				<td rowspan="3" > Semaforo de Colores</td>
+				<td colspan="3" > >= 100% </td>
+			</tr>
+
+
+			<tr>
+				<td colspan="3"> < 100% </td>
+			</tr>
+
+			<tr>
+				<td colspan="3"> < 85% </td>
+			</tr>
+
+			<tr>
+				<td >Fuente de Informacion</td>
+				<td  colspan="3"></td>
+			</tr>
+
+			<tr>
+
+				<td colspan="4" >------------Grafica-----------
+				</td>
+
+			</tr>
+
+			<tr>
+				<td colspan="4">Plan de Accion</td>
+			</tr>
+
+			<tr>
+
+				<td colspan="2">Accion</td>
+				<td>Fecha</td>
+				<td>Responsable</td>
+
+			</tr>
+
+			<tr>
+
+				<td colspan="2">--------</td>
+				<td>----------</td>
+				<td>----------</td>
+
+			</tr>
+
+		</tbody>
+
+	</table>
+
+</div>
+
+
+{% endblock %}

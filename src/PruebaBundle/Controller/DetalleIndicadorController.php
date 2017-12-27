@@ -9,6 +9,8 @@ use PruebaBundle\Entity\DetalleIndicador;
 use PruebaBundle\Form\DetalleIndicadorType;
 use Symfony\Component\HttpFoundation\Request;
 use PruebaBundle\Entity\Leyenda;
+use PruebaBundle\Entity\Indicador;
+use PruebaBundle\Entity\TotalIndicadores;
 use PruebaBundle\Form\LeyendaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
@@ -179,13 +181,101 @@ class DetalleIndicadorController extends Controller
     }
 
 
-    public function graficosAction(Resquest $request){
-
-        $this->render("PruebaBundle:DetalleIndicador:graficos.html.twig");
+    public function detalleIndicadorGraficaAction(Request $request, $id)
+    {   
+        
+        return $this->render('PruebaBundle:DetalleIndicador:graficos.html.twig', array("id" => $id));
     }
 
-    public function postTotalAjaxAction(Request $request){
 
+
+    public function postTotalSaveAction(Request  $request){
+
+        $jsonContent=null;
+        
+        $mensaje="";
+
+
+        if( $request->isXmlHttpRequest() ){
+
+            $total = $request->request->get('total');
+            $em = $this->getDoctrine()->getManager();
+            $total_busqueda = $this->getDoctrine()->getRepository(TotalIndicadores::class)->findAll();           
+
+            foreach ($total as $key => $value) {
+
+                $flag=false;               
+
+                
+
+                foreach ($total_busqueda as $key => $valueTotal) {
+                        
+                    if( $valueTotal->getIndicador()->getNombre() == $value[0] ){
+                        $mensaje= " si existe igualdad ";
+                        $flag=true;
+                        break;
+                    }
+
+                }
+
+
+                if($flag==false){
+                    $mensaje = "No existe igualdad";
+                    $total_indicadores = new TotalIndicadores();
+
+                    $total_indicadores->setEnero($value[2]);
+                    $total_indicadores->setFebrero($value[3]);
+                    $total_indicadores->setMarzo($value[4]);
+                    $total_indicadores->setAbril($value[5]);
+                    $total_indicadores->setMayo($value[6]);
+                    $total_indicadores->setJunio($value[7]);
+                    $total_indicadores->setJulio($value[8]);
+                    $total_indicadores->setAgosto($value[9]);
+                    $total_indicadores->setSeptiembre($value[10]);
+                    $total_indicadores->setOctubre($value[11]);
+                    $total_indicadores->setNoviembre($value[12]);
+                    $total_indicadores->setDiciembre($value[13]);
+
+                    $indicador = $this->getDoctrine()->getRepository(Indicador::class)->findOneBy(['nombre' => $value[0] ]); 
+
+                    $total_indicadores->setIndicador($indicador);
+
+                    $k= $total_indicadores->getIndicador()->getNombre();
+
+                    $em->persist($total_indicadores);
+                    $em->flush();
+                }
+ 
+
+
+
+
+            }
+
+             
+                return new JsonResponse("listo");  
+ /*
+           
+            $encoders = array(new JsonEncoder());
+            $normalizer = new ObjectNormalizer();
+            $normalizer->setCircularReferenceLimit(1);
+            // Add Circular reference handler
+            $normalizer->setCircularReferenceHandler(function ($object) {
+                return $object->getId();
+            });
+            $normalizers = array($normalizer);
+            $serializer = new Serializer($normalizers, $encoders);
+
+            $jsonContent = $serializer->serialize($post, 'json');
+*/
+             
+        }
+
+    }
+
+
+
+    public function postTotalAjaxAction(Request $request){
         $jsonContent=null;
 
         if( $request->isXmlHttpRequest() ){
@@ -214,6 +304,7 @@ class DetalleIndicadorController extends Controller
         $post = $this->getDoctrine()->getRepository(DetalleIndicador::class)->findAll(); 
 
             $encoders = array(new JsonEncoder());
+
             $normalizer = new ObjectNormalizer();
             $normalizer->setCircularReferenceLimit(1);
             // Add Circular reference handler

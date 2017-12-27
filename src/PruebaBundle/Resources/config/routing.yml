@@ -1,27 +1,35 @@
 
-prueba_nombre:
-  path: /nombre/{nPila} 
-  defaults: { _controller: PruebaBundle:Default:nombre}
-
-prueba_register:
-  path: /register 
-  defaults: { _controller: PruebaBundle:Default:register}
+######## USUARIO INICIO ############
 
 prueba_usuarios:
-  path: /usuarios 
-  defaults: { _controller: PruebaBundle:Default:usuarios}
+  path: /usuario 
+  defaults: { _controller: PruebaBundle:Default:usuario}
 
-prueba_getajaxarea:
-  path: /ajax/area 
-  defaults: { _controller: PruebaBundle:Default:getareajax}
+prueba_postUser:
+  path: /usuario/post 
+  defaults: { _controller: PruebaBundle:Default:postUser}
   methods:  [GET,POST]
 
+# USUARIO FIN
 
-prueba_postuserjax:
-  path: /post/user 
-  defaults: { _controller: PruebaBundle:Default:postuserjax}
+
+
+
+
+######### INICIO AREA ###########
+
+prueba_getArea:
+  path: /area/get 
+  defaults: { _controller: PruebaBundle:Area:getArea }
   methods:  [GET,POST]
 
+# FIN AREA 
+
+
+
+
+
+########## LOGIN AND LOGOUT INICIO ##########
 
 prueba_login:
   path: /login 
@@ -30,16 +38,19 @@ prueba_login:
 prueba_logout:
   path: /logout
 
-
-prueba_form:
-  path: /form
-  defaults: { _controller: PruebaBundle:Post:formPost }
+#LOGIN AND LOGOUT FIN
 
 
-prueba_insertar:
-  path: /insert/post
-  defaults: { _controller: PruebaBundle:Post:insertPost}
 
+########## INICIO PRINCIPAL #########
+
+
+prueba_principal:
+  path: /
+  defaults: { _controller: PruebaBundle:Default:principal }
+
+
+#FIN PRINCIPAL
 
 
 
@@ -53,7 +64,6 @@ prueba_indicadorajaxIndicador:
   path: /ajax/indicador
   defaults: { _controller: PruebaBundle:Indicador:indicadorajax }
 
-
 prueba_postTotalIndicadorAjax:
   path: /ajax/totalindicador
   defaults: { _controller: PruebaBundle:DetalleIndicador:postTotalIndicadorAjax }
@@ -61,29 +71,25 @@ prueba_postTotalIndicadorAjax:
 
 
 
-prueba_formLeyenda:
-  path: /leyenda
-  defaults: { _controller: PruebaBundle:Leyenda:formLeyenda }
+#INICIO LEYENDA
 
-
-
-prueba_postLeyendaAjax:
-  path: /leyenda/ajax/post
-  defaults: { _controller: PruebaBundle:Leyenda:postLeyendaAjax }  
+prueba_postLeyenda:
+  path: /disede/leyenda/post
+  defaults: { _controller: PruebaBundle:Leyenda:postLeyenda }  
   methods:  [GET,POST]
 
-prueba_getLeyendaAjax:
-  path: /leyenda/ajax/get
-  defaults: { _controller: PruebaBundle:Leyenda:getLeyendaAjax }  
+prueba_getLeyenda:
+  path: /disede/leyenda/get
+  defaults: { _controller: PruebaBundle:Leyenda:getLeyenda }  
   methods:  [GET,POST]
 
-
-
-
-prueba_ajaxLeyenda:
-  path: /leyenda/pruebaajax
-  defaults: { _controller: PruebaBundle:Leyenda:ajaxLeyenda }
+prueba_leyenda:
+  path: /disede/leyenda
+  defaults: { _controller: PruebaBundle:Leyenda:leyenda }
   methods:  [GET,POST]
+
+#FIN LEYENDA
+
 
 prueba_formDetalleIndicador:
   path: /formdetalleindicador
@@ -94,7 +100,7 @@ prueba_updateDetalleIndicador:
   defaults: { _controller: PruebaBundle:DetalleIndicador:updateDetalleIndicador }
 
 prueba_verDetalleIndicador:
-  path: /
+  path: /disede
   defaults: { _controller: PruebaBundle:DetalleIndicador:verDetalleIndicador }
 
 prueba_postTotalAjax:
@@ -102,12 +108,22 @@ prueba_postTotalAjax:
   defaults: { _controller: PruebaBundle:DetalleIndicador:postTotalAjax }
   methods:  [GET,POST]
 
-prueba_graficos:
-  path: /detalleindicador/graficos
-  defaults: { _controller: PruebaBundle:DetalleIndicador:graficos}
 
 
 
+prueba_postTotalSave:
+  path: /detalleindicador/total/post
+  defaults: { _controller: PruebaBundle:DetalleIndicador:postTotalSave }
+  methods:  [GET,POST]
+
+
+
+
+
+prueba_detalleIndicadorGrafica:
+  path: /detalleindicador/graficos/{id}
+  defaults: { _controller: PruebaBundle:DetalleIndicador:detalleIndicadorGrafica }
+  methods:  [GET,POST]
 
 prueba_postajax:
   path: /ajax/posts

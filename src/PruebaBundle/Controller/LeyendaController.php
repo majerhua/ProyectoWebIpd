@@ -12,7 +12,6 @@ use PruebaBundle\Entity\Indicador;
 use PruebaBundle\Form\LeyendaType;
 use Symfony\Component\HttpFoundation\Request;
 
-
 use Symfony\Component\HttpFoundation\JsonResponse; 
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
@@ -25,6 +24,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 class LeyendaController extends Controller
 {
 
+/*
 	public function formLeyendaAction(Request $request){
 		
 
@@ -60,16 +60,15 @@ class LeyendaController extends Controller
 		return $this->render('PruebaBundle:Leyenda:nuevo.html.twig',array("form"=>$form->createView(), "leyendas" => $leyendas));
 
 	}
+*/
 
+	public function leyendaAction(Request $request){
 
-	public function ajaxLeyendaAction(Request $request){
-
-
-		return $this->render("PruebaBundle:Leyenda:pruebaajax.html.twig");
+		return $this->render("PruebaBundle:Leyenda:leyenda.html.twig");
 
 	}
 
-	public function postLeyendaAjaxAction(Request $request){
+	public function postLeyendaAction(Request $request){
 
 
 		if($request->isXmlHttpRequest()){
@@ -125,7 +124,7 @@ class LeyendaController extends Controller
 
 
 
-	public function getLeyendaAjaxAction(Request $request){
+	public function getLeyendaAction(Request $request){
 
 
 		if($request->isXmlHttpRequest()){

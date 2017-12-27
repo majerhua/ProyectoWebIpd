@@ -1,29 +1,33 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Prueba Ajax</title>
-  	<link href="{{ asset('css/bootstrap.css')  }}"  rel="stylesheet" >
-    <link href="{{ asset('css/estilos.css')  }}"  rel="stylesheet" >
-</head>
-<body>
 
-        <nav class="navbar navbar-inverse">
-          <div class="container-fluid">
+{% extends '::base.html.twig'  %}
+
+
+{% block body %}
+
+    <nav class="navbar navbar-inverse">
+
+        <div class="container-fluid">
+
             <div class="navbar-header">
-              <a class="navbar-brand" href="#">WebSite IPD</a>
+                <a class="navbar-brand" href="/"><i class="fa fa-flag" aria-hidden="true" style="margin-right:10px;"></i>{{app.user.areaIpd}}</a>
             </div>
+
+            {% if is_granted('ROLE_ADMIN') %}
             <ul class="nav navbar-nav"  id="menu-inicio" >
-              <li><a href="{{path('prueba_verDetalleIndicador')}}">Tablero Control</a></li>
+              <li ><a href="{{path('prueba_verDetalleIndicador')}}">Tablero Control</a></li>
               <li><a href="{{path('prueba_formIndicador')}}">Indicador</a></li>
-              <li   class="active" ><a href="{{path('prueba_formLeyenda')}}">Leyenda</a></li>
+              <li class="active"><a href="{{path('prueba_leyenda')}}">Leyenda</a></li>
             </ul>
+            {% endif %}
+            
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="#"><span class="glyphicon glyphicon-user"></span> Carlos Javier Majerhua Nuñez</a></li>
-              <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Salir</a></li>
+              <li><a href="#"><span class="glyphicon glyphicon-user"></span> {{app.user.username}}</a></li>
+              <li><a href="{{path('prueba_logout')}}"><span class="glyphicon glyphicon-log-in"></span> Salir</a></li>
             </ul>
 
-          </div>
-</nav>
+        </div>
+
+    </nav>
 
 	
 <div  style="width:300px; margin:40px;">
@@ -156,7 +160,7 @@
 
 	        			$.ajax({
 
-        				url: "{{ url('prueba_postLeyendaAjax') }}",
+        				url: "{{ url('prueba_postLeyenda') }}",
         				type: 'POST',
         				dataType: 'json',
         				data: datos,
@@ -178,7 +182,7 @@
         		function listaLeyendas(){
 	        			$.ajax({
 
-        				url: "{{ url('prueba_getLeyendaAjax') }}",
+        				url: "{{ url('prueba_getLeyenda') }}",
         				type: 'GET',
         				dataType: 'json',
 
@@ -232,5 +236,4 @@
 
     </script>
 
-</body>
-</html>
+{% endblock %}

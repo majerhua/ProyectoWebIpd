@@ -21,13 +21,13 @@
 			<tr>
 
 				<td>Organo o Unidad Organica</td>
-				<td colspan="3">Direccion Nacional de Seguridad Deportiva</td>
+				<td colspan="3">{{app.user.areaIpd}}</td>
 
 			</tr>
 
 			<tr>
 				<td>Mes Reporte</td>
-				<td colspan="3"></td>
+				<td colspan="3">{{ "now"|date("m/d/Y") }}</td>
 			</tr>
 
 			<tr>
@@ -51,16 +51,16 @@
 
 			<tr>
 				<td rowspan="3" > Semaforo de Colores</td>
-				<td colspan="3" > >= 100% </td>
+				<td colspan="3" id="grafica_rojo" > </td>
 			</tr>
 
 
 			<tr>
-				<td colspan="3"> < 100% </td>
+				<td colspan="3" id="grafica_amarillo"> </td>
 			</tr>
 
 			<tr>
-				<td colspan="3"> < 85% </td>
+				<td colspan="3" id="grafica_verde"></td>
 			</tr>
 
 			<tr>
@@ -70,7 +70,7 @@
 
 			<tr>
 
-				<td colspan="4" >------------Grafica-----------
+				<td colspan="4" ><canvas id="myChart"></canvas>
 				</td>
 
 			</tr>
@@ -101,5 +101,78 @@
 
 </div>
 
+
+<script>
+
+	
+	var datos = {'id': {{id}}};
+
+$(document).ready(function(){
+
+
+
+		
+		$.ajax({
+
+			type:"POST",
+			url: "{{path('prueba_postIdGraficos')}}" ,
+			data: datos,
+			dataType: 'json',
+
+			success: function(data){
+				var totalDatos= JSON.parse(data)['totalesindicadores']['0'];
+				var leyendaDatos = JSON.parse(data)['leyendas']['0'];
+
+
+				$("#grafica_rojo").append(leyendaDatos['rojo']+"%");
+				$("#grafica_rojo").append("<div class='rojo'></div>");
+
+				$("#grafica_amarillo").append(leyendaDatos['amarillo']+"%");
+				$("#grafica_amarillo").append("<div class='amarillo'></div>");
+
+				$("#grafica_verde").append(leyendaDatos['verde']+"%");
+				$("#grafica_verde").append("<div class='verde'></div>");
+				
+
+
+				console.log(JSON.parse(data));
+
+
+		            var ctx = document.getElementById('myChart').getContext('2d');
+					var chart = new Chart(ctx, {
+
+				    type: 'bar',
+				    
+				    data: {
+				        labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio","Agosto","septiembre","Octubre","Noviembre","Diciembre"],
+				        datasets: [{
+				            label: "Grafico de Barras",
+				            backgroundColor: 'rgba(255, 86, 44, 0.8)',
+				            borderColor: 'rgb(255, 99, 132)',
+				            data: [totalDatos['enero'], totalDatos['febrero'], totalDatos['marzo'], totalDatos['abril'], totalDatos['mayo'], totalDatos['junio'],totalDatos['julio'],totalDatos['agosto'], totalDatos['septiembre'], totalDatos['octubre'], totalDatos['noviembre'], totalDatos['diciembre'] ],
+				        }]
+				    },
+
+				    // Configuration options go here
+				    options: {}
+				});
+
+
+			},
+
+			error: function(error){
+				console.log("Error",error);
+			}
+		});	
+
+});
+
+
+
+
+	
+</script>
+
+<script src="{{asset('js/chart.js')}}"></script>
 
 {% endblock %}

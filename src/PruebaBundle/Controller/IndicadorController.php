@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use PruebaBundle\Entity\Post;
 use PruebaBundle\Form\PostType;
 use PruebaBundle\Entity\Indicador;
+use PruebaBundle\Entity\TotalIndicadores;
 use PruebaBundle\Form\IndicadorType;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -108,5 +109,45 @@ class IndicadorController extends Controller
     return new JsonResponse($jsonContent);          
 
     } 
+
+
+    public function postIdDetalleIndicadorAction(Request $request){
+
+
+        if($request->isXmlHttpRequest()){
+
+
+            $id = $request->request->get('id');
+
+            $post = $this->getDoctrine()->getRepository(Indicador::class)->find($id); 
+
+           //$repository = $this->getDoctrine()->getRepository(TotalIndicadores::class);
+   
+            //$query = $repository->createQueryBuilder('p')
+            //->where('p.id = ?31')
+            //->getQuery();
+
+            //$post = $query->getResult();
+
+            $encoders = array(new JsonEncoder());
+            $normalizer = new ObjectNormalizer();
+            $normalizer->setCircularReferenceLimit(1);
+            // Add Circular reference handler
+            $normalizer->setCircularReferenceHandler(function ($object) {
+                return $object->getId();
+            });
+            $normalizers = array($normalizer);
+            $serializer = new Serializer($normalizers, $encoders);
+
+            $jsonContent = $serializer->serialize($post, 'json');
+
+
+            return new JsonResponse($jsonContent);
+
+        }
+
+        return new JsonResponse("si");
+
+    }
 
 }

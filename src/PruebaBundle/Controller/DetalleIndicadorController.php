@@ -340,4 +340,6 @@ class DetalleIndicadorController extends Controller
 
     }
 
+
+
 }

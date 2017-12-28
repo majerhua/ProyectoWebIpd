@@ -91,6 +91,8 @@ prueba_leyenda:
 #FIN LEYENDA
 
 
+#INICIO DETALLE_INDICADOR
+
 prueba_formDetalleIndicador:
   path: /formdetalleindicador
   defaults: { _controller: PruebaBundle:DetalleIndicador:formDetalleIndicador }
@@ -110,13 +112,18 @@ prueba_postTotalAjax:
 
 
 
-
 prueba_postTotalSave:
   path: /detalleindicador/total/post
   defaults: { _controller: PruebaBundle:DetalleIndicador:postTotalSave }
   methods:  [GET,POST]
 
 
+prueba_postIdGraficos:
+  path: /graficos/id/post
+  defaults: { _controller: PruebaBundle:Indicador:postIdDetalleIndicador}
+  methods:  [GET,POST]
+
+#FIN DETALLE_INDICADOR
 
 
 

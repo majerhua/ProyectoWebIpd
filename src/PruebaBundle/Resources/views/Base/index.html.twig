@@ -41,6 +41,7 @@
                       <li><a href="#">UP</a></li>
                       <li><a href="#">OTDA</a></li>
                       <li><a href="#">CONAD</a></li>
+                      
                   </ul>
 
                 {% if is_granted('ROLE_ADMIN') %}
@@ -49,6 +50,19 @@
                     <a href="{{url('prueba_usuarios')}}">
                     <i class="fa fa-users fa-lg"></i> Usuarios
                     </a>
+                  </li>
+
+                  <li>
+                    <a href="{{url('prueba_acuerdosPre')}}"> 
+                      <i class="fa fa-eraser" aria-hidden="true"></i>
+                      Acuerdos de Presidencia
+                    </a>
+                  </li>
+
+                  <li>
+                    <a href="{{url('prueba_acuerdosSG')}}">
+                      <i class="fa fa-th" aria-hidden="true"></i>
+                      Acuerdos de Secretaria General</a>
                   </li>
 
                 {%  endif  %} 

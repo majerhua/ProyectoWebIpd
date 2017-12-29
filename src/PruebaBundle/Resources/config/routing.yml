@@ -14,8 +14,6 @@ prueba_postUser:
 
 
 
-
-
 ######### INICIO AREA ###########
 
 prueba_getArea:
@@ -53,6 +51,67 @@ prueba_principal:
 #FIN PRINCIPAL
 
 
+
+########### ACUERDOS PRE ##########
+
+prueba_acuerdosPre:
+  path: /acuerdosPre 
+  defaults: { _controller: PruebaBundle:AcuerdosPre:acuerdosPre}
+  methods:  [GET,POST]
+
+prueba_postAcuerdosPre:
+  path: /acuerdosPre/post 
+  defaults: { _controller: PruebaBundle:AcuerdosPre:acuerdosPrePost}
+  methods:  [GET,POST]
+
+prueba_getAcuerdosPre:
+  path: /acuerdosPre/get 
+  defaults: { _controller: PruebaBundle:AcuerdosPre:acuerdosPreGet}
+  methods:  [GET,POST]
+
+#FIN ACUERDOS PRE
+
+
+########### ACUERDOS SG ##########
+
+prueba_acuerdosSG:
+  path: /acuerdosSG 
+  defaults: { _controller: PruebaBundle:AcuerdosSG:acuerdosSG}
+  methods:  [GET,POST]
+
+prueba_postAcuerdosSG:
+  path: /acuerdosSG/post 
+  defaults: { _controller: PruebaBundle:AcuerdosSG:acuerdosSGPost}
+  methods:  [GET,POST]
+
+prueba_getAcuerdosSG:
+  path: /acuerdosSG/get 
+  defaults: { _controller: PruebaBundle:AcuerdosSG:acuerdosSGGet}
+  methods:  [GET,POST]
+
+#FIN ACUERDOS SG
+
+
+############## OBSERVACIONES PRE ##############
+
+prueba_observacionesPrePost:
+  path: /observacionesPre/post 
+  defaults: { _controller: PruebaBundle:ObservacionesPre:observacionesPrePost}
+  methods:  [GET,POST]
+
+
+#FIN OBSERVACIONES PRE
+
+
+############## OBSERVACIONES SG ##############
+
+prueba_observacionesSGPost:
+  path: /observacionesSG/post 
+  defaults: { _controller: PruebaBundle:ObservacionesSG:observacionesSGPost}
+  methods:  [GET,POST]
+
+
+#FIN OBSERVACIONES SG
 
 
 prueba_formIndicador:

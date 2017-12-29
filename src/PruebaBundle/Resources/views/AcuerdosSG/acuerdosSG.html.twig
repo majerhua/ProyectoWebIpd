@@ -1,0 +1,342 @@
+{% extends '::base.html.twig'  %}
+
+{% block body %}
+
+  
+
+
+<h2 class="text-center">SEGUIMIENTO DE LOS ACUERDOS ADOPTADOS EN REUNIONES DE SECRETARIA GENERAL</h2>
+
+<div style="width:70%; height:400px; margin:0 auto;">
+
+
+	<div class="form-group col-md-6 col-lg-6">
+		<label>Sesion</label>
+		<input type="number" name="sesion"  id="sesion" class="form-control">
+	</div>
+
+	<div class="form-group col-md-6 col-lg-6">
+		<label>Fecha</label>
+		<input type="date" name="fecha"  id="fecha" class="form-control">
+	</div>
+
+	<div class="form-group col-md-6 col-sm-6 col-lg-6" >
+		<label>Agenda</label>
+		<input type="text" name="agenda" id="agenda"  class="form-control">
+	</div>
+
+	<div class="form-group col-md-6 col-sm-6 col-lg-6">
+		<label>Acuerdos Adoptados</label>
+		<input type="text" name="acuerdos"  id="acuerdos"  class="form-control">
+	</div>
+
+
+	<div class="form-group col-md-6 col-sm-6 col-lg-6">
+		<label>Area Responsable</label>
+		<select  name="areaIpd" id="areaIpd"  class="form-control">
+		</select>
+	</div>
+
+
+	<div class="form-group col-md-6 col-sm-6 col-lg-6">
+		<label>Estado</label>
+		
+		<select name="estado" id="estado"  class="form-control">
+			<option value="En Proceso">En Proceso</option>
+			<option value="Implementado">Implementado</option>
+			<option value="Cancelado">Cancelado</option>
+		</select>
+	</div>
+
+
+	<div class="form-group col-md-6 col-sm-6 col-lg-6">
+		<label>Observaciones</label>
+		<textarea type="text" name="observaciones" id="observaciones" class="form-control"></textarea>
+	</div>
+
+
+	<div class="form-group col-md-6 col-sm-6 col-lg-6">
+		<label>Plazo de Entrega</label>
+		<input type="date" name="plazoEntrega" id="plazoEntrega"  class="form-control">
+	</div>
+
+	<button class="btn btn-primary" id="boton-enviar-acuerdosSG">Enviar</button>
+
+</div>
+
+
+<table  class="table table-responsive table-bordered" style="margin:10px;">
+
+	<thead>
+		<tr>
+
+			<td>
+				Sesion
+			</td>
+			
+			<td>
+				Fecha
+			</td>
+
+			<td>
+				Agenda
+			</td>
+
+
+			<td>
+				Acuerdos Adoptados
+			</td>
+
+			<td>
+				Area Responsable
+			</td>
+
+			<td>
+				Estado
+			</td>
+
+			<td>
+				Plazo de Entrega
+			</td>
+
+			<td>
+				Observaciones
+			</td>
+
+			<td>
+				Historial Observ....
+			</td>
+
+			<td>
+				Editar
+			</td>
+
+		</tr>
+	</thead>
+
+	<tbody id="table_body">
+
+
+	</tbody>
+
+</table>
+
+
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" id="titulo_acuerdoSG"></h4>
+      </div>
+      <div class="modal-body">
+        <p>Historial de Observaciones</p>
+        <table class="table table-bordered table-responsive">
+
+        	<thead>
+        		<td>Id</td>
+        		<td>Descripcion</td>
+        		<td>Fecha</td>
+        	</thead>
+
+        	<tbody id="table-body-observaciones">
+
+
+        	</tbody>
+
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+<script>
+
+
+	$(document).ready(function(){
+	
+		$.ajax({
+			type:"GET",
+			url:"{{ url('prueba_getArea') }}",
+			dataType:'json',
+			success:function(data){
+			console.log(JSON.parse(data));
+			JSON.parse(data).forEach(function(valor,index){
+
+				$("#areaIpd").append("<option value='"+valor.id+"'>"+valor.nombre+"</option>");
+			});
+
+			},
+			error:function(error){
+				console.log(error);
+			}
+
+		});	
+
+
+
+
+		$.ajax({
+
+			dataType: 'json',
+			type: 'GET',
+			url: "{{url('prueba_getAcuerdosSG')}}",
+
+			success:function(data){
+				var datosAcuerdosSG=JSON.parse(data);
+				
+				
+				const promesa = new Promise(function(resolve,reject){
+					
+					datosAcuerdosSG.forEach(function(valor,index){
+
+					console.log(valor);	
+					$("#table_body").append('<tr value="'+valor.id+'" >'+'<td>'+valor.sesion+'</td>'+'<td>'+valor.fecha+'</td>'+'<td>'+valor.agenda+'<td>'+valor.acuerdos+'</td>'+'<td>'+valor.areaIpd.nombre+'</td>'+'<td>'+valor.estado+'</td>'+'<td>'+valor.plazoEntrega+'</td>'+'</td>'+'<td>'+valor["observacionSG"][valor["observacionSG"].length-1].descripcion+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal" data-target="#myModal" value="'+valor.id+'" >ver historial</button></td>'+'<td><button class="btn btn-success" >Editar</button></td>'+'</tr>');
+
+					});
+
+					resolve("a");
+
+				});
+
+				promesa.then(function(response){
+					
+
+
+					var btn_historial =  document.querySelectorAll(".btn-historial-observacion");
+
+					for(var i=0; i<btn_historial.length;i++){
+
+						btn_historial[i].onclick=function(){
+
+
+							$.ajax({
+
+								type:"POST",
+								data:{ id : this.value },
+								url:"{{ url('prueba_observacionesSGPost') }}",
+								dataType:'json',
+								success:function(data){
+
+									var data_observaciones = JSON.parse(data);	
+									console.log("Observaciones ==> ",data_observaciones);
+
+									$("#table-body-observaciones").empty();	
+									data_observaciones["observacionSG"].forEach(function(valor,index){
+										console.log(valor);
+										$("#table-body-observaciones").append("<tr>"+"<td>"+valor.id+"</td>"+"<td>"+valor.descripcion+"<td>"+valor.fecha+"</td>"+"</td>"+"</tr>")
+									});
+
+
+									//$("#table-body-observaciones").append()
+									$("#titulo_acuerdoSG").empty();
+									$("#titulo_acuerdoSG").append(data_observaciones["areaIpd"].nombre);
+
+								},
+								error:function(error){
+									console.log(error);
+								}
+
+
+							});
+
+						}
+					}
+
+				});
+
+
+			},
+			//data-toggle="modal" data-target="#myModal"
+			error:function(error){
+				console.log(error);
+			}
+
+
+		});
+
+
+
+
+
+		function historialObservaciones(){
+			//$("#table-body-observaciones").append("");
+			alert("hash");	
+		} 
+
+
+
+		$("#boton-enviar-acuerdosSG").on('click',function(){
+
+			postAcuerdosSG();
+
+		});
+
+		function postAcuerdosSG(){
+
+				datos={
+
+					sesion: $("#sesion").val(),
+					fecha: $("#fecha").val(),
+					agenda: $("#agenda").val(),
+					acuerdos: $("#acuerdos").val(),
+					areaIpd: $("#areaIpd").val(),
+					estado: $("#estado").val(),
+					observaciones: $("#observaciones").val(),
+					plazoEntrega: $("#plazoEntrega").val()
+
+				}
+
+
+				$.ajax({
+
+					dataType: 'json',
+					type: 'POST',
+					url: "{{url('prueba_postAcuerdosSG')}}",
+					data:datos,
+
+					success:function(data){
+						var datosAcuerdosSG=JSON.parse(data);
+						
+
+						datosAcuerdosSG.forEach(function(valor,index){
+
+							console.log(valor["fecha"]);	
+							$("#table_body").append('<tr value="'+valor.id+'" >'+'<td>'+valor.sesion+'</td>'+'<td>'+valor.fecha+'<td>'+valor.agenda+'</td>'+'<td>'+valor.acuerdos+'</td>'+'<td>'+valor.areaIpd.nombre+'</td>'+'<td>'+valor.estado+'</td>'+'<td>'+valor.plazoEntrega+'</td>'+'</td>'+'<td>'+valor.observacionPre[0].descripcion+'</td>'+'</tr>');
+
+						});
+
+					},
+
+					error:function(error){
+						console.log(error);
+					}
+
+
+				});
+
+			}
+
+
+
+
+	});
+
+
+
+
+
+</script>
+
+{% endblock %}

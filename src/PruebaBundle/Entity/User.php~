@@ -211,11 +211,6 @@ class User implements UserInterface
         return $this->roles;
     }
 
- 
-
-
-
-
     /**
      * Set roles
      *

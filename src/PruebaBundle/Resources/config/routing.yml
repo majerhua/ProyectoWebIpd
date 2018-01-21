@@ -24,9 +24,6 @@ prueba_getArea:
 # FIN AREA 
 
 
-
-
-
 ########## LOGIN AND LOGOUT INICIO ##########
 
 prueba_login:
@@ -69,8 +66,17 @@ prueba_getAcuerdosPre:
   defaults: { _controller: PruebaBundle:AcuerdosPre:acuerdosPreGet}
   methods:  [GET,POST]
 
-#FIN ACUERDOS PRE
+prueba_acuerdosPreUpdate:
+  path: /acuerdosPre/update/{id} 
+  defaults: { _controller: PruebaBundle:AcuerdosPre:acuerdosPreUpdate}
+  methods:  [GET,POST]
 
+prueba_nuevoAcuerdosPre:
+  path: /acuerdosPre/nuevo 
+  defaults: { _controller: PruebaBundle:AcuerdosPre:acuerdosPreNuevo}
+  methods:  [GET,POST]
+
+#FIN ACUERDOS PRE
 
 ########### ACUERDOS SG ##########
 
@@ -79,9 +85,20 @@ prueba_acuerdosSG:
   defaults: { _controller: PruebaBundle:AcuerdosSG:acuerdosSG}
   methods:  [GET,POST]
 
-prueba_postAcuerdosSG:
-  path: /acuerdosSG/post 
-  defaults: { _controller: PruebaBundle:AcuerdosSG:acuerdosSGPost}
+
+prueba_acuerdosSGUpdate:
+  path: /acuerdosSG/update/{id} 
+  defaults: { _controller: PruebaBundle:AcuerdosSG:acuerdosSGUpdate}
+  methods:  [GET,POST]
+
+prueba_acuerdosSGRemove:
+  path: /acuerdosSG/remove/{id}
+  defaults: { _controller: PruebaBundle:AcuerdosSG:acuerdosSGRemove}
+  methods:  [GET,POST]  
+
+prueba_nuevoAcuerdosSG:
+  path: /acuerdosSG/nuevo 
+  defaults: { _controller: PruebaBundle:AcuerdosSG:acuerdosSGNuevo}
   methods:  [GET,POST]
 
 prueba_getAcuerdosSG:
@@ -100,6 +117,10 @@ prueba_observacionesPrePost:
   methods:  [GET,POST]
 
 
+prueba_email:
+  path: /email 
+  defaults: { _controller: PruebaBundle:DetalleIndicador:email}
+  
 #FIN OBSERVACIONES PRE
 
 
@@ -123,10 +144,7 @@ prueba_indicadorajaxIndicador:
   path: /ajax/indicador
   defaults: { _controller: PruebaBundle:Indicador:indicadorajax }
 
-prueba_postTotalIndicadorAjax:
-  path: /ajax/totalindicador
-  defaults: { _controller: PruebaBundle:DetalleIndicador:postTotalIndicadorAjax }
-  methods:  [GET,POST]
+
 
 
 
@@ -152,27 +170,25 @@ prueba_leyenda:
 
 #INICIO DETALLE_INDICADOR
 
-prueba_formDetalleIndicador:
-  path: /formdetalleindicador
-  defaults: { _controller: PruebaBundle:DetalleIndicador:formDetalleIndicador }
+prueba_nuevoDetalleIndicador:
+  path: /nuevo-detalle-indicador
+  defaults: { _controller: PruebaBundle:DetalleIndicador:nuevoDetalleIndicador }
 
 prueba_updateDetalleIndicador:
-  path: /updatedetalleindicador/{id}
+  path: /disede/detalleindicador/update/{id}
   defaults: { _controller: PruebaBundle:DetalleIndicador:updateDetalleIndicador }
 
 prueba_verDetalleIndicador:
   path: /disede
   defaults: { _controller: PruebaBundle:DetalleIndicador:verDetalleIndicador }
 
-prueba_postTotalAjax:
-  path: /detalleindicador/ajax/post
-  defaults: { _controller: PruebaBundle:DetalleIndicador:postTotalAjax }
+prueba_postTotal:
+  path: /total/post
+  defaults: { _controller: PruebaBundle:DetalleIndicador:postTotal }
   methods:  [GET,POST]
 
-
-
-prueba_postTotalSave:
-  path: /detalleindicador/total/post
+prueba_getTotalIndicadores:
+  path: /detalleindicador/total-indicadores/get
   defaults: { _controller: PruebaBundle:DetalleIndicador:postTotalSave }
   methods:  [GET,POST]
 
@@ -182,14 +198,23 @@ prueba_postIdGraficos:
   defaults: { _controller: PruebaBundle:Indicador:postIdDetalleIndicador}
   methods:  [GET,POST]
 
-#FIN DETALLE_INDICADOR
-
-
-
 prueba_detalleIndicadorGrafica:
   path: /detalleindicador/graficos/{id}
   defaults: { _controller: PruebaBundle:DetalleIndicador:detalleIndicadorGrafica }
   methods:  [GET,POST]
+
+#FIN 
+
+#INICIO TOTAL INDICADOR
+
+prueba_postTotalInicio:
+  path: /total
+  defaults: { _controller: PruebaBundle:DetalleIndicador:postTotalInicio }
+  methods:  [GET,POST]
+
+#FIN
+
+
 
 prueba_postajax:
   path: /ajax/posts
@@ -200,3 +225,8 @@ prueba_mostrar:
   path: /mostrar
   defaults: { _controller: PruebaBundle:Post:mostrarPost } 
 
+#PRUEBA INGRESO DE USUARIO
+
+prueba_register:
+  path: /register
+  defaults: { _controller: PruebaBundle:Default:register }

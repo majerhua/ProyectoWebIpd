@@ -12,18 +12,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class AcuerdosSG
 {
-
-
     /**
      * @ORM\OneToMany(targetEntity="ObservacionesSG", mappedBy="acuerdoSG")
      */
     private $observacionSG;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AreaIpd", inversedBy="acuerdoSG")
-     * @ORM\JoinColumn(name="areaIpd_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="AcuerdosSGAreaIpd", mappedBy="acuerdoSG")
      */
-    private $areaIpd;
+    private $acuerdoSGAreaIpd;
 
 
     /**
@@ -55,6 +52,13 @@ class AcuerdosSG
      * @ORM\Column(name="agenda", type="string", length=255)
      */
     private $agenda;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="baja", type="string", length=1)
+     */
+    private $baja;
 
     /**
      * @var string
@@ -231,5 +235,104 @@ class AcuerdosSG
     {
         return $this->plazoEntrega;
     }
-}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->observacionSG = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
+    /**
+     * Add observacionSG
+     *
+     * @param \PruebaBundle\Entity\ObservacionesSG $observacionSG
+     *
+     * @return AcuerdosSG
+     */
+    public function addObservacionSG(\PruebaBundle\Entity\ObservacionesSG $observacionSG)
+    {
+        $this->observacionSG[] = $observacionSG;
+
+        return $this;
+    }
+
+    /**
+     * Remove observacionSG
+     *
+     * @param \PruebaBundle\Entity\ObservacionesSG $observacionSG
+     */
+    public function removeObservacionSG(\PruebaBundle\Entity\ObservacionesSG $observacionSG)
+    {
+        $this->observacionSG->removeElement($observacionSG);
+    }
+
+    /**
+     * Get observacionSG
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getObservacionSG()
+    {
+        return $this->observacionSG;
+    }
+
+    /**
+     * Set baja
+     *
+     * @param string $baja
+     *
+     * @return AcuerdosSG
+     */
+    public function setBaja($baja)
+    {
+        $this->baja = $baja;
+
+        return $this;
+    }
+
+    /**
+     * Get baja
+     *
+     * @return string
+     */
+    public function getBaja()
+    {
+        return $this->baja;
+    }
+    
+
+    /**
+     * Add acuerdoSGAreaIpd
+     *
+     * @param \PruebaBundle\Entity\AcuerdosSGAreaIpd $acuerdoSGAreaIpd
+     *
+     * @return AcuerdosSG
+     */
+    public function addAcuerdoSGAreaIpd(\PruebaBundle\Entity\AcuerdosSGAreaIpd $acuerdoSGAreaIpd)
+    {
+        $this->acuerdoSGAreaIpd[] = $acuerdoSGAreaIpd;
+
+        return $this;
+    }
+
+    /**
+     * Remove acuerdoSGAreaIpd
+     *
+     * @param \PruebaBundle\Entity\AcuerdosSGAreaIpd $acuerdoSGAreaIpd
+     */
+    public function removeAcuerdoSGAreaIpd(\PruebaBundle\Entity\AcuerdosSGAreaIpd $acuerdoSGAreaIpd)
+    {
+        $this->acuerdoSGAreaIpd->removeElement($acuerdoSGAreaIpd);
+    }
+
+    /**
+     * Get acuerdoSGAreaIpd
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAcuerdoSGAreaIpd()
+    {
+        return $this->acuerdoSGAreaIpd;
+    }
+}

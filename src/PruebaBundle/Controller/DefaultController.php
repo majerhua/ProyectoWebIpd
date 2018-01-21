@@ -4,8 +4,11 @@ namespace PruebaBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use PruebaBundle\Form\UserType;
-use PruebaBundle\Entity\User;
+
+
+use PruebaBundle\Form\UsuarioType;
+use PruebaBundle\Entity\Usuario;
+
 use PruebaBundle\Entity\AreaIpd;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -62,7 +65,7 @@ class DefaultController extends Controller
 
                 $post = $this->getDoctrine()->getRepository(AreaIpd::class)->findAll();
                 
-                $user = new User();
+                $user = new Usuario();
 
                 $user->setPlainPassword($plainpassword);
                 $user->setEmail($email);
@@ -132,13 +135,13 @@ class DefaultController extends Controller
 
 
 
-    /*
+    
     public function registerAction(Request $request)
     {
         // 1) build the form
 
-        $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $user = new Usuario();
+        $form = $this->createForm(UsuarioType::class, $user);
 
         // 2) handle the submit (will only happen on POST)
         $form->handleRequest($request); 
@@ -150,7 +153,7 @@ class DefaultController extends Controller
             $user->setPassword($password);
 
 
-           $roles = ["ROLE_USER"];
+           $roles = ["ROLE_ADMIN"];
             $user->setRoles($roles);
 
             // 4) save the User!
@@ -169,7 +172,7 @@ class DefaultController extends Controller
         );
     }
 
-    */
+    
 
 
 }

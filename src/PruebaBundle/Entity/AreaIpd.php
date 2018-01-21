@@ -15,21 +15,19 @@ class AreaIpd
 
 
      /**
-     * @ORM\OneToMany(targetEntity="User", mappedBy="areaIpd")
+     * @ORM\OneToMany(targetEntity="Usuario", mappedBy="areaIpd")
      */
-    private $users;
-
-
-     /**
-     * @ORM\OneToMany(targetEntity="AcuerdosPre", mappedBy="areaIpd")
-     */
-    private $acuerdoPre;
+    private $usuarios;
 
     /**
-     * @ORM\OneToMany(targetEntity="AcuerdosSG", mappedBy="areaIpd")
+     * @ORM\OneToMany(targetEntity="AcuerdosSGAreaIpd", mappedBy="areaIpd")
      */
-    private $acuerdoSG;
+    private $acuerdoSGAreaIpd;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AcuerdosPreAreaIpd", mappedBy="areaIpd")
+     */
+    private $acuerdoPreAreaIpd;
 
      /**
      * @ORM\OneToMany(targetEntity="Indicador", mappedBy="areaIpd")
@@ -135,104 +133,108 @@ class AreaIpd
 
 
     /**
-     * Add user
+     * Add usuario
      *
-     * @param \PruebaBundle\Entity\User $user
+     * @param \PruebaBundle\Entity\Usuario $usuario
      *
      * @return AreaIpd
      */
-    public function addUser(\PruebaBundle\Entity\User $user)
+    public function addUsuario(\PruebaBundle\Entity\Usuario $usuario)
     {
-        $this->users[] = $user;
+        $this->usuarios[] = $usuario;
 
         return $this;
     }
 
     /**
-     * Remove user
+     * Remove usuario
      *
-     * @param \PruebaBundle\Entity\User $user
+     * @param \PruebaBundle\Entity\Usuario $usuario
      */
-    public function removeUser(\PruebaBundle\Entity\User $user)
+    public function removeUsuario(\PruebaBundle\Entity\Usuario $usuario)
     {
-        $this->users->removeElement($user);
+        $this->usuarios->removeElement($usuario);
     }
 
     /**
-     * Get users
+     * Get usuarios
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getUsers()
+    public function getUsuarios()
     {
-        return $this->users;
+        return $this->usuarios;
     }
 
     /**
-     * Add acuerdoPre
+     * Add acuerdoSGAreaIpd
      *
-     * @param \PruebaBundle\Entity\AcuerdosPre $acuerdoPre
+     * @param \PruebaBundle\Entity\AcuerdosSGAreaIpd $acuerdoSGAreaIpd
      *
      * @return AreaIpd
      */
-    public function addAcuerdoPre(\PruebaBundle\Entity\AcuerdosPre $acuerdoPre)
+    public function addAcuerdoSGAreaIpd(\PruebaBundle\Entity\AcuerdosSGAreaIpd $acuerdoSGAreaIpd)
     {
-        $this->acuerdoPre[] = $acuerdoPre;
+        $this->acuerdoSGAreaIpd[] = $acuerdoSGAreaIpd;
 
         return $this;
     }
 
     /**
-     * Remove acuerdoPre
+     * Remove acuerdoSGAreaIpd
      *
-     * @param \PruebaBundle\Entity\AcuerdosPre $acuerdoPre
+     * @param \PruebaBundle\Entity\AcuerdosSGAreaIpd $acuerdoSGAreaIpd
      */
-    public function removeAcuerdoPre(\PruebaBundle\Entity\AcuerdosPre $acuerdoPre)
+    public function removeAcuerdoSGAreaIpd(\PruebaBundle\Entity\AcuerdosSGAreaIpd $acuerdoSGAreaIpd)
     {
-        $this->acuerdoPre->removeElement($acuerdoPre);
+        $this->acuerdoSGAreaIpd->removeElement($acuerdoSGAreaIpd);
     }
 
     /**
-     * Get acuerdoPre
+     * Get acuerdoSGAreaIpd
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getAcuerdoPre()
+    public function getAcuerdoSGAreaIpd()
     {
-        return $this->acuerdoPre;
+        return $this->acuerdoSGAreaIpd;
     }
 
     /**
-     * Add acuerdoSG
+     * Add acuerdoPreAreaIpd
      *
-     * @param \PruebaBundle\Entity\AcuerdosSG $acuerdoSG
+     * @param \PruebaBundle\Entity\AcuerdosPreAreaIpd $acuerdoPreAreaIpd
      *
      * @return AreaIpd
      */
-    public function addAcuerdoSG(\PruebaBundle\Entity\AcuerdosSG $acuerdoSG)
+    public function addAcuerdoPreAreaIpd(\PruebaBundle\Entity\AcuerdosPreAreaIpd $acuerdoPreAreaIpd)
     {
-        $this->acuerdoSG[] = $acuerdoSG;
+        $this->acuerdoPreAreaIpd[] = $acuerdoPreAreaIpd;
 
         return $this;
     }
 
     /**
-     * Remove acuerdoSG
+     * Remove acuerdoPreAreaIpd
      *
-     * @param \PruebaBundle\Entity\AcuerdosSG $acuerdoSG
+     * @param \PruebaBundle\Entity\AcuerdosPreAreaIpd $acuerdoPreAreaIpd
      */
-    public function removeAcuerdoSG(\PruebaBundle\Entity\AcuerdosSG $acuerdoSG)
+    public function removeAcuerdoPreAreaIpd(\PruebaBundle\Entity\AcuerdosPreAreaIpd $acuerdoPreAreaIpd)
     {
-        $this->acuerdoSG->removeElement($acuerdoSG);
+        $this->acuerdoPreAreaIpd->removeElement($acuerdoPreAreaIpd);
     }
 
     /**
-     * Get acuerdoSG
+     * Get acuerdoPreAreaIpd
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getAcuerdoSG()
+    public function getAcuerdoPreAreaIpd()
     {
-        return $this->acuerdoSG;
+        return $this->acuerdoPreAreaIpd;
+    }
+
+    public function getAcuerdoPre(){
+        
     }
 }

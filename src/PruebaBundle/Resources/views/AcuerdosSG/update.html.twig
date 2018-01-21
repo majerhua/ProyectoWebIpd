@@ -1,0 +1,219 @@
+{% extends '::base.html.twig'  %}
+
+{% block body %}
+
+
+	{#{{dump(acuerdosSG)}}
+	{{dump(acuerdosSG.areaIpd.id)}}
+	{{dump(observaciones)}}
+	{{cantidadObservaciones}}
+	{{dump(latestObservacion)}}
+	
+	{{dump(id)}}
+
+	{{dump(acuerdosSGAreaIpd)}}
+	{{dump(totalSGAreaIpd)}}
+
+	{{dump(areaIpdTotal)}}
+	#}
+
+
+<a href="/acuerdosSG"><button style="margin:10px 20px;"  class="btn btn-info btn-lg">Regresar</button></a>
+
+<div id="menssage-edit" class="	text-center" style="width:80%; background-color: rgba(55, 181, 108, 0.8); line-height:50px; margin:0 auto; color:white; font-weight:bold; font-size:1.2em;"></div>
+
+<h2 class="text-center">SEGUIMIENTO DE LOS ACUERDOS ADOPTADOS EN REUNIONES DE SECRETARIA GENERAL</h2>
+
+<div style="width:70%; height:400px; margin:0 auto;">
+
+
+	<div class="form-group col-md-6 col-lg-6">
+		<label>Sesion</label>
+		<input type="number" name="sesion"  id="sesion" class="form-control">
+	</div>
+
+	<div class="form-group col-md-6 col-lg-6">
+		<label>Fecha</label>
+		<input type="date" name="fecha"  id="fecha" class="form-control">
+	</div>
+
+	<div class="form-group col-md-6 col-sm-6 col-lg-6" >
+		<label>Agenda</label>
+		<input type="text" name="agenda" id="agenda"  class="form-control">
+	</div>
+
+	<div class="form-group col-md-6 col-sm-6 col-lg-6">
+		<label>Acuerdos Adoptados</label>
+		<input type="text" name="acuerdos"  id="acuerdos"  class="form-control">
+	</div>
+
+
+	<div class="form-group col-md-6 col-sm-6 col-lg-6">
+		<label>Area Responsable</label>
+		<select  name="areaIpd" id="areaIpd"  class="form-control" multiple >
+		</select>
+		<label for="todo-area" >Todas las areas</label>
+		<input id="todo-area" type="checkbox" name="todo-area">	
+	</div>
+
+
+	<div class="form-group col-md-6 col-sm-6 col-lg-6">
+		<label>Estado</label>
+		
+		<select name="estado" id="estado"  class="form-control">
+			<option value="En Proceso">En Proceso</option>
+			<option value="Implementado">Implementado</option>
+			<option value="Cancelado">Cancelado</option>
+			<option value="No aplica">No Aplica</option>
+		</select>
+	</div>
+
+
+	<div class="form-group col-md-6 col-sm-6 col-lg-6">
+		<label>Observaciones</label>
+		<textarea type="text" name="observaciones" id="observaciones" class="form-control"></textarea>
+	</div>
+
+
+	<div class="form-group col-md-6 col-sm-6 col-lg-6">
+		<label>Plazo de Entrega</label>
+		<input type="date" name="plazoEntrega" id="plazoEntrega"  class="form-control">
+	</div>
+
+	<div class="form-group col-md-6 col-sm-6 col-lg-6" >
+		<button class="btn btn-success" id="boton-editar-acuerdosSG">Editar</button>
+	</div>
+</div>
+
+<script>
+
+
+
+	$("#sesion").val("{{acuerdosSG.sesion}}");
+	$("#fecha").val( "{{acuerdosSG.fecha}}");
+	$("#agenda").val( "{{acuerdosSG.agenda}}");
+	$("#acuerdos").val( "{{acuerdosSG.acuerdos}}");
+ 
+	$("#observaciones").val("{{observaciones[cantidadObservaciones-1].descripcion}}");
+	$("#plazoEntrega").val("{{acuerdosSG.plazoEntrega}}");
+
+	var sel = document.getElementById("estado");
+
+	
+	for (let i = 0; i < sel.length; i++) {
+		
+		if(sel[i].value === "{{acuerdosSG.estado}}" ){
+
+			sel[i].setAttribute('selected','selected');
+		}
+	}
+
+	var arrAreasIpd= [];
+
+	{% for acuSGA in acuerdosSGAreaIpd  %}	
+
+		if( {{id}} == {{acuSGA.acuerdoSG.id}} ){			
+
+			$("#areaIpd").append("<option selected='selected' value={{acuSGA.areaIpd.id}}>{{acuSGA.areaIpd.nombre}}</option>");
+			arrAreasIpd.push({{acuSGA.areaIpd.id}});
+		}
+
+	{% endfor %}
+
+	c=-1;
+
+	{% for arit in areaIpdTotal  %}	
+		a=0;
+		while(a<arrAreasIpd.length ){
+
+			if({{arit.id}} == arrAreasIpd[a]){
+				c=arrAreasIpd[a];
+			}
+			a++;
+		}
+		
+		if( c != {{arit.id}} ){			
+			$("#areaIpd").append("<option  value={{arit.id}}>{{arit.nombre}}</option>");	
+		}	
+
+	{% endfor %}
+
+	$("#boton-editar-acuerdosSG").on('click',function(){
+
+		datos={
+
+			sesion: $("#sesion").val(),
+			fecha: $("#fecha").val(),
+			agenda: $("#agenda").val(),
+			acuerdos: $("#acuerdos").val(),
+			areaIpd: $("#areaIpd").val(),
+			estado: $("#estado").val(),
+			areasIpdInicio: arrAreasIpd,
+			observaciones: $("#observaciones").val(),
+			plazoEntrega: $("#plazoEntrega").val()
+		}
+
+		$.ajax({
+
+			dataType: 'json',
+			type: 'POST',
+			url: "/acuerdosSG/update/{{id}}",
+			data:datos,
+
+			success:function(data){
+				
+				$("#menssage-edit").append(data);
+				console.log(data);		
+			},
+
+			error:function(error){
+				console.log(error);
+			}
+
+		});					
+
+	});
+
+	var areaIpdSelect = document.getElementById("areaIpd");
+
+	var arraySelectAreasInicio = [];
+
+	for (var i = 0; i <areaIpdSelect.options.length ; i++) {
+		if(areaIpdSelect.options[i].selected == true){
+			arraySelectAreasInicio.push(i);
+		}		
+	}
+
+	var cont=0;
+
+	$( "#todo-area" ).on( "click",function(){
+
+		if(cont==0){
+			selecionarAreasAll(true);
+			cont++;
+		}else{
+			selecionarAreasAll(false);
+			selecionarAreasInicio(arraySelectAreasInicio);
+			cont=0;
+
+		}		
+
+	});
+
+	function selecionarAreasAll(varBool){
+		for (var i = 0; i <areaIpdSelect.options.length ; i++) {
+			areaIpdSelect.options[i].selected=varBool;		
+		}		
+	}
+
+	function selecionarAreasInicio(arraPos){
+		for (var i = 0; i <arraPos.length ; i++) {			
+			areaIpdSelect.options[arraPos[i]].selected=true;	
+		}		
+	}
+
+	
+</script>
+
+
+{%  endblock %}

@@ -16,11 +16,13 @@ security:
 
         our_db_provider:
             entity:
-                class: PruebaBundle:User
+                class: PruebaBundle:Usuario
                 property: username
     encoders:
-        PruebaBundle\Entity\User: bcrypt
-        Symfony\Component\Security\Core\User\User: plaintext
+        #Symfony\Component\Security\Core\User\User: plaintext
+        #PruebaBundle\Entity\Usuario: bcrypt
+        PruebaBundle\Entity\Usuario: plaintext
+        
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
 
 

@@ -1,45 +1,41 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
 
-	{{id}}
+{% extends '::base.html.twig'  %}
 
-<br>
+{% block body %}
+
+    <a href="/disede"><button style="margin-left:30px; margin-top:20px;"  class="btn btn-danger btn-lg">Regresar Tablero Control</button></a>
+
+    <div style="width:40%; margin:10px auto; ">
+            <h1 class="text-left">Editar Sub Indicador</h1>
+            {{form(form)}}
+    </div>
+
+    <script  src="{{ asset('js/jquery.js') }}"></script>
 
 
-{{form(form)}}
+    <script>
 
+    	$(document).ready(function(){
+    		
+    		$.ajax({
 
-        <script  src="{{ asset('js/jquery.js') }}">
+    			url:"{{ url('prueba_postajax') }}",
+    			type:"GET",
+    			dataType: 'json',
 
-        </script>
+    			 success:function(data){
+    			 		
+    			 		
+    			 		console.log(data);
+    			 },
 
-        <script>
+    			error: function(error){
+    				console.log("Error",error);
+    			}
 
-        	$(document).ready(function(){
-        		
-        		$.ajax({
+    		});
 
-        			url:"{{ url('prueba_postajax') }}",
-        			type:"GET",
-        			dataType: 'json',
+    	});
+    </script>
 
-        			 success:function(data){
-        			 		
-        			 		
-        			 		console.log(data);
-        			 },
-
-        			error: function(error){
-        				console.log("Error",error);
-        			}
-
-        		});
-
-        	});
-        </script>
-</body>
-</html>
+{% endblock %}

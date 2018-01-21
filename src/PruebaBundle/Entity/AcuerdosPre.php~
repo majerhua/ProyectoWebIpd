@@ -13,20 +13,15 @@ use Doctrine\ORM\Mapping as ORM;
 class AcuerdosPre
 {
 
-
-
-
     /**
      * @ORM\OneToMany(targetEntity="ObservacionesPre", mappedBy="acuerdoPre")
      */
     private $observacionPre;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AreaIpd", inversedBy="acuerdoPre")
-     * @ORM\JoinColumn(name="areaIpd_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="AcuerdosPreAreaIpd", mappedBy="acuerdoPre")
      */
-    private $areaIpd;
-
+    private $acuerdoPreAreaIpd;
 
     /**
      * @var int
@@ -51,7 +46,13 @@ class AcuerdosPre
      */
     private $acuerdos;
 
-
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="baja", type="string", length=1)
+     */
+    private $baja;
+    
     /**
      * @var string
      *
@@ -231,29 +232,6 @@ class AcuerdosPre
         return $this->observacionPre;
     }
 
-    /**
-     * Set areaIpd
-     *
-     * @param \PruebaBundle\Entity\AreaIpd $areaIpd
-     *
-     * @return AcuerdosPre
-     */
-    public function setAreaIpd(\PruebaBundle\Entity\AreaIpd $areaIpd = null)
-    {
-        $this->areaIpd = $areaIpd;
-
-        return $this;
-    }
-
-    /**
-     * Get areaIpd
-     *
-     * @return \PruebaBundle\Entity\AreaIpd
-     */
-    public function getAreaIpd()
-    {
-        return $this->areaIpd;
-    }
 
     /**
      * Set comite
@@ -302,4 +280,39 @@ class AcuerdosPre
     {
         return $this->fecha;
     }
+
+    /**
+     * Add acuerdoPreAreaIpd
+     *
+     * @param \PruebaBundle\Entity\AcuerdosPreAreaIpd $acuerdoPreAreaIpd
+     *
+     * @return AcuerdosPre
+     */
+    public function addAcuerdoPreAreaIpd(\PruebaBundle\Entity\AcuerdosPreAreaIpd $acuerdoPreAreaIpd)
+    {
+        $this->acuerdoPreAreaIpd[] = $acuerdoPreAreaIpd;
+
+        return $this;
+    }
+
+    /**
+     * Remove acuerdoPreAreaIpd
+     *
+     * @param \PruebaBundle\Entity\AcuerdosPreAreaIpd $acuerdoPreAreaIpd
+     */
+    public function removeAcuerdoPreAreaIpd(\PruebaBundle\Entity\AcuerdosPreAreaIpd $acuerdoPreAreaIpd)
+    {
+        $this->acuerdoPreAreaIpd->removeElement($acuerdoPreAreaIpd);
+    }
+
+    /**
+     * Get acuerdoPreAreaIpd
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAcuerdoPreAreaIpd()
+    {
+        return $this->acuerdoPreAreaIpd;
+    }
+
 }

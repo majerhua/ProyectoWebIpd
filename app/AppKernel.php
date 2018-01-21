@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new PruebaBundle\PruebaBundle(),
             new AdminBundle\AdminBundle(),
+            new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
             
         ];
 

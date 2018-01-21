@@ -101,5 +101,28 @@ class ObservacionesSG
     {
         return $this->descripcion;
     }
-}
 
+    /**
+     * Set acuerdoSG
+     *
+     * @param \PruebaBundle\Entity\AcuerdosSG $acuerdoSG
+     *
+     * @return ObservacionesSG
+     */
+    public function setAcuerdoSG(\PruebaBundle\Entity\AcuerdosSG $acuerdoSG = null)
+    {
+        $this->acuerdoSG = $acuerdoSG;
+
+        return $this;
+    }
+
+    /**
+     * Get acuerdoSG
+     *
+     * @return \PruebaBundle\Entity\AcuerdosSG
+     */
+    public function getAcuerdoSG()
+    {
+        return $this->acuerdoSG;
+    }
+}

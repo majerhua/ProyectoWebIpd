@@ -13,8 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class TotalIndicadores
 {
 
-
-
     /**
      * @ORM\ManyToOne(targetEntity="Indicador", inversedBy="totalesindicadores")
      * @ORM\JoinColumn(name="indicador_id", referencedColumnName="id")

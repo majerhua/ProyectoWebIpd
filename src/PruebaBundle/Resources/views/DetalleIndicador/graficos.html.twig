@@ -1,10 +1,93 @@
 
-
-
-{% extends '::base.html.twig'  %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
 	
-{% block body %}
-{{id}}
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<style>
+		
+		*{
+			margin:0;
+			padding: 0;
+		}
+
+		body{
+
+			padding: 20px;
+
+		}
+
+
+		#content_canvas_valuebarras{
+
+
+		}
+
+		#value_barras{
+			
+			float: left;
+			width: 40px;
+
+		}
+
+
+
+		#value_barras p{
+			border: 1px solid black;
+			margin:0;
+		}
+
+		#canvas{
+			float: left;
+		}
+
+		#label_barras{
+
+			clear: both;
+			width: 760px;
+			height: 40px;
+			margin-left: 40px;
+
+		}
+
+		#label_barras p{
+			
+			width: 61px;
+			float: left;
+			margin:0;
+			text-align: center;
+			padding: 0;
+			font-size: 0.8em;
+		}
+
+		.semaforo{
+			width: 20px;
+			border-radius: 50%;
+			height: 20px;	
+		}
+
+			.semaforo__colorRojo{
+
+				background-color: red;
+			}
+			.semaforo__colorAmarillo{
+
+				background-color: yellow;
+			}
+			.semaforo__colorVerde{
+
+				background-color: green;
+			}
+
+	</style>
+      
+</head>
+<body>
+
+
+
+
 <div class="container">
 	<h1>Ficha Indicador de Gestion</h1>
 
@@ -14,7 +97,7 @@
 
 			<tr>
 
-				<td colspan="4">TOTAL(%) DE PLANES DE SEGURIDAD EVALUADOS</td>
+				<td colspan="4">Total de {{indicador.nombre}}</td>
 
 			</tr>
 
@@ -27,14 +110,24 @@
 
 			<tr>
 				<td>Mes Reporte</td>
-				<td colspan="3">{{ "now"|date("m/d/Y") }}</td>
+				<td colspan="3">{{ "now"|date(' F ')|replace({
+
+				    'January'  : 'Enero',
+				    'February' : 'Febrero',
+				    'March' : 'Marzo',
+				    'April' : 'Abril',
+				    'May' : 'Mayo',
+				    'June' : 'Junio',
+				    'July' : 'Julio',
+				    'August' : 'Agosto',
+				    'September' : 'septiembre',
+				    'October' : 'Octubre',
+					'November' : 'Noviembre',  
+  					'December' : 'Diciembre'
+				}) }}</td>
 			</tr>
 
 			<tr>
-				<td>Proceso</td>
-				<td>Estrategicos</td>
-				<td>Misional</td>
-				<td>Soporte</td>
 			</tr>
 
 
@@ -50,17 +143,20 @@
 			</tr>
 
 			<tr>
-				<td rowspan="3" > Semaforo de Colores</td>
-				<td colspan="3" id="grafica_rojo" > </td>
+				<td rowspan="3" >Semaforos de Colores </td>
+				<td colspan="3" id="grafica_rojo" >{{leyendas.rojo }}<div class="semaforo  semaforo__colorRojo"></div></td>
+				
 			</tr>
 
 
 			<tr>
-				<td colspan="3" id="grafica_amarillo"> </td>
+				<td colspan="3" id="grafica_amarillo">{{ leyendas.amarillo }} <div class="semaforo semaforo__colorAmarillo"></div> </td>
+				
 			</tr>
 
 			<tr>
-				<td colspan="3" id="grafica_verde"></td>
+				<td colspan="3" id="grafica_verde"> {{ leyendas.verde }}<div class="semaforo semaforo__colorVerde"></div></td>
+				
 			</tr>
 
 			<tr>
@@ -68,9 +164,18 @@
 				<td  colspan="3"></td>
 			</tr>
 
+	
 			<tr>
 
-				<td colspan="4" ><canvas id="myChart"></canvas>
+				<td colspan="4" id="content_canvas_valuebarras" >
+
+					<div id="value_barras">
+					</div>
+					<canvas id="canvas"  width="740" height="400">
+					</canvas> 
+					<div id="label_barras">
+					</div>
+
 				</td>
 
 			</tr>
@@ -90,7 +195,7 @@
 			<tr>
 
 				<td colspan="2">--------</td>
-				<td>----------</td>
+				<td>{{ "now"|date("m/d/Y") }}</td>
 				<td>----------</td>
 
 			</tr>
@@ -100,79 +205,76 @@
 	</table>
 
 </div>
-
-
 <script>
-
 	
-	var datos = {'id': {{id}}};
 
-$(document).ready(function(){
+	var value_barras = document.getElementById('value_barras');
+	var label_barras = document.getElementById('label_barras');
 
+	canvas = document.getElementById('canvas'); 
+    var ctx=canvas.getContext("2d");
 
+    var data=[{{total.enero}},{{total.febrero}},{{total.marzo}},{{total.abril}},{{total.mayo}},{{total.junio}},{{total.julio}},{{total.agosto}},{{total.septiembre}},{{total.octubre}},{{total.noviembre}},{{total.diciembre}}];
+    var label=[100,90,80,70,60,50,40,30,20,10];
+  	var labelBarra = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
-		
-		$.ajax({
+    function barras(ctx,data,color){
 
-			type:"POST",
-			url: "{{path('prueba_postIdGraficos')}}" ,
-			data: datos,
-			dataType: 'json',
+    	var numBarras = data.length;
+    	var widthCanvas = canvas.getAttribute('width');
+    	var marginBarras = widthCanvas*0.02;
+    	var widthBarra = widthCanvas/numBarras;
+		x=0;
 
-			success: function(data){
-				var totalDatos= JSON.parse(data)['totalesindicadores']['0'];
-				var leyendaDatos = JSON.parse(data)['leyendas']['0'];
+		var heightLabel= canvas.getAttribute('height')/10;
 
+		var hl=0;
 
-				$("#grafica_rojo").append(leyendaDatos['rojo']+"%");
-				$("#grafica_rojo").append("<div class='rojo'></div>");
-
-				$("#grafica_amarillo").append(leyendaDatos['amarillo']+"%");
-				$("#grafica_amarillo").append("<div class='amarillo'></div>");
-
-				$("#grafica_verde").append(leyendaDatos['verde']+"%");
-				$("#grafica_verde").append("<div class='verde'></div>");
-				
-
-
-				console.log(JSON.parse(data));
-
-
-		            var ctx = document.getElementById('myChart').getContext('2d');
-					var chart = new Chart(ctx, {
-
-				    type: 'bar',
-				    
-				    data: {
-				        labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio","Agosto","septiembre","Octubre","Noviembre","Diciembre"],
-				        datasets: [{
-				            label: "Grafico de Barras",
-				            backgroundColor: 'rgba(255, 86, 44, 0.8)',
-				            borderColor: 'rgb(255, 99, 132)',
-				            data: [totalDatos['enero'], totalDatos['febrero'], totalDatos['marzo'], totalDatos['abril'], totalDatos['mayo'], totalDatos['junio'],totalDatos['julio'],totalDatos['agosto'], totalDatos['septiembre'], totalDatos['octubre'], totalDatos['noviembre'], totalDatos['diciembre'] ],
-				        }]
-				    },
-
-				    // Configuration options go here
-				    options: {}
-				});
-
-
-			},
-
-			error: function(error){
-				console.log("Error",error);
-			}
-		});	
-
-});
+    	for(var i = 0 ; i < numBarras ; i++){
 
 
 
+    		if(i>-1 && i<10){
+    			var pa = document.createElement('p');
+    			var nodo = document.createTextNode(label[i]);
+    			pa.appendChild(nodo);
+    			value_barras.appendChild(pa);	
+    			document.getElementsByTagName('p')[i].style.height=heightLabel+"px";
+    			console.log(heightLabel);
 
-	
+    			
+				ctx.moveTo(0, hl);
+				ctx.lineTo(widthCanvas, hl);
+				ctx.lineWidth=0.1;
+				ctx.stroke();
+				 
+				hl+=heightLabel;
+    		}
+
+
+			ctx.fillStyle = color;
+			//console.log(x);
+			
+    		ctx.fillRect (x,canvas.getAttribute('height'),widthBarra-marginBarras,-data[i]*canvas.getAttribute('height')/100); 
+    		x = x +widthBarra;  
+
+    		
+    	}
+
+    	for(var j=0;j<labelBarra.length;j++){
+    		console.log(labelBarra[j]);
+   			var pa_la = document.createElement('p');
+			var nodo_la = document.createTextNode(labelBarra[j]);
+			pa_la.appendChild(nodo_la);
+			label_barras.appendChild(pa_la);	
+    	}
+    }
+
+    barras(ctx,data,"rgb(100,200,200)");
+
+
+
 </script>
+</body>
+</html>
 
-<script src="{{asset('js/chart.js')}}"></script>
-
-{% endblock %}

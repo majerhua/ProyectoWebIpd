@@ -3,190 +3,262 @@
 {% block body %}
 
 
-<br>
-<a href="/"><button style="margin-left:30px;"  class="btn btn-info btn-lg">Regresar Menu Principal</button></a>
 
-<h2 class="text-center">SEGUIMIENTO DE LOS ACUERDOS DE LOS COMITES DE PRESIDENCIA</h2>
-
-<div style="width:70%; height:400px; margin:0 auto;">
-
-
-	<div class="form-group col-md-6 col-lg-6">
-		<label>Comite</label>
-		<input type="number" name="comite"  id="comite" class="form-control">
+<section>
+	<div class="contenedor-titulo">
+		<span>SEGUIMIENTO DE LOS ACUERDOS ADOPTADOS</span>
+		<span>EN COMITE DE PRESIDENCIA</span>	
 	</div>
 
-	<div class="form-group col-md-6 col-lg-6">
-		<label>Fecha</label>
-		<input type="date" name="fecha"  id="fecha" class="form-control">
+	<div class="contenedor-table">
+
+		<div class="contenedor-boton-nuevo-sg">
+			<a  style="margin-left:20px;" href="{{url('prueba_principal')}}"><button class="btn btn-danger btn-lg" ><i class="icon-back"></i> Regresar</button></a>
+			<a  style="margin-left:20px;" href="{{url('prueba_nuevoAcuerdosPre')}}"><button class="btn btn-info btn-lg" ><i class="icon-plus-square-o"></i> Nuevo Seguimiento SG</button></a>
+			<button data-toggle="modal" data-target="#myModal" style="margin-left:20px;" class="btn btn-warning btn-lg btn-resena" ><i class="icon-pie-chart"></i> Reseña</button>	
+		</div>
+
+		<table  class="table table-responsive table-bordered table-pre"  style="margin:10px;">
+
+			<thead>
+				<tr>
+
+					<th>
+						Comite
+					</th>
+					
+					<th>
+						Fecha
+					</th>
+
+					<th>
+						Acuerdos Adoptados
+					</th>
+
+
+					<th>
+						N° del Acuerdo
+					</th>
+
+					<th>
+						Responsables
+					</th>
+
+					<th>
+						Estado
+					</th>
+
+					<th>
+						Plazo de Entrega
+					</th>
+
+					<th>
+						Observaciones
+					</th>
+
+					<th>
+						Historial Observ....
+					</th>
+
+					<th>
+						Editar
+					</th>
+
+					<th>
+						Eliminar
+					</th>
+
+				</tr>
+			</thead>
+
+			<tbody id="table_body">
+
+
+			</tbody>
+
+		</table>
+
+
+		<div id="myModal" class="modal fade" role="dialog">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        <h4 class="modal-title" id="titulo_acuerdoSG"></h4>
+		      </div>
+		      <div class="modal-body">
+		        <p class="titulo-modal">Historial de Observaciones</p>
+		        <div class="container-table-resena">
+		        	<table border="1" class="table-resena" >
+		        		<tbody>
+				
+		        			<tr style="background-color:#95C11E">
+		        				<td>Implementado</td>
+		        				<td>{{cantidadImplementado[0]['cantidadEstado']}}</td>
+
+
+								{% if cantidadImplementado[0]['cantidadEstado'] != 0 %}
+		        					<td>{{(cantidadImplementado[0]['cantidadEstado'] / cantidadPre[0]['cantidadEstado']) * 100|round}}%</td>
+		        				{% else %}
+		        					<td>0%</td>
+		        				{% endif %}
+		        			</tr>
+
+        					<tr style="background-color:#FBC900">
+		        				<td>Cancelado</td>
+		        				<td>{{cantidadCancelado[0]['cantidadEstado']}}</td>
+		        				{% if  cantidadCancelado[0]['cantidadEstado'] != 0 %}
+		        					<td>{{((cantidadCancelado[0]['cantidadEstado'] / cantidadPre[0]['cantidadEstado']) * 100)|round}}%</td>
+
+		        				{% else %}
+		        					<td>0%</td>
+		        				{% endif %}
+		        			</tr>
+		        			<tr style="background-color:#00A09A">
+		        				<td>En proceso</td>
+
+
+		        				<td>{{cantidadEnProceso[0]['cantidadEstado']}}</td>
+		        				{% if cantidadEnProceso[0]['cantidadEstado'] != 0 %}
+		        					<td>{{(cantidadEnProceso[0]['cantidadEstado'] / cantidadPre[0]['cantidadEstado']) * 100|round}}%</td>
+		        				{% else %}
+									<td>0%</td>
+		        				{% endif %}	
+		        			</tr>
+
+        					<tr>
+		        				<td>Total</td>
+		        				<td>{{cantidadPre[0]['cantidadEstado']}}</td>
+		        				{% if cantidadPre[0]['cantidadEstado'] != 0 %}
+		        					<td>{{(cantidadPre[0]['cantidadEstado'] / cantidadPre[0]['cantidadEstado']) * 100|round}}%</td>
+		        				{% else %}
+									<td>0%</td>
+		        				{% endif %}
+		        			</tr>
+
+		        			
+		        		</tbody>
+		        	</table>
+		        </div>
+		        <table class="info table table-bordered table-responsive">
+		        	<thead class="table-head" >
+		        		<tr style="background-color:#95C11E ">
+		        			<td>Num</td>
+		        			<td>Descripcion</td>
+		        			<td>Fecha</td>
+		        		</tr>
+		        	</thead>
+		        	<tbody id="table-body-observaciones">
+		        		<canvas id="myChart"></canvas>
+		        	</tbody>
+		        </table>
+		      </div>
+		      <div class="modal-footer" style="background-color:#ac2d0f">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Salir</button>
+		      </div>
+		    </div>
+
+		  </div>
+		</div>
+
+
 	</div>
 
-	<div class="form-group col-md-6 col-sm-6 col-lg-6">
-		<label>Acuerdos Adoptados</label>
-		<input type="text" name="acuerdos"  id="acuerdos"  class="form-control">
-	</div>
+		<div id="modalAreas" class="modal fade" role="dialog">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        <h4 class="modal-title" id="titulo_acuerdoSG">Areas Reponsables</h4>
+		      </div>
+		      <div class="modal-body">
+		        
+				<div class="listadoAreaResponsables">
+					
+				</div>
 
-	<div class="form-group col-md-6 col-sm-6 col-lg-6" >
-		<label>N° del acuerdo</label>
-		<input type="number" name="nroAcuerdo" id="nroAcuerdo"  class="form-control">
-	</div>
+		      </div>
+		      <div class="modal-footer" style="background-color:#ac2d0f">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Salir</button>
+		      </div>
+		    </div>
 
-
-	<div class="form-group col-md-6 col-sm-6 col-lg-6">
-		<label>Area Responsable</label>
-		<select  name="areaIpd" id="areaIpd"  class="form-control">
-		</select>
-	</div>
-
-
-	<div class="form-group col-md-6 col-sm-6 col-lg-6">
-		<label>Estado</label>
-		
-		<select name="estado" id="estado"  class="form-control">
-			<option value="En Proceso">En Proceso</option>
-			<option value="Implementado">Implementado</option>
-			<option value="Cancelado">Cancelado</option>
-		</select>
-	</div>
+		  </div>
+		</div>
 
 
-	<div class="form-group col-md-6 col-sm-6 col-lg-6">
-		<label>Observaciones</label>
-		<textarea type="text" name="observaciones" id="observaciones" class="form-control"></textarea>
-	</div>
-
-
-	<div class="form-group col-md-6 col-sm-6 col-lg-6">
-		<label>Plazo de Entrega</label>
-		<input type="date" name="plazoEntrega" id="plazoEntrega"  class="form-control">
-	</div>
-
-	<button class="btn btn-primary" id="boton-enviar-acuerdosPre">Enviar</button>
-
-</div>
-
-
-<table  class="table table-responsive table-bordered" style="margin:10px;">
-
-	<thead>
-		<tr>
-
-			<td>
-				Comite
-			</td>
-			
-			<td>
-				Fecha
-			</td>
-
-			<td>
-				Acuerdos Adoptados
-			</td>
-
-
-			<td>
-				N° del Acuerdo
-			</td>
-
-			<td>
-				Area Responsable
-			</td>
-
-			<td>
-				Estado
-			</td>
-
-			<td>
-				Plazo de Entrega
-			</td>
-
-			<td>
-				Observaciones
-			</td>
-
-			<td>
-				Historial Observ....
-			</td>
-
-			<td>
-				Editar
-			</td>
-
-		</tr>
-	</thead>
-
-	<tbody id="table_body">
-
-
-	</tbody>
-
-</table>
-
-
-
-<!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title" id="titulo_acuerdoPre"></h4>
-      </div>
-      <div class="modal-body">
-        <p>Historial de Observaciones</p>
-        <table class="table table-bordered table-responsive">
-
-        	<thead>
-        		<td>Id</td>
-        		<td>Descripcion</td>
-        		<td>Fecha</td>
-        	</thead>
-
-        	<tbody id="table-body-observaciones">
-
-
-        	</tbody>
-
-        </table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-
-
+</section>
 
 <script>
 
 
-	$(document).ready(function(){
-	
-		$.ajax({
-			type:"GET",
-			url:"{{ url('prueba_getArea') }}",
-			dataType:'json',
-			success:function(data){
-			console.log(JSON.parse(data));
-			JSON.parse(data).forEach(function(valor,index){
 
-				$("#areaIpd").append("<option value='"+valor.id+"'>"+valor.nombre+"</option>");
+	$(".btn-resena").on('click',function(){
+		$("#myChart").show();
+		$('.titulo-modal').empty();
+		$('.table-head').hide();
+		$('#table-body-observaciones').empty();
+		$('.container-table-resena').show('slow');
+		$('.modal-title').empty();
+		$('.modal-title').append('Reseñas de los acuerdos de los comite de presidencia');
+
+
+			var CantidadImplementado = {{cantidadImplementado[0]['cantidadEstado']}}
+			var CantidadCancelado = {{cantidadCancelado[0]['cantidadEstado']}}
+			var CantidadEnProceso = {{cantidadEnProceso[0]['cantidadEstado']}}
+			var CantidadEstadoTotal = {{cantidadPre[0]['cantidadEstado']}};
+
+
+			var porCantidadImplementado = (CantidadImplementado/CantidadEstadoTotal)*100;
+			var porCantidadCancelado = (CantidadCancelado/CantidadEstadoTotal)*100;
+			var porCantidadEnProceso = (CantidadEnProceso/CantidadEstadoTotal)*100;
+
+            var ctx = document.getElementById('myChart').getContext('2d');
+			var chart = new Chart(ctx, {
+		    	type: 'bar',
+		    	data: {
+		        labels: ["Implementado", "Cancelado", "En Proceso"],
+		        datasets: [{
+		            label: "Reseñas",
+		            backgroundColor: [
+						'#95C11E',
+						'#FBC900',
+						'#00A09A',
+						],
+		            borderColor: 'rgb(255, 99, 132)',
+	            	data: [ porCantidadImplementado , porCantidadCancelado, porCantidadEnProceso,],
+		        	}]
+		    	},
+		    	options: {
+		    		scales:{
+
+		    			yAxes:[{
+		    				ticks:{
+		    					max:100,
+		    					min:0 
+		    				}
+		    			}]
+
+		    		}
+		    	}
 			});
 
-			},
-			error:function(error){
-				console.log(error);
-			}
+	});
 
-		});	
-
-
-
+		var dataMeses = {
+			"01": "Enero",
+			"02": "Febrero",
+			"03": "Marzo",
+			"04": "Abril",
+			"05": "Mayo",
+			"06": "Junio",
+			"07": "Julio",
+			"08": "Agosto",
+			"09": "Septiembre",
+			"10": "Octubre",
+			"11": "Noviembre",
+			"12": "Diciembre"
+		}
 
 		$.ajax({
 
@@ -202,8 +274,42 @@
 					
 					datosAcuerdosPre.forEach(function(valor,index){
 
-					console.log(valor);	
-					$("#table_body").append('<tr value="'+valor.id+'" >'+'<td>'+valor.comite+'</td>'+'<td>'+valor.fecha+'<td>'+valor.acuerdos+'</td>'+'<td>'+valor.nroAcuerdo+'</td>'+'<td>'+valor.areaIpd.nombre+'</td>'+'<td>'+valor.estado+'</td>'+'<td>'+valor.plazoEntrega+'</td>'+'<td>'+valor["observacionPre"][valor["observacionPre"].length-1].descripcion+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal" data-target="#myModal" value="'+valor.id+'" >ver historial</button></td>'+'<td><button class="btn btn-success" >Editar</button></td>'+'</tr>');
+
+						let fecha = new Date();
+						let dia = fecha.getDate();
+						let mes = fecha.getMonth()+1;
+						let anio = fecha.getFullYear();
+						let arrayFecha = valor.plazoEntrega.split("-");
+
+						if(arrayFecha[0] == anio ){
+							if(arrayFecha[1] == mes ){
+								if(arrayFecha[2] - dia < 4 ){
+
+									{% for acupr in acuerdosPreAreaIpd %}
+
+										if({{acupr.acuerdoPre.id}} == valor.id && valor.baja==1){
+
+											if("{{acupr.areaIpd.nombre}}" == "{{app.user.areaIpd}}"){
+
+												Push.create((arrayFecha[2] - dia) + " DIAS RESTANTES",{
+													body: "Faltan solo"+ (arrayFecha[2] - dia) +"dias para cumplir el plazo del acuerdo {{acupr.acuerdoPre.acuerdos}}",
+													icon: "{{ asset('img/oscar.jpg') }}",
+													timeout: 1000
+												});
+												console.log("mamama");
+											}						
+										} 
+
+									{% endfor %}
+
+								}
+							}
+						}
+
+						let fechaAcuerdo = valor.fecha.split("-");
+						let fechaPlazo = valor.plazoEntrega.split("-");
+						
+					$("#table_body").append('<tr value="'+valor.id+'" >'+'<td>'+valor.comite+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'<td>'+valor.acuerdos+'</td>'+'<td>'+valor.nroAcuerdo+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" >ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td>'+'<td>'+valor["observacionPre"][valor["observacionPre"].length-1].descripcion+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal" data-target="#myModal" value="'+valor.id+'" >ver historial</button></td>'+'<td><a href="/acuerdosPre/update/'+valor.id+'"><button class="btn btn-success" >Editar</button></a></td><td><a href="/acuerdosSG/remove/'+valor.id+'" ><button class="btn btn-danger" ><i class="icon-trash"></i> Eliminar</button></a></td>'+'</tr>');
 
 					});
 
@@ -214,13 +320,58 @@
 				promesa.then(function(response){
 					
 
+					$(".btn-areas-reponsables").on('click',function(){
 
+						$(".listadoAreaResponsables").empty();
+
+						{% for val in  acuerdosPreAreaIpd %}
+
+							if({{val.acuerdoPre.id}} == $(this).val() ){
+								
+								$(".listadoAreaResponsables").append("<p>{{val.areaIpd.nombre}}</p>");
+
+							}
+
+						{% endfor %}
+
+					});
+
+					var refRow = document.querySelectorAll('#table_body> tr');
+					var botonRemove = document.querySelectorAll('.btn-remove');
+					for (var i = 0; i < botonRemove.length; i++) {
+						botonRemove[i].onclick=function(){
+
+							if(confirm("Esta seguro en Eliminar Acuerdo ?")){
+								
+
+								for (var i = 0; i < refRow.length; i++) {
+						
+									if($(refRow[i]).attr('data-row')==this.value){
+										//AcuerdosSGRemove(this.value);
+										$(refRow[i]).css('display','none');
+
+									}
+						
+								}	
+							}
+
+						}
+					}
+
+					console.log(response);
+					$(".table-pre").attr('id','table-acuerdosPre');
+					$('#table-acuerdosPre').DataTable();
 					var btn_historial =  document.querySelectorAll(".btn-historial-observacion");
 
 					for(var i=0; i<btn_historial.length;i++){
 
 						btn_historial[i].onclick=function(){
 
+							$("#myChart").hide();
+							$('.titulo-modal').empty();
+							$('.table-head').show();
+							$('.titulo-modal').append('Historial Observaciones');
+							$(".container-table-resena").hide('slow');
 
 							$.ajax({
 
@@ -231,18 +382,32 @@
 								success:function(data){
 
 									var data_observaciones = JSON.parse(data);	
-									console.log("Observaciones ==> ",data_observaciones);
+									var arrObs = new Array();
+									console.log(data_observaciones);
+									$("#table-body-observaciones").empty();
 
-									$("#table-body-observaciones").empty();	
 									data_observaciones["observacionPre"].forEach(function(valor,index){
 										console.log(valor);
-										$("#table-body-observaciones").append("<tr>"+"<td>"+valor.id+"</td>"+"<td>"+valor.descripcion+"<td>"+valor.fecha+"</td>"+"</td>"+"</tr>")
+										arrObs.push(valor);
+										
 									});
+
+									for(var i = arrObs.length-1; i >=0 ; i--) {
+										let fechaObservacionMod = arrObs[i].fecha.split("-");
+										$("#table-body-observaciones").append("<tr>"+"<td>"+(i+1)+"</td>"+"<td>"+arrObs[i].descripcion+"<td>"+fechaObservacionMod[2]+' de '+ dataMeses[fechaObservacionMod[1]]+' del '+fechaObservacionMod[0]+"</td>"+"</td>"+"</tr>");
+									}
+									$("#titulo_acuerdoSG").empty();
+									$("#titulo_acuerdoSG").append(data_observaciones["areaIpd"].nombre);
 
 
 									//$("#table-body-observaciones").append()
 									$("#titulo_acuerdoPre").empty();
 									$("#titulo_acuerdoPre").append(data_observaciones["areaIpd"].nombre);
+
+
+
+
+
 
 								},
 								error:function(error){
@@ -267,77 +432,6 @@
 
 		});
 
-
-
-
-
-		function historialObservaciones(){
-			//$("#table-body-observaciones").append("");
-			alert("hash");	
-		} 
-
-
-
-		$("#boton-enviar-acuerdosPre").on('click',function(){
-
-			postAcuerdosPre();
-
-		});
-
-		function postAcuerdosPre(){
-
-				datos={
-
-					comite: $("#comite").val(),
-					fecha: $("#fecha").val(),
-					acuerdos: $("#acuerdos").val(),
-					nroAcuerdo: $("#nroAcuerdo").val(),
-					areaIpd: $("#areaIpd").val(),
-					estado: $("#estado").val(),
-					observaciones: $("#observaciones").val(),
-					plazoEntrega: $("#plazoEntrega").val()
-
-				}
-
-
-				$.ajax({
-
-					dataType: 'json',
-					type: 'POST',
-					url: "{{url('prueba_postAcuerdosPre')}}",
-					data:datos,
-
-					success:function(data){
-						var datosAcuerdosPre=JSON.parse(data);
-						
-
-						datosAcuerdosPre.forEach(function(valor,index){
-
-							console.log(valor["fecha"]);	
-							$("#table_body").append('<tr value="'+valor.id+'" >'+'<td>'+valor.comite+'</td>'+'<td>'+valor.fecha+'<td>'+valor.acuerdos+'</td>'+'<td>'+valor.areaIpd.nombre+'</td>'+'<td>'+valor.estado+'</td>'+'</td>'+'<td>'+valor.observacionPre[0].descripcion+'</td>'+'</tr>');
-
-						});
-
-					},
-
-					error:function(error){
-						console.log(error);
-					}
-
-
-				});
-
-			}
-
-
-
-
-	});
-
-
-
-
-
 </script>
-
+<script src="{{asset('js/chart.js')}}"></script>
 {% endblock %}

@@ -19,8 +19,6 @@ class Indicador
      */
     private $detallesIndicador;
 
-
-
     /**
      * @ORM\OneToMany(targetEntity="TotalIndicadores", mappedBy="indicador")
      */
@@ -119,6 +117,7 @@ class Indicador
     public function __construct()
     {
         $this->leyendas = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->totalesindicadores = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -156,9 +155,7 @@ class Indicador
     }
 
 
-    public function __toString(){
-        return $this->nombre;
-    }
+
 
     /**
      * Add detallesIndicador
@@ -195,6 +192,7 @@ class Indicador
     }
 
 
+
     /**
      * Add totalesindicadore
      *
@@ -227,5 +225,9 @@ class Indicador
     public function getTotalesindicadores()
     {
         return $this->totalesindicadores;
+    }
+
+    public function __toString(){
+        return $this->nombre;
     }
 }

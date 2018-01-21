@@ -12,18 +12,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class AcuerdosSG
 {
-
-
     /**
      * @ORM\OneToMany(targetEntity="ObservacionesSG", mappedBy="acuerdoSG")
      */
     private $observacionSG;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AreaIpd", inversedBy="acuerdoSG")
-     * @ORM\JoinColumn(name="areaIpd_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="AcuerdosSGAreaIpd", mappedBy="acuerdoSG")
      */
-    private $areaIpd;
+    private $acuerdoSGAreaIpd;
 
 
     /**
@@ -55,6 +52,13 @@ class AcuerdosSG
      * @ORM\Column(name="agenda", type="string", length=255)
      */
     private $agenda;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="baja", type="string", length=1)
+     */
+    private $baja;
 
     /**
      * @var string
@@ -274,26 +278,61 @@ class AcuerdosSG
     }
 
     /**
-     * Set areaIpd
+     * Set baja
      *
-     * @param \PruebaBundle\Entity\AreaIpd $areaIpd
+     * @param string $baja
      *
      * @return AcuerdosSG
      */
-    public function setAreaIpd(\PruebaBundle\Entity\AreaIpd $areaIpd = null)
+    public function setBaja($baja)
     {
-        $this->areaIpd = $areaIpd;
+        $this->baja = $baja;
 
         return $this;
     }
 
     /**
-     * Get areaIpd
+     * Get baja
      *
-     * @return \PruebaBundle\Entity\AreaIpd
+     * @return string
      */
-    public function getAreaIpd()
+    public function getBaja()
     {
-        return $this->areaIpd;
+        return $this->baja;
+    }
+    
+
+    /**
+     * Add acuerdoSGAreaIpd
+     *
+     * @param \PruebaBundle\Entity\AcuerdosSGAreaIpd $acuerdoSGAreaIpd
+     *
+     * @return AcuerdosSG
+     */
+    public function addAcuerdoSGAreaIpd(\PruebaBundle\Entity\AcuerdosSGAreaIpd $acuerdoSGAreaIpd)
+    {
+        $this->acuerdoSGAreaIpd[] = $acuerdoSGAreaIpd;
+
+        return $this;
+    }
+
+    /**
+     * Remove acuerdoSGAreaIpd
+     *
+     * @param \PruebaBundle\Entity\AcuerdosSGAreaIpd $acuerdoSGAreaIpd
+     */
+    public function removeAcuerdoSGAreaIpd(\PruebaBundle\Entity\AcuerdosSGAreaIpd $acuerdoSGAreaIpd)
+    {
+        $this->acuerdoSGAreaIpd->removeElement($acuerdoSGAreaIpd);
+    }
+
+    /**
+     * Get acuerdoSGAreaIpd
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAcuerdoSGAreaIpd()
+    {
+        return $this->acuerdoSGAreaIpd;
     }
 }

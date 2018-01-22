@@ -2,16 +2,17 @@
 
 {% block body %}
 
-<section class="contenedorRegistroASG" >
+<section class="contenedorRegistroASG" style="background-image: url({{ asset('img/basket-ipd.jpg') }}); background-size: cover; height: 100vh;" >
 
 	<div class="form-group containerBtnRegresar">
-		<a  style="margin-left:20px;" href="{{url('prueba_acuerdosSG')}}"><button class="btn btn-danger btn-lg" ><i class="icon-back"></i> Regresar</button></a>  		
+		<a  style="margin-left:20px;" href="{{url('prueba_acuerdosSG')}}" class="icon-back"></a>
+
 	</div>
 
 	<div class="form-group">
 		<p class="text-center tituloNuevoSG">REGISTRAR NUEVO SEGUIMIENTO DE ACUERDOS ADOPTADOS EN REUNIONES DE SECRETARIA GENERAL</p>
 	</div>
-	<div style="width:70%; height:400px; margin:0 auto;">
+	<div style="width:70%; height:450px; margin:0 auto; " class="div-form">
 
 		<div class="form-group col-md-6  col-xs-12 col-lg-6">
 			<label>Sesion</label>
@@ -67,12 +68,12 @@
 		<div class="form-group col-xs-12 col-md-12 col-sm-12 col-lg-12">
 		<button class="btn btn-primary" id="boton-registrar-acuerdosSG"><i class="icon-plus-square"></i> Registrar</button>
 		</div>
-	</div>
 
-	<div class="form-group col-xs-12 col-md-12 col-sm-12 col-lg-12">
-		<div class="containerAlertaRegistro">
-			<p>Acuerdo Registrado</p>
-		</div>
+		<div class="form-group col-xs-12 col-md-12 col-sm-12 col-lg-12">
+		   <div class="containerAlertaRegistro">
+			  <p>Acuerdo Registrado</p>
+		   </div>
+	    </div>
 	</div>
 </section>
 

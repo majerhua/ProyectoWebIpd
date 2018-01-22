@@ -32,14 +32,13 @@
 
 
 	.containerBtnRegresar{
-		padding-left: 10px;
-		padding-top: 15px;
+		margin-bottom: 0;
 	}
 
 	.tituloNuevoSG{
 		font-size: 2em;
 		color: #cb2f1d;
-		text-shadow: 5px 5px 5px rgba(0,0,0,0.2);
+		text-shadow: 5px 3px 3px #fff;
 		font-weight: bold;
 		
 		font-family: 'Adamina', serif;
@@ -51,10 +50,31 @@
 		font-size: 2.02em;
 	}
 
+/* estilos aurora */
+	.div-form{
+        background: rgba(212, 44, 44, 0.7);
+		padding: 10px 0;
+		color: #fff;
+	}
+
+	.icon-back{
+		font-size: 45px;
+		color: #fff;
+		text-decoration: none;
+	}
+
+	.icon-back:hover{
+		color: #cb2f1d;
+	    text-decoration: none;
+
+
+	}
+
+/* fin*/
 
 	.containerAlertaRegistro{
-		background-color: rgba(110, 220, 110, 0.8);
-		width: 40%;
+/*		background-color: rgba(110, 220, 110, 0.8);
+*/		width: 40%;
 		border-radius: 5px;
 		display: none;
 		margin:0 auto;

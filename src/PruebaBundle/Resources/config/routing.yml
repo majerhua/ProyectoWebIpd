@@ -179,10 +179,6 @@ prueba_indicadorajaxIndicador:
   path: /ajax/indicador
   defaults: { _controller: PruebaBundle:Indicador:indicadorajax }
 
-
-
-
-
 #INICIO LEYENDA
 
 prueba_postLeyenda:

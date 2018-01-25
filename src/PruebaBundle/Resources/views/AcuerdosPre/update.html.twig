@@ -193,7 +193,7 @@ $(document).ready(function(){
 
 					dataType: 'json',
 					type: 'POST',
-					url: "/acuerdosPre/update/{{id}}",
+					url: "{{url('prueba_acuerdosPreUpdate',{id:id})}}",
 					data:datos,
 
 					success:function(data){

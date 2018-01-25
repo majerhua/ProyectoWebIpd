@@ -154,7 +154,7 @@
 
 			dataType: 'json',
 			type: 'POST',
-			url: "/acuerdosSG/update/{{id}}",
+			url: "{{url('prueba_acuerdosSGUpdate',{id:id})}}",
 			data:datos,
 
 			success:function(data){
@@ -232,10 +232,7 @@
 				areaIpdSelect.options[i].selected=varBool;
 			}	
 		}		
-	}
-
-	
+	}	
 </script>
-
 
 {%  endblock %}

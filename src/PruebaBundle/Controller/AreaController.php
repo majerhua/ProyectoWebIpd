@@ -45,8 +45,24 @@ class AreaController extends Controller
 
 
             return new JsonResponse($jsonContent);  
-
         }
+
+            $post = $this->getDoctrine()->getRepository(AreaIpd::class)->findAll(); 
+
+            $encoders = array(new JsonEncoder());
+            $normalizer = new ObjectNormalizer();
+            $normalizer->setCircularReferenceLimit(1);
+            // Add Circular reference handler
+            $normalizer->setCircularReferenceHandler(function ($object) {
+                return $object->getId();
+            });
+            $normalizers = array($normalizer);
+            $serializer = new Serializer($normalizers, $encoders);
+
+            $jsonContent = $serializer->serialize($post, 'json');
+
+
+            return new JsonResponse("javier");
      
     }
 

@@ -237,20 +237,13 @@
 
 <script>
 
-
-
-
 	$("#send-mail").on('click',function(){
-
 		datos={
-
 			'nombre':$("#correo-persona-responsable").val(),
 			'email': $("#correo-enviar-responsable").val(),
 			'mensaje': $('#correo-enviar-mensaje').val()
 		}
-
 		$.ajax({
-
 		type:"POST",
 		data:datos,
 		url:"{{ url('prueba_sendMail') }}",
@@ -261,14 +254,8 @@
 			error:function(error){
 				console.log(error);
 			}
-
-
 		});
-
-
 	});
-
-
 
 	$(".btn-resena").on('click',function(){
 		$("#myChart").show();
@@ -278,7 +265,6 @@
 		$('.container-table-resena').show('slow');
 		$('.modal-title').empty();
 		$('.modal-title').append('Reseñas de los acuerdos de los comite de presidencia');
-
 
 			var CantidadImplementado = {{cantidadImplementado[0]['cantidadEstado']}}
 			var CantidadCancelado = {{cantidadCancelado[0]['cantidadEstado']}}
@@ -383,14 +369,22 @@
 							}
 						}
 
+						let fechaAcuerdo = valor.fecha.split("-");
+						let fechaPlazo = valor.plazoEntrega.split("-");
 
 						if(valor.baja=='1'){
-							let fechaAcuerdo = valor.fecha.split("-");
-							let fechaPlazo = valor.plazoEntrega.split("-");
+
 						
+
 							{% if is_granted('ROLE_ADMIN') %}	
 
-							$("#table_body").append('<tr value="'+valor.id+'" >'+'<td>'+valor.comite+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'<td>'+valor.acuerdos+'</td>'+'<td>'+valor.nroAcuerdo+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" >ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td>'+'<td>'+valor["observacionPre"][valor["observacionPre"].length-1].descripcion+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal" data-target="#myModal" value="'+valor.id+'" >ver historial</button></td>'+'<td><a href="/acuerdosPre/update/'+valor.id+'"><button class="btn btn-success" >Editar</button></a></td><td><a href="/acuerdosPre/remove/'+valor.id+'" ><button class="btn btn-danger" ><i class="icon-trash"></i> Eliminar</button></a></td>'+'</tr>');
+	 							var urlUpdate = "{{url('prueba_acuerdosPreUpdate',{id:'idAcu'})}}";
+            					urlUpdate = urlUpdate.replace("idAcu", valor.id);
+
+				            	var urlRemove = "{{url('prueba_acuerdosPreRemove',{id:'idAcu'})}}";
+            					urlRemove = urlRemove.replace("idAcu", valor.id);
+
+							$("#table_body").append('<tr value="'+valor.id+'" >'+'<td>'+valor.comite+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'<td>'+valor.acuerdos+'</td>'+'<td>'+valor.nroAcuerdo+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" >ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td>'+'<td>'+valor["observacionPre"][valor["observacionPre"].length-1].descripcion+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal" data-target="#myModal" value="'+valor.id+'" >ver historial</button></td>'+'<td><a href="'+urlUpdate+'"><button class="btn btn-success" >Editar</button></a></td><td><a href="'+urlRemove+'" ><button class="btn btn-danger" ><i class="icon-trash"></i> Eliminar</button></a></td>'+'</tr>');
 
 							
 							{% else %}
@@ -428,11 +422,6 @@
 								$(".listadoAreaResponsables").append("<button class='btn sendMail btn-primary' data-toggle='modal' data-target='#modalMensajeResponsable' data-persona='{{val.areaIpd.personaResponsable}}' value='{{val.areaIpd.correo}}'>Enviar Mensaje</button></div>");
 
 								{% endif %}
-
-								
-
-								//$("#correo-enviar-responsable").val('{{val.areaIpd.correo}}');
-								//$("#correo-persona-responsable").val('{{val.areaIpd.personaResponsable}}');
 
 							}
 

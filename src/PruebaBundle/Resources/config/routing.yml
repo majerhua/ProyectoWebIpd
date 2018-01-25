@@ -24,6 +24,36 @@ prueba_getArea:
 # FIN AREA 
 
 
+######### INICIO RESPONSABLE ACUERDO ###########
+
+prueba_getResponsableAcuerdo:
+  path: /responsable/post 
+  defaults: { _controller: PruebaBundle:Area:postArea }
+  methods:  [GET,POST]
+
+prueba_responsableAcuerdo:
+  path: /responsable-acuerdo 
+  defaults: { _controller: PruebaBundle:Area:responsableAcuerdo}
+  methods:  [GET,POST]
+
+prueba_responsableAcuerdoNuevo:
+  path: /responsable-acuerdo/nuevo 
+  defaults: { _controller: PruebaBundle:Area:responsableAcuerdoNuevo}
+  methods:  [GET,POST]
+
+prueba_responsableAcuerdoEditar:
+  path: /responsable-acuerdo/editar/{id} 
+  defaults: { _controller: PruebaBundle:Area:responsableAcuerdoUpdate}
+  methods:  [GET,POST]
+
+prueba_responsableAcuerdoRemove:
+  path: /responsable-acuerdo/remove/{id} 
+  defaults: { _controller: PruebaBundle:Area:responsableAcuerdoRemove}
+  methods:  [GET,POST]
+
+# FIN RESPONSABLE ACUERDO 
+
+
 ########## LOGIN AND LOGOUT INICIO ##########
 
 prueba_login:
@@ -230,3 +260,15 @@ prueba_mostrar:
 prueba_register:
   path: /register
   defaults: { _controller: PruebaBundle:Default:register }
+
+
+#SEND MAIL
+prueba_sendMail:
+  path: /sendmail
+  defaults: { _controller: PruebaBundle:AcuerdosPre:sendemail }
+
+prueba_sendMailSG:
+  path: /sendmail/SG
+  defaults: { _controller: PruebaBundle:AcuerdosSG:sendemail }
+
+#FIN SEND MAIL

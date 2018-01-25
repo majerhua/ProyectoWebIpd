@@ -22,7 +22,6 @@ class AcuerdosSGAreaIpdRepository extends \Doctrine\ORM\EntityRepository
 
 	}
 
-
 	public function getCantidadSGAreaIpd($acuerdoSGId){
 
         $query = "select COUNT(*) as total from acuerdos_s_g_area_ipd where acuerdoSG_id='$acuerdoSGId';";
@@ -57,4 +56,5 @@ class AcuerdosSGAreaIpdRepository extends \Doctrine\ORM\EntityRepository
         $stmt->execute();
 
 	}
+
 }

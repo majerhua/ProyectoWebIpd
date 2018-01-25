@@ -35,6 +35,10 @@
 		<label>Area Responsable</label>
 		<select  name="areaIpd" id="areaIpd"  class="form-control" multiple >
 		</select>
+		<label>Seleccionar Todas las Areas</label>
+		<input id="todo-area" type="checkbox" name="todo-area">
+		<label>Seleccionar Otros</label>
+		<input id="todo-otros" type="checkbox" name="todo-area">
 	</div>
 
 
@@ -77,16 +81,24 @@
 		url:"{{ url('prueba_getArea') }}",
 		dataType:'json',
 		success:function(data){
-			console.log(JSON.parse(data));
-			JSON.parse(data).forEach(function(valor,index){
-
-				$("#areaIpd").append("<option value='"+valor.id+"'>"+valor.nombre+"</option>");
-			});
+			listarAreas(JSON.parse(data));
 		},
 		error:function(error){
 			console.log(error);
 		}
 	});	
+
+
+	function listarAreas(dataArea){
+			dataArea.forEach(function(valor,index){
+
+				if(valor.nombre=='OTROS' && valor.tipo=='1' && valor.baja=='1'){
+					$("#areaIpd").append("<option data-option='"+valor.nombre+"' value='"+valor.id+"'>"+valor.personaResponsable+"</option>");
+				}else if(valor.nombre !='OTROS' && valor.tipo=='1' && valor.baja=='1' ) {
+					$("#areaIpd").append("<option value='"+valor.id+"'>"+valor.nombre+"</option>");	
+				}
+			});		
+	}
 
 
 	function nuevoAcuerdosPre(){
@@ -128,6 +140,62 @@
 		nuevoAcuerdosPre();
 	});
 
+	var areaIpdSelect = document.getElementById("areaIpd");
+
+	var contAreas=0;
+	$( "#todo-area" ).on( "click",function(){
+
+		if(contAreas==0){
+			selecionarAreasAll(true);
+			contAreas++;
+		}else{
+			selecionarAreasAll(false);
+			contAreas=0;
+		}		
+	});
+
+	function selecionarAreasAll(varBool){
+		for (var i = 0; i <areaIpdSelect.options.length ; i++) {
+
+			if($(areaIpdSelect.options[i]).attr('data-option') !='OTROS'){
+				
+				areaIpdSelect.options[i].selected=varBool;
+			}	
+		}		
+	}
+
+	var contOtros=0;
+	$( "#todo-otros" ).on( "click",function(){
+
+		if(contOtros==0){
+			selecionarOtrosAll(true);
+			contOtros++;
+		}else{
+			selecionarOtrosAll(false);
+			contOtros=0;
+		}		
+	});
+
+	function selecionarOtrosAll(varBool){
+		for (var i = 0; i <areaIpdSelect.options.length ; i++) {
+
+			if($(areaIpdSelect.options[i]).attr('data-option') =='OTROS'){
+				
+				areaIpdSelect.options[i].selected=varBool;
+			}	
+		}		
+	}
+
+
 </script>
+
+
+
+
+
+
+
+
+
 
 {% endblock %}

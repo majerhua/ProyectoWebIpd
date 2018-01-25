@@ -315,4 +315,28 @@ class AcuerdosPre
         return $this->acuerdoPreAreaIpd;
     }
 
+
+    /**
+     * Set baja
+     *
+     * @param string $baja
+     *
+     * @return AcuerdosPre
+     */
+    public function setBaja($baja)
+    {
+        $this->baja = $baja;
+
+        return $this;
+    }
+
+    /**
+     * Get baja
+     *
+     * @return string
+     */
+    public function getBaja()
+    {
+        return $this->baja;
+    }
 }

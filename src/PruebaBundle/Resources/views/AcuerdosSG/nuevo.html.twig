@@ -37,6 +37,10 @@
 			<label>Area Responsable</label>
 			<select  name="areaIpd" id="areaIpd"  class="form-control" multiple >
 			</select>
+			<label>Seleccionar Todas las Areas</label>
+			<input id="todo-area" type="checkbox" name="todo-area">
+			<label>Seleccionar Otros</label>
+			<input id="todo-otros" type="checkbox" name="todo-area">	
 		</div>
 
 
@@ -64,7 +68,7 @@
 			<input type="date" name="plazoEntrega" id="plazoEntrega"  class="form-control">
 		</div>
 
-		<div class="form-group col-xs-12 col-md-12 col-sm-12 col-lg-12">
+		<div class="form-group col-xs-12 col-md-6 col-sm-6 col-lg-6">
 		<button class="btn btn-primary" id="boton-registrar-acuerdosSG"><i class="icon-plus-square"></i> Registrar</button>
 		</div>
 	</div>
@@ -78,13 +82,22 @@
 
 <script type="text/javascript">
 	
+
+
+
 	$("#boton-registrar-acuerdosSG").on('click',function(){
 			nuevoAcuerdoSG();
 		});
 
 	function listarAreas(dataArea){
 			dataArea.forEach(function(valor,index){
-				$("#areaIpd").append("<option value='"+valor.id+"'>"+valor.nombre+"</option>");
+
+				if(valor.nombre=='OTROS' && valor.tipo=='1' && valor.baja=='1'){
+					$("#areaIpd").append("<option data-option='"+valor.nombre+"' value='"+valor.id+"'>"+valor.personaResponsable+"</option>");
+				}else if(valor.nombre !='OTROS' && valor.tipo=='1' && valor.baja=='1' ) {
+					$("#areaIpd").append("<option value='"+valor.id+"'>"+valor.nombre+"</option>");	
+				}
+				
 			});		
 	}
 
@@ -100,7 +113,6 @@
 		}
 	});	
 		
-
 	function nuevoAcuerdoSG(){
 
 		datos={
@@ -139,6 +151,57 @@
 		});
 
 	}
+
+	var areaIpdSelect = document.getElementById("areaIpd");
+
+	var contAreas=0;
+	$( "#todo-area" ).on( "click",function(){
+
+		if(contAreas==0){
+			selecionarAreasAll(true);
+			contAreas++;
+		}else{
+			selecionarAreasAll(false);
+			contAreas=0;
+		}		
+	});
+
+	function selecionarAreasAll(varBool){
+		for (var i = 0; i <areaIpdSelect.options.length ; i++) {
+
+			if($(areaIpdSelect.options[i]).attr('data-option') !='OTROS'){
+				
+				areaIpdSelect.options[i].selected=varBool;
+			}	
+		}		
+	}
+
+	var contOtros=0;
+	$( "#todo-otros" ).on( "click",function(){
+
+		if(contOtros==0){
+			selecionarOtrosAll(true);
+			contOtros++;
+		}else{
+			selecionarOtrosAll(false);
+			contOtros=0;
+		}		
+	});
+
+	function selecionarOtrosAll(varBool){
+		for (var i = 0; i <areaIpdSelect.options.length ; i++) {
+
+			if($(areaIpdSelect.options[i]).attr('data-option') =='OTROS'){
+				
+				areaIpdSelect.options[i].selected=varBool;
+			}	
+		}		
+	}
+
+
+
+
+
 
 </script>
 

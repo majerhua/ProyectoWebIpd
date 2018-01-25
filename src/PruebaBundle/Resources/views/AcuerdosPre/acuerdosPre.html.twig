@@ -6,8 +6,11 @@
 
 <section>
 	<div class="contenedor-titulo">
-		<span>SEGUIMIENTO DE LOS ACUERDOS ADOPTADOS</span>
-		<span>EN COMITE DE PRESIDENCIA</span>	
+		<img  class="image-responsive" src="{{asset('img/logoipd.png')}}">
+		<div>
+			<span>SEGUIMIENTO DE LOS ACUERDOS ADOPTADOS</span>
+			<span>EN COMITE DE PRESIDENCIA</span>	
+		</div>
 	</div>
 
 	<div class="contenedor-table">
@@ -187,9 +190,74 @@
 		</div>
 
 
+
+
+
+
+		<div id="modalMensajeResponsable" class="modal fade" role="dialog">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        <h4 class="modal-title" id="titulo_acuerdoSG">Mensaje</h4>
+		      </div>
+		      <div class="modal-body">
+		      	<label>Persona Responsable</label>
+		      	<input type="text" class="form-control" name="personaResponsable" id="correo-persona-responsable" >
+
+		      	<label>Correo</label>
+		        <input type="email"  class="form-control" name="correo" id="correo-enviar-responsable" >ç
+
+		        <label>Mensaje</label>
+				<textarea  class="form-control" id="correo-enviar-mensaje" ></textarea>
+
+				<button class="btn btn-primary" id="send-mail" >Enviar Mensaje</button>
+
+		      </div>
+		      <div class="modal-footer" style="background-color:#ac2d0f">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Salir</button>
+		      </div>
+		    </div>
+
+		  </div>
+		</div>
+
+
+
 </section>
 
 <script>
+
+
+
+
+	$("#send-mail").on('click',function(){
+
+		datos={
+
+			'nombre':$("#correo-persona-responsable").val(),
+			'email': $("#correo-enviar-responsable").val(),
+			'mensaje': $('#correo-enviar-mensaje').val()
+		}
+
+		$.ajax({
+
+		type:"POST",
+		data:datos,
+		url:"{{ url('prueba_sendMail') }}",
+		dataType:'json',
+		success:function(data){
+				console.log(data);
+			},
+			error:function(error){
+				console.log(error);
+			}
+
+
+		});
+
+
+	});
 
 
 
@@ -323,16 +391,33 @@
 					$(".btn-areas-reponsables").on('click',function(){
 
 						$(".listadoAreaResponsables").empty();
-
+						//$("#correo-enviar-responsable").val('');
+						//$("#correo-persona-responsable").val('');
 						{% for val in  acuerdosPreAreaIpd %}
 
 							if({{val.acuerdoPre.id}} == $(this).val() ){
 								
-								$(".listadoAreaResponsables").append("<p>{{val.areaIpd.nombre}}</p>");
+								$(".listadoAreaResponsables").append("<div class='container-mensaje-area' ><p>{{val.areaIpd.nombre}}</p><button class='btn sendMail btn-primary' data-toggle='modal' data-target='#modalMensajeResponsable' data-persona='{{val.areaIpd.personaResponsable}}' value='{{val.areaIpd.correo}}'>Enviar Mensaje</button></div>");
+
+
+								
+
+								//$("#correo-enviar-responsable").val('{{val.areaIpd.correo}}');
+								//$("#correo-persona-responsable").val('{{val.areaIpd.personaResponsable}}');
 
 							}
 
 						{% endfor %}
+
+						var abrirModalMensajeResponsables  = document.querySelectorAll('.sendMail');
+
+						for (var i = 0; i < abrirModalMensajeResponsables.length; i++) {
+							
+							abrirModalMensajeResponsables[i].onclick=function(){
+								$("#correo-enviar-responsable").val($(this).val());
+								$("#correo-persona-responsable").val($(this).attr('data-persona'));
+							}
+						}
 
 					});
 

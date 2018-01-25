@@ -104,7 +104,13 @@ class AcuerdosSGController extends Controller
                 
 		}    
 
-        return $this->render('PruebaBundle:AcuerdosSG:nuevo.html.twig');
+        $em = $this->getDoctrine()->getManager();
+
+        $areaIpdTotal = $em->getRepository(AreaIpd::class)->findAll();
+        $acuerdosSGTotal = $em->getRepository(AcuerdosSG::class)->findAll();
+        $acuerdosSGAreaIpd = $em->getRepository(AcuerdosSGAreaIpd::class)->findAll();
+        
+        return $this->render('PruebaBundle:AcuerdosSG:nuevo.html.twig',array("acuerdosSGAreaIpd" => $acuerdosSGAreaIpd, "acuerdosSGTotal", "areaIpdTotal" => $areaIpdTotal) );
     }
 
 
@@ -193,10 +199,8 @@ class AcuerdosSGController extends Controller
                     }    
                 }
             }
-
-
+            
             else if( count($areaIpd) < count($areasIpdInicio)  && count($areaIpd)> -1 ){
-
 
                 for ($i=0; $i < count($areasIpdInicio) ; $i++) { 
 
@@ -226,7 +230,7 @@ class AcuerdosSGController extends Controller
 
         $latestObservacion = $acuerdosSG->getObservacionSG()[count($acuerdosSG->getObservacionSG())-1];
 
-        return $this->render('PruebaBundle:AcuerdosSG:update.html.twig',array("acuerdosSG" => $acuerdosSG , "observaciones" => $acuerdosSG->getObservacionSG(), "cantidadObservaciones" => count($acuerdosSG->getObservacionSG()) , 'id' => $id , "latestObservacion" => $latestObservacion->getDescripcion(), "acuerdosSGAreaIpd" => $acuerdosSGAreaIpd, "acuerdosSGTotal", "areaIpdTotal" => $areaIpdTotal, "totalSGAreaIpd" =>$countAcuerdosSGAreaIpd[0]['total'] ));
+        return $this->render('PruebaBundle:AcuerdosSG:update.html.twig',array("acuerdosSG" => $acuerdosSG , "observaciones" => $acuerdosSG->getObservacionSG(), "cantidadObservaciones" => count($acuerdosSG->getObservacionSG()) , 'id' => $id , "latestObservacion" => $latestObservacion->getDescripcion(), "acuerdosSGAreaIpd" => $acuerdosSGAreaIpd, "acuerdosSGTotal" => $acuerdosSGTotal , "areaIpdTotal" => $areaIpdTotal, "totalSGAreaIpd" =>$countAcuerdosSGAreaIpd[0]['total'] ));
     }
 
     public function acuerdosSGRemoveAction(Request $request,$id){
@@ -250,4 +254,21 @@ class AcuerdosSGController extends Controller
         return $this->render('PruebaBundle:AcuerdosSG:remove.html.twig', array("id" => $id));
     }
     
+
+        public function sendemailAction(Request $request){
+
+            if($request->isXmlHttpRequest()){
+
+                $nombre = $request->request->get('nombre');
+                $email= $request->request->get('email');
+                $mensaje=$request->request->get('mensaje');
+                            
+                $subject = 'Notificacion Secretaria General';
+                $message = 'Hemos recibido un nuevo comentario y/o sugerencia de Secretaria General'. "\r\n" ."\r\n".'NOMBRE: '.$nombre. "\r\n" ."\r\n".'CORREO ELECTRÓNICO: '.$email ."\r\n"."\r\n".'COMENTARIO: '."\r\n"."\r\n". $mensaje ;
+                $headers = 'From: secretariageneral@ipd.gob.pe' . "\r\n" .
+                    'X-Mailer: PHP/' . phpversion();
+                mail($email, $subject, $message, $headers);
+                return new JsonResponse("enviado");
+        }
+    }
 }

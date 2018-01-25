@@ -1,0 +1,84 @@
+{% extends '::base.html.twig'  %}
+
+{% block body %}
+
+<section class="container-removeSG">
+	
+	<div class="carta_remove">
+		
+		<p class="text-center">
+			Esta seguro en eliminar Responsable?
+		</p>
+
+		<div >
+			<button class="btn btn-danger" id="btn-remove-si" >Si</button>
+			<a href="{{url('prueba_responsableAcuerdo')}}"><button class="btn btn-success" id="btn-remove-no" >No</button></a>
+			
+		</div>
+		
+		<div>
+			<img  id="load" width="50" height="40"  src="{{asset('img/loading.gif')}}" style="display:none;">
+		</div>
+
+	</div>
+	
+
+</section>
+
+
+<script >
+	
+
+	$("#btn-remove-si").on('click',function(){
+		responsableRemove();
+	});
+
+
+
+function responsableRemove(){
+
+	datos = {
+			'baja':'0',
+			'id': {{id}}
+		}
+
+	$.ajax({
+		dataType: 'json',
+		type: 'POST',
+		url: "{{url('prueba_responsableAcuerdoRemove', {id:id} ) }}",
+		data:datos,
+
+		beforeSend:function(){
+			$("#load").show();
+		},
+
+		success:function(data){
+
+			$("#load").hide();
+			if(data==1){
+
+				$(".carta_remove").empty();
+				$(".carta_remove").append("<p>Se Removio Correctamente!</p>");
+				$(".carta_remove").append("<a href={{url('prueba_responsableAcuerdo')}} ><button class='btn btn-info'>Regresar</button></a>");	
+
+			}else{
+				$(".carta_remove").append("<p>Se Removio Correctamente!</p>");
+				$(".carta_remove").append("<a href={{url('prueba_responsableAcuerdo')}} ><button class='btn btn-info'>Regresar</button></a>");	
+			}
+
+			console.log(data);
+		},
+		error:function(error){
+			console.log(error);
+		}
+	});	
+
+
+
+}
+
+
+
+</script>
+
+{% endblock %}

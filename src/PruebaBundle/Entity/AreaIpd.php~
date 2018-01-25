@@ -51,6 +51,35 @@ class AreaIpd
      */
     private $nombre;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="correo", type="string", length=255,  nullable=true)
+     */
+    private $correo;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="personaResponsable", type="string", length=255,  nullable=true)
+     */
+    private $personaResponsable;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tipo", type="string", length=1)
+     */
+    private $tipo; 
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="baja", type="string", length=1)
+     */
+    private $baja;
+
 
     /**
      * Get id
@@ -236,5 +265,77 @@ class AreaIpd
 
     public function getAcuerdoPre(){
         
+    }
+
+    /**
+     * Set correo
+     *
+     * @param string $correo
+     *
+     * @return AreaIpd
+     */
+    public function setCorreo($correo)
+    {
+        $this->correo = $correo;
+
+        return $this;
+    }
+
+    /**
+     * Get correo
+     *
+     * @return string
+     */
+    public function getCorreo()
+    {
+        return $this->correo;
+    }
+
+    /**
+     * Set tipo
+     *
+     * @param string $tipo
+     *
+     * @return AreaIpd
+     */
+    public function setTipo($tipo)
+    {
+        $this->tipo = $tipo;
+
+        return $this;
+    }
+
+    /**
+     * Get tipo
+     *
+     * @return string
+     */
+    public function getTipo()
+    {
+        return $this->tipo;
+    }
+
+    /**
+     * Set personaResponsable
+     *
+     * @param string $personaResponsable
+     *
+     * @return AreaIpd
+     */
+    public function setPersonaResponsable($personaResponsable)
+    {
+        $this->personaResponsable = $personaResponsable;
+
+        return $this;
+    }
+
+    /**
+     * Get personaResponsable
+     *
+     * @return string
+     */
+    public function getPersonaResponsable()
+    {
+        return $this->personaResponsable;
     }
 }

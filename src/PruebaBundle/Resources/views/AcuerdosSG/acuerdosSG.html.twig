@@ -15,7 +15,11 @@
 	<div class="contenedor-table">
 		<div class="contenedor-boton-nuevo-sg">
 			<a  style="margin-left:20px;" href="{{url('prueba_principal')}}"><button class="btn btn-danger btn-lg" ><i class="icon-back"></i> Regresar</button></a>
-			<a  style="margin-left:20px;" href="{{url('prueba_nuevoAcuerdosSG')}}"><button class="btn btn-info btn-lg" ><i class="icon-plus-square-o"></i> Nuevo Seguimiento SG</button></a>
+
+			{% if is_granted('ROLE_ADMIN') %}
+				<a  style="margin-left:20px;" href="{{url('prueba_nuevoAcuerdosSG')}}"><button class="btn btn-info btn-lg" ><i class="icon-plus-square-o"></i> Nuevo Seguimiento SG</button></a>
+			{% endif %}
+
 			<button data-toggle="modal" data-target="#myModal" style="margin-left:20px;" class="btn btn-warning btn-lg btn-resena" ><i class="icon-pie-chart"></i> Reseña</button>
 		</div>
 
@@ -55,13 +59,17 @@
 						Observaciones
 					</td>
 
-					<td>
-						Editar
-					</td>
+					{% if is_granted('ROLE_ADMIN') %}
 
-					<td>
-						Eliminar
-					</td>
+						<th>
+							Editar
+						</th>
+
+						<th>
+							Eliminar
+						</th>
+
+					{% endif %}
 
 				</tr>
 			</thead>
@@ -380,7 +388,20 @@
 						let fechaAcuerdo = valor.fecha.split("-");
 						let fechaPlazo = valor.plazoEntrega.split("-");
 
-							$("#table_body").append('<tr value="'+valor.id+'" data-row="'+valor.id+'" >'+'<td>'+valor.sesion+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'</td>'+'<td>'+valor.agenda+'</td>'+'<td>'+valor.acuerdos+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" >ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal"  data-target="#myModal" value="'+valor.id+'" ><i class="icon-history"></i> Observaciones</button></td>'+'<td><a class="editar-sg" href="/acuerdosSG/update/'+valor.id+'"><button class="btn btn-success"><i class="icon-pencil-square-o" ></i> Editar</a></button></td>'+'<td><a href="/acuerdosSG/remove/'+valor.id+'" ><button class="btn btn-danger" ><i class="icon-trash"></i> Eliminar</button></a></td>'+'</tr>');							
+						{% if is_granted('ROLE_ADMIN') %}
+
+				            var url = "{{url('prueba_acuerdosSGUpdate',{id:'idAcu'})}}";
+            				url = url.replace("idAcu", valor.id);	
+
+            				console.log(url);
+
+							$("#table_body").append('<tr value="'+valor.id+'" data-row="'+valor.id+'" >'+'<td>'+valor.sesion+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'</td>'+'<td>'+valor.agenda+'</td>'+'<td>'+valor.acuerdos+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" >ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal"  data-target="#myModal" value="'+valor.id+'" ><i class="icon-history"></i> Observaciones</button></td>'+"<td><a class='editar-sg' href='"+url+"'><button class='btn btn-success'><i class='icon-pencil-square-o' ></i> Editar</button></a></td>"+'<td><a href="/acuerdosSG/remove/'+valor.id+'" ><button class="btn btn-danger" ><i class="icon-trash"></i> Eliminar</button></a></td>'+'</tr>');
+
+						{% else %}	
+
+								$("#table_body").append('<tr value="'+valor.id+'" data-row="'+valor.id+'" >'+'<td>'+valor.sesion+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'</td>'+'<td>'+valor.agenda+'</td>'+'<td>'+valor.acuerdos+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" >ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal"  data-target="#myModal" value="'+valor.id+'" ><i class="icon-history"></i> Observaciones</button></td></tr>');				
+
+						{%endif  %}					
 					
 						});
 					resolve("jajaj");

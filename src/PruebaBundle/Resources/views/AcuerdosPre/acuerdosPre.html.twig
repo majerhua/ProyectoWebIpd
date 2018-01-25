@@ -17,7 +17,12 @@
 
 		<div class="contenedor-boton-nuevo-sg">
 			<a  style="margin-left:20px;" href="{{url('prueba_principal')}}"><button class="btn btn-danger btn-lg" ><i class="icon-back"></i> Regresar</button></a>
+
+		{% if is_granted('ROLE_ADMIN') %}
+
 			<a  style="margin-left:20px;" href="{{url('prueba_nuevoAcuerdosPre')}}"><button class="btn btn-info btn-lg" ><i class="icon-plus-square-o"></i> Nuevo Seguimiento SG</button></a>
+		{% endif %}
+	
 			<button data-toggle="modal" data-target="#myModal" style="margin-left:20px;" class="btn btn-warning btn-lg btn-resena" ><i class="icon-pie-chart"></i> Reseña</button>	
 		</div>
 
@@ -62,6 +67,8 @@
 					<th>
 						Historial Observ....
 					</th>
+					
+					{% if is_granted('ROLE_ADMIN') %}
 
 					<th>
 						Editar
@@ -70,6 +77,8 @@
 					<th>
 						Eliminar
 					</th>
+
+					{% endif %}
 
 				</tr>
 			</thead>
@@ -376,8 +385,18 @@
 
 						let fechaAcuerdo = valor.fecha.split("-");
 						let fechaPlazo = valor.plazoEntrega.split("-");
+					
+						{% if is_granted('ROLE_ADMIN') %}	
+
+						$("#table_body").append('<tr value="'+valor.id+'" >'+'<td>'+valor.comite+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'<td>'+valor.acuerdos+'</td>'+'<td>'+valor.nroAcuerdo+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" >ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td>'+'<td>'+valor["observacionPre"][valor["observacionPre"].length-1].descripcion+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal" data-target="#myModal" value="'+valor.id+'" >ver historial</button></td>'+'<td><a href="/acuerdosPre/update/'+valor.id+'"><button class="btn btn-success" >Editar</button></a></td><td><a href="/acuerdosSG/remove/'+valor.id+'" ><button class="btn btn-danger" ><i class="icon-trash"></i> Eliminar</button></a></td>'+'</tr>');
+
 						
-					$("#table_body").append('<tr value="'+valor.id+'" >'+'<td>'+valor.comite+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'<td>'+valor.acuerdos+'</td>'+'<td>'+valor.nroAcuerdo+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" >ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td>'+'<td>'+valor["observacionPre"][valor["observacionPre"].length-1].descripcion+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal" data-target="#myModal" value="'+valor.id+'" >ver historial</button></td>'+'<td><a href="/acuerdosPre/update/'+valor.id+'"><button class="btn btn-success" >Editar</button></a></td><td><a href="/acuerdosSG/remove/'+valor.id+'" ><button class="btn btn-danger" ><i class="icon-trash"></i> Eliminar</button></a></td>'+'</tr>');
+						{% else %}
+
+
+						$("#table_body").append('<tr value="'+valor.id+'" >'+'<td>'+valor.comite+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'<td>'+valor.acuerdos+'</td>'+'<td>'+valor.nroAcuerdo+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" >ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td>'+'<td>'+valor["observacionPre"][valor["observacionPre"].length-1].descripcion+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal" data-target="#myModal" value="'+valor.id+'" >ver historial</button></td></tr>');
+
+						{% endif %}
 
 					});
 
@@ -397,8 +416,13 @@
 
 							if({{val.acuerdoPre.id}} == $(this).val() ){
 								
-								$(".listadoAreaResponsables").append("<div class='container-mensaje-area' ><p>{{val.areaIpd.nombre}}</p><button class='btn sendMail btn-primary' data-toggle='modal' data-target='#modalMensajeResponsable' data-persona='{{val.areaIpd.personaResponsable}}' value='{{val.areaIpd.correo}}'>Enviar Mensaje</button></div>");
+								$(".listadoAreaResponsables").append("<div class='container-mensaje-area' ><p>{{val.areaIpd.nombre}}</p>");
 
+								{% if is_granted('ROLE_ADMIN') %}
+
+								$(".listadoAreaResponsables").append("<button class='btn sendMail btn-primary' data-toggle='modal' data-target='#modalMensajeResponsable' data-persona='{{val.areaIpd.personaResponsable}}' value='{{val.areaIpd.correo}}'>Enviar Mensaje</button></div>");
+
+								{% endif %}
 
 								
 

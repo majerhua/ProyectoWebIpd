@@ -219,6 +219,27 @@ class AcuerdosPreController extends Controller
 
 	}
 
+    public function acuerdosPreRemoveAction(Request $request,$id){
+
+        if($request->isXmlHttpRequest()){
+            
+            $baja = $request->request->get('baja');
+            $id = $request->request->get('id');
+
+            $em = $this->getDoctrine()->getManager(); 
+            $acuerdosSG = $em->getRepository(AcuerdosPre::class)->find($id);
+
+            $acuerdosSG->setBaja($baja);
+            $em->flush();
+
+            $jsonContent="1";
+            return new JsonResponse($jsonContent);
+        }
+
+
+        return $this->render('PruebaBundle:AcuerdosPre:remove.html.twig', array("id" => $id));
+    }
+
     
         public function sendemailAction(Request $request){
 

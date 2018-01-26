@@ -201,6 +201,10 @@ prueba_leyenda:
 
 #INICIO DETALLE_INDICADOR
 
+prueba_nuevoDetalleIndicadorPrueba:
+  path: /prueba
+  defaults: { _controller: PruebaBundle:DetalleIndicador:prueba }
+
 prueba_nuevoDetalleIndicador:
   path: /nuevo-detalle-indicador
   defaults: { _controller: PruebaBundle:DetalleIndicador:nuevoDetalleIndicador }

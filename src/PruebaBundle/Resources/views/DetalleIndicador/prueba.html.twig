@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+	<div id="value_barras">
+	</div>
+	<canvas id="canvas"  width="740" height="400">
+	</canvas> 
+	<div id="label_barras">
+	</div>
+
+<script>
+	
+	var value_barras = document.getElementById('value_barras');
+	var label_barras = document.getElementById('label_barras');
+
+	canvas = document.getElementById('canvas'); 
+    var ctx=canvas.getContext("2d");
+
+    var data=[1,2,3];
+    var label=[100,90,80];
+  	var labelBarra = ['Enero','Febrero','Marzo'];
+
+    function barras(ctx,data,color){
+
+    	var numBarras = data.length;
+    	var widthCanvas = canvas.getAttribute('width');
+    	var marginBarras = widthCanvas*0.02;
+    	var widthBarra = widthCanvas/numBarras;
+		x=0;
+
+		var heightLabel= canvas.getAttribute('height')/10;
+
+		var hl=0;
+
+    	for(var i = 0 ; i < numBarras ; i++){
+
+
+    		if(i>-1 && i<10){
+    			var pa = document.createElement('p');
+    			var nodo = document.createTextNode(label[i]);
+    			pa.appendChild(nodo);
+    			value_barras.appendChild(pa);	
+    			document.getElementsByTagName('p')[i].style.height=heightLabel+"px";
+    			console.log(heightLabel);
+
+    			
+				ctx.moveTo(0, hl);
+				ctx.lineTo(widthCanvas, hl);
+				ctx.lineWidth=0.1;
+				ctx.stroke();
+				 
+				hl+=heightLabel;
+    		}
+
+
+			ctx.fillStyle = color;
+			//console.log(x);
+			
+    		ctx.fillRect (x,canvas.getAttribute('height'),widthBarra-marginBarras,-data[i]*canvas.getAttribute('height')/100); 
+    		x = x +widthBarra;  
+
+    		
+    	}
+
+    	for(var j=0;j<labelBarra.length;j++){
+    		console.log(labelBarra[j]);
+   			var pa_la = document.createElement('p');
+			var nodo_la = document.createTextNode(labelBarra[j]);
+			pa_la.appendChild(nodo_la);
+			label_barras.appendChild(pa_la);	
+    	}
+    }
+
+    barras(ctx,data,"rgb(100,200,200)");
+
+</script>
+
+</body>
+</html>

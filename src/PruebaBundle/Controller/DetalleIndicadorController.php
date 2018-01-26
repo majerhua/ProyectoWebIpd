@@ -31,16 +31,23 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 class DetalleIndicadorController extends Controller
 {
 
-    public function emailAction(){
-
-        $correo = 'majerhua123@gmail.com';
-        $subject = 'Prueba Servidor de Correo';
-        $message = 'Hola fullstacka';
-        $headers = 'From: soporte@ipd.gob.pe' . "\r\n" .
-                'X-Mailer: PHP/' . phpversion();
-        mail($correo, $subject, $message, $headers);
+     public function pruebaAction(Request $request){
         
-       return new Response('email enviado!');
+        $html = $this->renderView('PruebaBundle:DetalleIndicador:prueba.html.twig');
+     
+        $pdf = $this->container->get("white_october.tcpdf")->create();
+        $pdf->SetAuthor('IPD');
+        $pdf->setPrintHeader(false);
+        $pdf->SetTitle('Declaracion Jurada');
+        $pdf->SetSubject('Mecenazgo Deportivo');
+        $pdf->SetKeywords('TCPDF, PDF, Mecenazgo Deportivo, IPD, Sistemas IPD, Deportistas');       
+        $pdf->AddPage();
+        $pdf->setCellPaddings(0, 0, 0, 0);                
+        $pdf->writeHTMLCell(
+                    $w = 0, $h = 0, $x = '', $y = '', $html, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true
+            );         
+        $pdf->writeHTML($html);
+        $pdf->Output("compromisoIPD.pdf", 'I');        
     }
 
 	public function nuevoDetalleIndicadorAction(Request $request){

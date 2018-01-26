@@ -264,8 +264,8 @@ class AcuerdosSGController extends Controller
                 $mensaje=$request->request->get('mensaje');
                             
                 $subject = 'Notificacion Secretaria General';
-                $message = 'Hemos recibido un nuevo comentario y/o sugerencia de Secretaria General'. "\r\n" ."\r\n".'NOMBRE: '.$nombre. "\r\n" ."\r\n".'CORREO ELECTRÓNICO: '.$email ."\r\n"."\r\n".'COMENTARIO: '."\r\n"."\r\n". $mensaje ;
-                $headers = 'From: secretariageneral@ipd.gob.pe' . "\r\n" .
+                $message = 'Usted tiene un acuerdo pendiente de implementación, informar a la Secretaría General su cumplimiento'."\r\n"."\r\n".'COMENTARIO: '."\r\n"."\r\n". $mensaje ;
+                $headers = 'From: pilar@ipd.gob.pe' . "\r\n" .
                     'X-Mailer: PHP/' . phpversion();
                 mail($email, $subject, $message, $headers);
                 return new JsonResponse("enviado");

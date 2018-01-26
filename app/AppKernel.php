@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new PruebaBundle\PruebaBundle(),
             new AdminBundle\AdminBundle(),
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
+            new WhiteOctober\TCPDFBundle\WhiteOctoberTCPDFBundle(),
             
         ];
 

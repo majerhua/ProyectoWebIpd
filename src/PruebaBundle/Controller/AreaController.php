@@ -77,7 +77,6 @@ class AreaController extends Controller
 
     }
 
-
     public function responsableAcuerdoNuevoAction(Request $request){
 
         if($request->isXmlHttpRequest()){

@@ -409,13 +409,12 @@
 					$(".btn-areas-reponsables").on('click',function(){
 
 						$(".listadoAreaResponsables").empty();
-						//$("#correo-enviar-responsable").val('');
-						//$("#correo-persona-responsable").val('');
+
 						{% for val in  acuerdosPreAreaIpd %}
 
 							if({{val.acuerdoPre.id}} == $(this).val() ){
 								
-								$(".listadoAreaResponsables").append("<div class='container-mensaje-area' ><p>{{val.areaIpd.nombre}}</p>");
+								$(".listadoAreaResponsables").append("<p>{{val.areaIpd.nombre}}</p>");
 
 								{% if is_granted('ROLE_ADMIN') %}
 
@@ -506,11 +505,6 @@
 									//$("#table-body-observaciones").append()
 									$("#titulo_acuerdoPre").empty();
 									$("#titulo_acuerdoPre").append(data_observaciones["areaIpd"].nombre);
-
-
-
-
-
 
 								},
 								error:function(error){

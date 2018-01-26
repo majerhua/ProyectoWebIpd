@@ -250,7 +250,6 @@ class AcuerdosSGController extends Controller
             return new JsonResponse($jsonContent);
         }
 
-
         return $this->render('PruebaBundle:AcuerdosSG:remove.html.twig', array("id" => $id));
     }
     

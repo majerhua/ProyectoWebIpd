@@ -217,3 +217,12 @@
 	.container-mensaje-area>button{
 		margin-top: 3px;
 	}
+
+.listadoAreaResponsables{
+	display: flex;
+	flex-wrap: wrap;
+}
+
+	.listadoAreaResponsables>p{
+		width: 50%;
+	}

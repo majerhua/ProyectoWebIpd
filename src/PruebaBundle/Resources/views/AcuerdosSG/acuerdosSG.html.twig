@@ -388,24 +388,25 @@
 						let fechaAcuerdo = valor.fecha.split("-");
 						let fechaPlazo = valor.plazoEntrega.split("-");
 
-						{% if is_granted('ROLE_ADMIN') %}
+						
 
 
 						if(valor.baja=='1'){
 							
- 							var urlUpdate = "{{url('prueba_acuerdosSGUpdate',{id:'idAcu'})}}";
-            				urlUpdate = urlUpdate.replace("idAcu", valor.id);
+							{% if is_granted('ROLE_ADMIN') %}	
+	 							var urlUpdate = "{{url('prueba_acuerdosSGUpdate',{id:'idAcu'})}}";
+	            				urlUpdate = urlUpdate.replace("idAcu", valor.id);
 
-				            var urlRemove = "{{url('prueba_acuerdosSGRemove',{id:'idAcu'})}}";
-            				urlRemove = urlRemove.replace("idAcu", valor.id);
+					            var urlRemove = "{{url('prueba_acuerdosSGRemove',{id:'idAcu'})}}";
+	            				urlRemove = urlRemove.replace("idAcu", valor.id);
 
-							$("#table_body").append('<tr value="'+valor.id+'" data-row="'+valor.id+'" >'+'<td>'+valor.sesion+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'</td>'+'<td>'+valor.agenda+'</td>'+'<td>'+valor.acuerdos+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" >ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal"  data-target="#myModal" value="'+valor.id+'" ><i class="icon-history"></i> Observaciones</button></td>'+"<td><a class='editar-sg' href='"+urlUpdate+"'><button class='btn btn-success'><i class='icon-pencil-square-o' ></i> Editar</button></a></td>"+'<td><a href="'+urlRemove+'" ><button class="btn btn-danger" ><i class="icon-trash"></i> Eliminar</button></a></td>'+'</tr>');
+								$("#table_body").append('<tr value="'+valor.id+'" data-row="'+valor.id+'" >'+'<td>'+valor.sesion+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'</td>'+'<td>'+valor.agenda+'</td>'+'<td>'+valor.acuerdos+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" >ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal"  data-target="#myModal" value="'+valor.id+'" ><i class="icon-history"></i> Observaciones</button></td>'+"<td><a class='editar-sg' href='"+urlUpdate+"'><button class='btn btn-success'><i class='icon-pencil-square-o' ></i> Editar</button></a></td>"+'<td><a href="'+urlRemove+'" ><button class="btn btn-danger" ><i class="icon-trash"></i> Eliminar</button></a></td>'+'</tr>');
 
-						{% else %}	
+							{% else %}	
 
-								$("#table_body").append('<tr value="'+valor.id+'" data-row="'+valor.id+'" >'+'<td>'+valor.sesion+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'</td>'+'<td>'+valor.agenda+'</td>'+'<td>'+valor.acuerdos+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" >ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal"  data-target="#myModal" value="'+valor.id+'" ><i class="icon-history"></i> Observaciones</button></td></tr>');				
+									$("#table_body").append('<tr value="'+valor.id+'" data-row="'+valor.id+'" >'+'<td>'+valor.sesion+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'</td>'+'<td>'+valor.agenda+'</td>'+'<td>'+valor.acuerdos+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" >ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal"  data-target="#myModal" value="'+valor.id+'" ><i class="icon-history"></i> Observaciones</button></td></tr>');				
 
-						{%endif  %}	
+							{%endif  %}	
 
 
 						}
@@ -426,8 +427,14 @@
 						{% for val in  acuerdosSGAreaIpd %}
 
 							if({{val.acuerdoSG.id}} == $(this).val() ){
-								
-								$(".listadoAreaResponsables").append("<div class='container-mensaje-area' ><p>{{val.areaIpd.nombre}}</p><button class='btn sendMail btn-primary' data-toggle='modal' data-target='#modalMensajeResponsable' data-persona='{{val.areaIpd.personaResponsable}}' value='{{val.areaIpd.correo}}'>Enviar Mensaje</button></div>");
+
+								$(".listadoAreaResponsables").append("<p>{{val.areaIpd.nombre}}</p>");
+
+								{% if is_granted('ROLE_ADMIN') %}
+
+									$(".listadoAreaResponsables").append("<button class='btn sendMail btn-primary' data-toggle='modal' data-target='#modalMensajeResponsable' data-persona='{{val.areaIpd.personaResponsable}}' value='{{val.areaIpd.correo}}'>Enviar Mensaje</button></div>");
+
+								{% endif %}
 
 							}
 

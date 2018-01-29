@@ -68,6 +68,12 @@
 			font-size: 1.2em;
 		}
 
+.table-row-title{
+	background-color:#cb2f1d;
+	 color:#fff;
+	  font-weight:bold;
+}
+
 
 .contenedor-titulo{
 	background-color: rgba(255, 162, 0, 0.5);
@@ -87,16 +93,27 @@
 	}
 
 	.contenedor-titulo>div>span{
-		font-size: 1.7em;
-		color:#fff;
-		text-shadow: 4px 4px 4px rgba(0,0,0,0.7);
+		font-size: 1.75em;
+		color:#cb2f1d;
+		text-shadow: 4px 6px 6px rgba(255,255,255,0.5);
 		width: 100%;
 		font-weight: bold;
+		transition: font-size 2s;
 		font-family: 'Adamina', serif;
 	}
 
+	.contenedor-titulo>div>span:hover{
+		font-size: 1.85em;
+	}
+
+
 	.contenedor-titulo>img{
 		width: 10%;
+		transition: width 2s;
+	}
+
+	.contenedor-titulo>img:hover{
+		width: 10.5%;
 	}
 
 .contenedor-table{

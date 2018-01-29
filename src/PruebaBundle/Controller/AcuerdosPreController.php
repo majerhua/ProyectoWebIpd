@@ -76,13 +76,13 @@ class AcuerdosPreController extends Controller
 
                 $observacionesPre = new ObservacionesPre();
                 $hoy = date("Y-m-d");
-                $observacionesSG->setDescripcion($observaciones);
-                $observacionesSG->setFecha($hoy);
+                $observacionesPre->setDescripcion($observaciones);
+                $observacionesPre->setFecha($hoy);
                 //SE REALIZA LA BUSQUEDA DEL ULTIMO ACUERDO SG INGRESADO
                 $em =  $this->getDoctrine()->getRepository(AcuerdosPre::class);
                 $acuerdosPreN = $em->find($id_acuerdosPre);
                 //SE ASIGNA EL ULTIMO ACUERDO INGRESADO POR AJAX AL OBJETO OBSERVACIONESSG
-                $observacionesPre->setAcuerdoSG($acuerdosPreN);
+                $observacionesPre->setAcuerdoPre($acuerdosPreN);
                 //SE GUARDA EN LA BASE DE DATOS
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($observacionesPre);

@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title>Ficha</title>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="{{asset('css/detalleIndicador/grafico.css')}}">
+	<link rel="stylesheet"  href="{{  asset('styles.css') }}">
+
+</head>
+<body>
+
+
+<div>
+	<figure>
+		<a href="{{url('prueba_verDetalleIndicador')}}"><img height="25" width="35" class="img-back" src="{{asset('img/back.png')}}"></a>
+	</figure>
+</div>
+
+<div class="container">	
+	<div class="container-table">
+		<form  action="{{url('prueba_detalleIndicadorGrafica', {id:id})}}"  method="get">
+		<table class="table table-bordered table-responsive" border="3" >
+
+			<tbody>
+				<tr>
+					<td colspan="4"><input  class="form-control" type="text" name="titulo" placeholder="Titulo de ficha de Indicador" ></td>
+				</tr>
+
+				<tr>
+					<td>ORGANO O UNIDAD ORGANICA</td>
+					<td colspan="3"><input type="text" class="form-control" name="organo" id="organo" placeholder="Ingresar Organo o Unidad Organica"></td>
+				</tr>
+
+				<tr>
+					<td>MES DE REPORTE</td>
+					<td colspan="3"><input type="text" name="mes-reporte" id="mes-reporte" class="form-control" placeholder="Ingresar mes de reporte"></td>
+				</tr>
+
+				<tr>
+					<td>PROCESO</td>
+
+					<td>
+						<input type="text"  class="form-control" name="proceso" id="proceso" placeholder="Ingrese proceso">
+					</td>
+				</tr>
+
+
+				<tr>
+					<td>OBJETIVO</td>
+					<td colspan="3"><input type="text" placeholder="Ingresar Objetivo" name="objetivo" class="form-control" id="objetivo"></td>
+				</tr>
+
+				<tr>
+					<td>FORMA DE CALCULO</td>
+					<td colspan="3"><input type="text"  placeholder="Ingresar Forma de Calculo" name="calculo" class="form-control" id="calculo"></td>
+				</tr>
+
+				<tr>
+					<td rowspan="3" class="td-semaforoColores" ><p>SEMAFORO DE COLORES</p> </td>
+					<td colspan="3" id="grafica_rojo" >{{leyendas.rojo }}<div class="semaforo  semaforo__colorRojo"></div></td>
+					
+				</tr>
+
+				<tr>
+					<td colspan="3" id="grafica_amarillo">{{ leyendas.amarillo }} <div class="semaforo semaforo__colorAmarillo"></div> 
+					</td>
+					
+				</tr>
+
+				<tr>
+					<td colspan="3" id="grafica_verde"> {{ leyendas.verde }}<div class="semaforo semaforo__colorVerde"></div></td>
+					
+				</tr>
+
+				<tr>
+					<td >FUENTE DE INFORMACION</td>
+					<td  colspan="3"><input type="text" name="fuente" class="form-control" placeholder="Ingresar Fuente de Informacion"  id="fuente"></td>
+				</tr>
+
+		
+				<tr>
+					<td colspan="4" id="content_canvas_valuebarras" >
+						<div id="value_barras">
+						</div>
+						<canvas id="canvas"  width="740" height="300">
+						</canvas> 
+						<div id="label_barras">
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td colspan="4">PLAN DE ACCION</td>
+				</tr>
+
+				<tr>
+					<td colspan="2"><p class="text-center" >ACCION</p></td>
+					<td>FECHA</td>
+					<td>RESPONSABLE</td>
+				</tr>
+
+				<tr>
+					<td colspan="2"><input placeholder="Ingresar accion" type="text" name="accion" class="form-control" id="accion"></td>
+					<td><input type="date" name="fecha" class="form-control" id="fecha"></td>
+					<td><input type="text" placeholder="Ingresar responsable" name="responsable" class="form-control" id="responsable"></td>
+				</tr>
+
+			</tbody>
+
+		</table>
+		<button class="btn btn-danger" type="submit" ><i class="icon-print"></i> Generar Pdf</button>
+		</form>
+	</div>
+</div>
+
+
+
+<script>
+
+
+	let generarPdfForm = document.getElementById('generarPdfForm');
+	var objetivo = document.getElementById('objetivo');
+	var estrategico = document.getElementById('estrategico');
+	var misional = document.getElementById('misional');
+	var soporte = document.getElementById('soporte');
+	var calculo = document.getElementById('calculo');
+	var fuente = document.getElementById('fuente');
+
+/*
+	generarPdfForm.onclick=function(){
+
+		var url = "/detalleindicador/graficos/"+{{id}}+"?objetivo="+objetivo.value;
+
+		location.href =url;
+	}
+*/
+
+function round(num, decimales = 2) {
+    var signo = (num >= 0 ? 1 : -1);
+    num = num * signo;
+    if (decimales === 0) //con 0 decimales
+        return signo * Math.round(num);
+    // round(x * 10 ^ decimales)
+    num = num.toString().split('e');
+    num = Math.round(+(num[0] + 'e' + (num[1] ? (+num[1] + decimales) : decimales)));
+    // x * 10 ^ (-decimales)
+    num = num.toString().split('e');
+    return signo * (num[0] + 'e' + (num[1] ? (+num[1] - decimales) : -decimales));
+}
+
+	var value_barras = document.getElementById('value_barras');
+	var label_barras = document.getElementById('label_barras');
+
+	canvas = document.getElementById('canvas'); 
+    var ctx=canvas.getContext("2d");
+
+    var data=[{{total.enero}},{{total.febrero}},{{total.marzo}},{{total.abril}},{{total.mayo}},{{total.junio}},{{total.julio}},{{total.agosto}},{{total.septiembre}},{{total.octubre}},{{total.noviembre}},{{total.diciembre}}];
+
+		var label=[];
+
+		var cont=9;
+
+		var mayor = data[0];
+
+		for (var i =1; i < data.length; i++) {
+			
+			if (mayor<data[i]) {
+				mayor=data[i];
+			}
+		}
+
+		var itNum= mayor/10;
+		var sum=0;
+
+		while(cont>-1){
+
+			sum+=itNum;
+			label[cont]=round(sum,2);
+			cont--;
+		}
+    	    
+  	var labelBarra = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+    function barras(ctx,data,color){
+
+    	var numBarras = data.length;
+    	var widthCanvas = canvas.getAttribute('width');
+    	var marginBarras = widthCanvas*0.02;
+    	var widthBarra = widthCanvas/numBarras;
+		x=0;
+
+		var heightLabel= canvas.getAttribute('height')/10;
+
+		var hl=0;
+
+		console.log(heightLabel);
+		console.log(mayor);
+    	for(var i = 0 ; i < numBarras ; i++){
+
+    		let alturaBarra = -data[i]*canvas.getAttribute('height')/mayor;
+
+    		if(i>-1 && i<10){
+    			var pa = document.createElement('p');
+    			var nodo = document.createTextNode(label[i]);
+    			pa.appendChild(nodo);
+    			value_barras.appendChild(pa);	
+    			document.getElementsByTagName('p')[i].style.height=heightLabel+"px";
+				ctx.moveTo(0, hl);
+				ctx.lineTo(widthCanvas, hl);
+				ctx.lineWidth=0.1;
+				ctx.stroke();
+				 
+				hl+=heightLabel;
+    		}
+
+			ctx.fillStyle = color;		
+    		ctx.fillRect (x,canvas.getAttribute('height'),widthBarra-marginBarras,alturaBarra); 
+    		x = x +widthBarra;     
+    	}
+
+    	for(var j=0;j<labelBarra.length;j++){
+    		
+   			var pa_la = document.createElement('p');
+			var nodo_la = document.createTextNode(labelBarra[j]);
+			pa_la.appendChild(nodo_la);
+			label_barras.appendChild(pa_la);	
+    	}
+    }
+
+    barras(ctx,data,"#cb2f1d");
+
+</script>
+</body>
+</html>
+

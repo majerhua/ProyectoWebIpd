@@ -33,9 +33,16 @@ class DetalleIndicador
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=255)
+     * @ORM\Column(name="nombre", type="string", length=255,nullable=true)
      */
     private $nombre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tipo", type="string", length=1)
+     */
+    private $tipo;
 
     /**
      * @var string
@@ -470,5 +477,29 @@ class DetalleIndicador
 
     public function __toString(){
         return $this->nombre;
+    }
+
+    /**
+     * Set tipo
+     *
+     * @param string $tipo
+     *
+     * @return DetalleIndicador
+     */
+    public function setTipo($tipo)
+    {
+        $this->tipo = $tipo;
+
+        return $this;
+    }
+
+    /**
+     * Get tipo
+     *
+     * @return string
+     */
+    public function getTipo()
+    {
+        return $this->tipo;
     }
 }

@@ -5,7 +5,7 @@
 	<title></title>
 	
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<style>
+    <style>
 		
 		*{
 			margin:0;
@@ -13,29 +13,24 @@
 		}
 
 		body{
-
 			padding: 20px;
-
+			font-weight: bold;
 		}
 
-
-		#content_canvas_valuebarras{
-
-
-		}
 
 		#value_barras{
-			
 			float: left;
 			width: 40px;
-
 		}
 
-
-
 		#value_barras p{
-			border: 1px solid black;
+			
 			margin:0;
+			
+		}
+
+		#value_barras p:nth-child(10){
+			padding-top: 10px;
 		}
 
 		#canvas{
@@ -43,19 +38,18 @@
 		}
 
 		#label_barras{
-
 			clear: both;
 			width: 760px;
 			height: 40px;
 			margin-left: 40px;
-
 		}
 
 		#label_barras p{
-			
+						
 			width: 61px;
 			float: left;
 			margin:0;
+
 			text-align: center;
 			padding: 0;
 			font-size: 0.8em;
@@ -80,70 +74,74 @@
 				background-color: green;
 			}
 
-	</style>
-      
+	.container-table{
+		
+		width:  80%;
+		margin:0 auto;	
+	}
+
+		.container-table td{
+			font-weight: bold;
+		}
+
+		.titulo-ficha{
+			text-align: center;
+			font-size: 1.5em;
+			
+		}
+
+		.td-semaforoColores > p {
+			
+			padding-top: 60px;
+			
+		}
+
+	</style>  
 </head>
 <body>
 
-
-
-
 <div class="container">
-	<h1>Ficha Indicador de Gestion</h1>
-
 	<table class="table table-bordered table-responsive" border="2" >
 
 		<tbody>
 
 			<tr>
 
-				<td colspan="4">Total de {{indicador.nombre}}</td>
+				<td colspan="4"><p class="titulo-ficha">{{arrayFormGet[0]}}</p></td>
 
 			</tr>
 
 			<tr>
 
-				<td>Organo o Unidad Organica</td>
-				<td colspan="3">{{app.user.areaIpd}}</td>
+				<td>ORGANO O UNIDAD ORGANICA</td>
+				<td colspan="3">{{arrayFormGet[1]}}</td>
 
 			</tr>
 
 			<tr>
-				<td>Mes Reporte</td>
-				<td colspan="3">{{ "now"|date(' F ')|replace({
-
-				    'January'  : 'Enero',
-				    'February' : 'Febrero',
-				    'March' : 'Marzo',
-				    'April' : 'Abril',
-				    'May' : 'Mayo',
-				    'June' : 'Junio',
-				    'July' : 'Julio',
-				    'August' : 'Agosto',
-				    'September' : 'septiembre',
-				    'October' : 'Octubre',
-					'November' : 'Noviembre',  
-  					'December' : 'Diciembre'
-				}) }}</td>
+				<td>MES REPORTE</td>
+				<td colspan="3">{{arrayFormGet[2]}}</td>
 			</tr>
 
 			<tr>
+				<td>PROCESO</td>
+				<td colspan="3">{{arrayFormGet[3]}}</td>					
 			</tr>
 
 
 			<tr>
-				<td>Objetivo</td>
-				<td colspan="3"></td>
+				<td>OBJETIVO</td>
+				<td colspan="3">{{arrayFormGet[4]}}</td>
 			</tr>
 
 
 			<tr>
-				<td>Forma de Calculo</td>
-				<td colspan="3"></td>
+				<td>FORMA CALCULO</td>
+				<td colspan="3">{{arrayFormGet[5]}}</td>
 			</tr>
 
 			<tr>
-				<td rowspan="3" >Semaforos de Colores </td>
+				<td rowspan="3" class="td-semaforoColores"><P>SEMAFORO DE COLORES</P> </td>
 				<td colspan="3" id="grafica_rojo" >{{leyendas.rojo }}<div class="semaforo  semaforo__colorRojo"></div></td>
 				
 			</tr>
@@ -160,8 +158,8 @@
 			</tr>
 
 			<tr>
-				<td >Fuente de Informacion</td>
-				<td  colspan="3"></td>
+				<td >FUENTE DE INFORMACION</td>
+				<td  colspan="3">{{arrayFormGet[6]}}</td>
 			</tr>
 
 	
@@ -170,7 +168,7 @@
 				<td colspan="4" id="content_canvas_valuebarras" >
 					<div id="value_barras">
 					</div>
-					<canvas id="canvas"  width="740" height="400">
+					<canvas id="canvas"  width="740" height="300">
 					</canvas> 
 					<div id="label_barras">
 					</div>
@@ -179,22 +177,22 @@
 			</tr>
 
 			<tr>
-				<td colspan="4">Plan de Accion</td>
+				<td colspan="4">PLAN DE ACCION</td>
 			</tr>
 
 			<tr>
 
-				<td colspan="2">Accion</td>
-				<td>Fecha</td>
-				<td>Responsable</td>
+				<td colspan="2">ACCION</td>
+				<td>FECHA</td>
+				<td>RESPONSABLE</td>
 
 			</tr>
 
 			<tr>
 
-				<td colspan="2">--------</td>
-				<td>{{ "now"|date("m/d/Y") }}</td>
-				<td>----------</td>
+				<td colspan="2">{{arrayFormGet[7]}}</td>
+				<td>{{arrayFormGet[8]}}</td>
+				<td>{{arrayFormGet[9]}}</td>
 
 			</tr>
 
@@ -203,8 +201,9 @@
 	</table>
 
 </div>
+
+
 <script>
-	
 
 	var value_barras = document.getElementById('value_barras');
 	var label_barras = document.getElementById('label_barras');
@@ -213,7 +212,47 @@
     var ctx=canvas.getContext("2d");
 
     var data=[{{total.enero}},{{total.febrero}},{{total.marzo}},{{total.abril}},{{total.mayo}},{{total.junio}},{{total.julio}},{{total.agosto}},{{total.septiembre}},{{total.octubre}},{{total.noviembre}},{{total.diciembre}}];
-    var label=[100,90,80,70,60,50,40,30,20,10];
+
+	var label=[];
+
+	var mayor = data[0];
+
+	for (var i =1; i < data.length; i++) {
+		
+		if (mayor<data[i]) {
+			mayor=data[i];
+		}
+	}
+
+	var itNum= mayor/10;
+	var sum=0;	
+
+	for(var i =9 ; i>-1 ; i--){	
+		sum=sum+itNum;
+
+		var a =sum.toString();
+
+		var dec	= a.split('.')[1];
+
+		if(dec == undefined){
+			label[i] = sum;	
+		}
+		else if(String(dec).length == 1 ){
+			label[i] = sum;	
+		}else if(String(dec).length > 1) {
+			label[i] = String(dec);
+
+			if(String(dec)[2]> 4){
+				label[i] = String(a).substring(0,4);				
+			}else{
+				label[i] = String(a).substring(0,3);
+			}
+
+		}
+
+		
+	}
+            
   	var labelBarra = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
     function barras(ctx,data,color){
@@ -230,8 +269,7 @@
 
     	for(var i = 0 ; i < numBarras ; i++){
 
-
-
+    		
     		if(i>-1 && i<10){
     			var pa = document.createElement('p');
     			var nodo = document.createTextNode(label[i]);
@@ -253,7 +291,7 @@
 			ctx.fillStyle = color;
 			//console.log(x);
 			
-    		ctx.fillRect (x,canvas.getAttribute('height'),widthBarra-marginBarras,-data[i]*canvas.getAttribute('height')/100); 
+    		ctx.fillRect (x,canvas.getAttribute('height'),widthBarra-marginBarras,-data[i]*canvas.getAttribute('height')/mayor); 
     		x = x +widthBarra;  
 
     		
@@ -268,9 +306,7 @@
     	}
     }
 
-    barras(ctx,data,"rgb(100,200,200)");
-
-
+    barras(ctx,data,"#cb2f1d");
 
 </script>
 </body>

@@ -158,6 +158,14 @@ prueba_email:
   
 #FIN OBSERVACIONES PRE
 
+############## INDICADOR ##############
+
+prueba_getIndicador:
+  path: /indicador/get
+  defaults: { _controller: PruebaBundle:Indicador:getIndicador }
+
+
+#FIN
 
 ############## OBSERVACIONES SG ##############
 
@@ -173,11 +181,6 @@ prueba_observacionesSGPost:
 prueba_formIndicador:
   path: /indicador
   defaults: { _controller: PruebaBundle:Indicador:formIndicador }
-
-
-prueba_indicadorajaxIndicador:
-  path: /ajax/indicador
-  defaults: { _controller: PruebaBundle:Indicador:indicadorajax }
 
 #INICIO LEYENDA
 
@@ -206,7 +209,7 @@ prueba_nuevoDetalleIndicadorPrueba:
   defaults: { _controller: PruebaBundle:DetalleIndicador:prueba }
 
 prueba_nuevoDetalleIndicador:
-  path: /nuevo-detalle-indicador
+  path: /nuevo-detalle-indicador/{tipo}
   defaults: { _controller: PruebaBundle:DetalleIndicador:nuevoDetalleIndicador }
 
 prueba_updateDetalleIndicador:
@@ -236,6 +239,11 @@ prueba_postIdGraficos:
 prueba_detalleIndicadorGrafica:
   path: /detalleindicador/graficos/{id}
   defaults: { _controller: PruebaBundle:DetalleIndicador:detalleIndicadorGrafica }
+  methods:  [GET,POST]
+
+prueba_detalleIndicadorGraficaForm:
+  path: /detalleindicador/graficos/form/{id}
+  defaults: { _controller: PruebaBundle:DetalleIndicador:detalleIndicadorGraficaForm }
   methods:  [GET,POST]
 
 #FIN 

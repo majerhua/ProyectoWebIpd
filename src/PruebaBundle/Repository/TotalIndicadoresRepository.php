@@ -10,4 +10,10 @@ namespace PruebaBundle\Repository;
  */
 class TotalIndicadoresRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function updateTotalIndicador($indicador,$enero,$febrero,$marzo,$abril,$mayo,$junio,$julio,$agosto,$septiembre,$octubre,$noviembre,$diciembre){
+
+        $query = "update total_indicadores set enero='$enero', febrero='$febrero', marzo='$marzo', abril='$abril', mayo='$mayo', junio='$junio', julio='$julio', agosto='$agosto', septiembre='$septiembre', octubre='$octubre', noviembre='$noviembre', diciembre='$diciembre' where indicador_id = '$indicador' ";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+	}
 }

@@ -10,4 +10,7 @@ namespace PruebaBundle\Repository;
  */
 class IndicadorRepository extends \Doctrine\ORM\EntityRepository
 {
+
+
+
 }

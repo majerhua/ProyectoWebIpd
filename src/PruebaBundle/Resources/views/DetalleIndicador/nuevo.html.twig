@@ -3,14 +3,185 @@
 
 
 {% block body %}
+
+
 <br>
-<a href="/disede"><button style="margin-left:30px;"  class="btn btn-danger btn-lg">Regresar Tablero Control</button></a>
+<a href="/disede"><button style="margin-left:30px;"  class="btn btn-danger btn-lg"><i class="icon-back"></i> Regresar</button></a>
 
 	<h1>Ingrese Nuevo Sub Indicador</h1>
 
 	<br>
-	{{form(form)}}
+	{# {{form(form)}} #}
 	<br>
+
+
+<div class="containerSubIndicador">	
+
+		<div class="form-group">	
+			<label>Indicador</label>
+			<select class="form-control" id="indicador" ></select> 
+		</div>	
+
+		{% if tipo == 2 %}
+			<div class="form-group">	
+				<label>Nombre</label>
+				<input type="text" class="form-control" id="nombre" value="">
+			</div>
+		{% endif %}
+
+		<div class="form-group">
+			<label>Enero</label>	
+			<input type="text"  id="enero" class="form-control" value="0">
+		</div>
+
+		<div class="form-group">
+			<label>Febrero</label>	
+			<input type="number"  id="febrero" class="form-control" value="0">
+		</div>
+
+		<div class="form-group">
+			<label>Marzo</label>	
+			<input type="number"  id="marzo" class="form-control"  value="0">
+		</div>
+
+		<div class="form-group">
+			<label>Abril</label>	
+			<input type="number" id="abril" class="form-control" value="0" >
+		</div>
+
+		<div class="form-group">
+			<label>Mayo</label>	
+			<input type="number"  id="mayo" class="form-control" value="0" >
+		</div>
+
+		<div class="form-group">	
+			<label>Junio</label>
+			<input type="number"  id="junio" class="form-control" value="0" >
+		</div>
+
+
+		<div class="form-group">
+		    <label>Julio</label>	
+			<input type="number" id="julio"  class="form-control" value="0" >
+		</div>
+
+		<div class="form-group">
+			<label>Agosto</label>	
+			<input type="number"  id="agosto" class="form-control" value="0" >
+		</div>
+
+		<div class="form-group">	
+			<label>Septiembre</label>
+			<input type="number" id="septiembre" class="form-control" value="0" >
+		</div>
+
+		<div class="form-group">	
+			<label>Octubre</label>
+			<input type="number" id="octubre"  class="form-control" value="0" >
+		</div>
+
+		<div class="form-group">	
+			<label>Noviembre</label>
+			<input type="number" id="noviembre"  class="form-control" value="0" >
+		</div>
+
+		<div class="form-group">	
+			<label>Diciembre</label>
+			<input type="number"  id="diciembre" class="form-control" value="0" >
+		</div>
+
+		<div class="form-group">	
+			<button class="btn btn-primary" id="registrar" >Registrar</button> 
+		</div>
+
+</div>
+
+
+<script>
+	
+
+	getIndicadores();
+
+	$("#registrar").on('click',function(){
+		postDetalleIndicador();		
+	});
+
+	function getIndicadores(){
+
+		$.ajax({
+			url:"{{ url('prueba_getIndicador') }}",
+			type:"GET",
+			dataType: 'json',
+		 	success:function(data){		
+		 		var indicadores = JSON.parse(data);
+
+		 		for(indicador in indicadores){
+		 			let nombre = indicadores[indicador].nombre;
+		 			let id = indicadores[indicador].id;
+		 			$("#indicador").append("<option value="+id+">"+nombre+"</option>");
+		 		}
+			 },
+			error: function(error){
+				console.log("Error",error);
+			}
+		});
+	}
+
+
+	function postDetalleIndicador(){
+
+		var datos = {
+
+			indicador:$("#indicador").val(),
+
+			{% if tipo == 2 %}
+				nombre:$("#nombre").val(),
+
+			{% elseif tipo == 1 %}
+
+				nombre: $("#indicador option:selected").text(),
+
+			{% endif %}
+			
+			enero:$("#enero").val(),
+			febrero:$("#febrero").val(),
+			marzo:$("#marzo").val(),
+			abril:$("#abril").val(),
+			mayo:$("#mayo").val(),
+			junio:$("#junio").val(),
+			julio:$("#julio").val(),
+			agosto:$("#agosto").val(),
+			septiembre:$("#septiembre").val(),
+			octubre:$("#octubre").val(),
+			noviembre:$("#noviembre").val(),
+			diciembre:$("#diciembre").val(),
+			tipo: '{{tipo}}'
+		}
+
+		$.ajax({
+		url:"{{ url('prueba_nuevoDetalleIndicador',{tipo:tipo})}}",
+		type:"POST",
+		data:datos,
+		dataType: 'json',
+
+		beforeSend:function(){
+			
+		},
+
+		success:function(data){	
+			console.log(data);	
+		 },
+
+		error: function(error){
+			console.log("Error",error);
+		}
+
+	});
+
+	}
+
+</script>
+
 
 
 {% endblock %}

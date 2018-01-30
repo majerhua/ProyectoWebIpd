@@ -27,6 +27,7 @@
 
 	background-color: #fff;
 	height: 100vh;
+	padding: 20px;
 	width: 100%;	
 }
 
@@ -35,15 +36,6 @@
 		margin-bottom: 0;
 	}
 
-	.tituloNuevoSG{
-		font-size: 2em;
-		color: #cb2f1d;
-		text-shadow: 5px 3px 3px #fff;
-		font-weight: bold;
-		
-		font-family: 'Adamina', serif;
-		transition: font-size 2s;
-	}
 
 
 	.tituloNuevoSG:hover{
@@ -51,11 +43,6 @@
 	}
 
 /* estilos aurora */
-	.div-form{
-        background: rgba(212, 44, 44, 0.7);
-		padding: 10px 0;
-		color: #fff;
-	}
 
 	.icon-back{
 		font-size: 20px;
@@ -254,11 +241,3 @@
 		margin-top: 3px;
 	}
 
-.listadoAreaResponsables{
-	display: flex;
-	flex-wrap: wrap;
-}
-
-	.listadoAreaResponsables>p{
-		width: 50%;
-	}

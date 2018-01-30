@@ -4,62 +4,64 @@
 
 <br>
 
-<a href="{{url('prueba_acuerdosPre')}}"><button style="margin-left:30px;"  class="btn btn-danger btn-lg"><i class="icon-back"></i> Regresar </button></a>
+<section>
 
-<h2 class="text-center">SEGUIMIENTO DE LOS ACUERDOS DE LOS COMITES DE PRESIDENCIA</h2>
-
-<div style="width:70%; height:400px; margin:0 auto;">
-
-	<div class="form-group col-md-6 col-lg-6">
-		<label>Comite</label>
-		<input type="number" name="comite"  id="comite" class="form-control">
+	<div class="form-group">
+		<p class="text-center tituloNuevo">SEGUIMIENTO DE LOS ACUERDOS DE LOS COMITES DE PRESIDENCIA</p>
 	</div>
 
-	<div class="form-group col-md-6 col-lg-6">
-		<label>Fecha</label>
-		<input type="date" name="fecha"  id="fecha" class="form-control">
-	</div>
+	<div style="width:70%; height:400px; margin:0 auto;">
 
-	<div class="form-group col-md-6 col-sm-6 col-lg-6">
-		<label>Acuerdos Adoptados</label>
-		<input type="text" name="acuerdos"  id="acuerdos"  class="form-control">
-	</div>
+		<div class="form-group col-md-6 col-lg-6">
+			<label>Comite</label>
+			<input type="number" name="comite"  id="comite" class="form-control">
+		</div>
 
-	<div class="form-group col-md-6 col-sm-6 col-lg-6" >
-		<label>N° del acuerdo</label>
-		<input type="number" name="nroAcuerdo" id="nroAcuerdo"  class="form-control">
-	</div>
+		<div class="form-group col-md-6 col-lg-6">
+			<label>Fecha</label>
+			<input type="date" name="fecha"  id="fecha" class="form-control">
+		</div>
 
+		<div class="form-group col-md-6 col-sm-6 col-lg-6">
+			<label>Acuerdos Adoptados</label>
+			<input type="text" name="acuerdos"  id="acuerdos"  class="form-control">
+		</div>
 
-	<div class="form-group col-md-6 col-sm-6 col-lg-6">
-		<label>Area Responsable</label>
-		<select  name="areaIpd" id="areaIpd"  class="form-control" multiple >
-		</select>
-		<label>Seleccionar Todas las Areas</label>
-		<input id="todo-area" type="checkbox" name="todo-area">
-		<label>Seleccionar Otros</label>
-		<input id="todo-otros" type="checkbox" name="todo-area">
-	</div>
+		<div class="form-group col-md-6 col-sm-6 col-lg-6" >
+			<label>N° del acuerdo</label>
+			<input type="number" name="nroAcuerdo" id="nroAcuerdo"  class="form-control">
+		</div>
 
 
-	<div class="form-group col-md-6 col-sm-6 col-lg-6">
-		<label>Estado</label>
-		
-		<select name="estado" id="estado"  class="form-control">
-			<option value="En Proceso">En Proceso</option>
-			<option value="Implementado">Implementado</option>
-			<option value="Cancelado">Cancelado</option>
-		</select>
-	</div>
+		<div class="form-group col-md-6 col-sm-6 col-lg-6">
+			<label>Area Responsable</label>
+			<select  name="areaIpd" id="areaIpd"  class="form-control" multiple >
+			</select>
+			<label>Seleccionar Todas las Areas</label>
+			<input id="todo-area" type="checkbox" name="todo-area">
+			<label>Seleccionar Otros</label>
+			<input id="todo-otros" type="checkbox" name="todo-area">
+		</div>
 
 
-	<div class="form-group col-md-6 col-sm-6 col-lg-6">
-		<label>Observaciones</label>
-		<textarea type="text" name="observaciones" id="observaciones" class="form-control"></textarea>
-	</div>
+		<div class="form-group col-md-6 col-sm-6 col-lg-6">
+			<label>Estado</label>
+			
+			<select name="estado" id="estado"  class="form-control">
+				<option value="En Proceso">En Proceso</option>
+				<option value="Implementado">Implementado</option>
+				<option value="Cancelado">Cancelado</option>
+			</select>
+		</div>
 
 
-	<div class="form-group col-md-6 col-sm-6 col-lg-6">
+		<div class="form-group col-md-6 col-sm-6 col-lg-6">
+			<label>Observaciones</label>
+			<textarea type="text" name="observaciones" id="observaciones" class="form-control"></textarea>
+		</div>
+
+
+	<div class="form-group col-md-6 col-sm-6 col-lg-6"  >
 		<label>Plazo de Entrega</label>
 		<input type="date" name="plazoEntrega" id="plazoEntrega"  class="form-control">
 	</div>

@@ -10,4 +10,47 @@ namespace PruebaBundle\Repository;
  */
 class AcuerdosPreAreaIpdRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function getCantidadPre(){
+
+        $query = "select count(estado) as cantidadEstado from acuerdos_pre where baja='1';";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $countPre = $stmt->fetchAll();
+
+        return $countPre;
+	}
+
+	public function getCantidadPreAreaIpd($acuerdoPreId){
+
+        $query = "select COUNT(*) as total from acuerdos_pre_area_ipd where acuerdoPre_id='$acuerdoPreId';";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $countPreAreaIpd = $stmt->fetchAll();
+
+        return $countPreAreaIpd;
+	}
+
+	public function updatePreAreaIpd($acuerdoPreId, $areaIpdId, $newAreaIpdId){
+
+        $query = "update acuerdos_pre_area_ipd set areaIpd_id = $newAreaIpdId where areaIpd_id = '$areaIpdId' and acuerdoPre_id ='$acuerdoPreId';";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+
+	}
+
+	public function insertPreAreaIpd($acuerdoPreId, $areaIpdId){
+
+        $query = "insert into acuerdos_pre_area_ipd(areaIpd_id,acuerdoPre_id) values('$areaIpdId','$acuerdoPreId');";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+
+	}
+
+	public function removePreAreaIpd($acuerdoPreId, $areaIpdId){
+
+        $query = "delete from acuerdos_pre_area_ipd  where areaIpd_id='$areaIpdId' and acuerdoPre_id='$acuerdoPreId';";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+
+	}
 }

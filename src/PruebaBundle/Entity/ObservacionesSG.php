@@ -13,7 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class ObservacionesSG
 {
 
-
     /**
      * @ORM\ManyToOne(targetEntity="AcuerdosSG", inversedBy="observacionSG")
      * @ORM\JoinColumn(name="acuerdoSG_id", referencedColumnName="id")
@@ -39,7 +38,7 @@ class ObservacionesSG
     /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="string", length=255)
+     * @ORM\Column(name="descripcion", type="string", length=750,nullable=true)
      */
     private $descripcion;
 

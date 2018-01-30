@@ -1,0 +1,91 @@
+		*{
+			margin:0;
+			padding: 0;
+		}
+
+		body{
+			padding: 20px;
+		}
+
+		#value_barras{
+			
+			float: left;
+			width: 40px;
+		}
+
+		#value_barras p{
+			
+			margin:0;
+			
+		}
+
+		#canvas{
+			float: left;
+		}
+
+		#label_barras{
+
+			clear: both;
+			width: 760px;
+			height: 40px;
+			margin-left: 40px;
+
+		}
+
+		#label_barras p{
+						
+			width: 61px;
+			float: left;
+			margin:0;
+			text-align: center;
+			padding: 0;
+			font-size: 0.8em;
+		}
+
+		.semaforo{
+			width: 20px;
+			border-radius: 50%;
+			height: 20px;	
+		}
+
+			.semaforo__colorRojo{
+
+				background-color: red;
+			}
+			.semaforo__colorAmarillo{
+
+				background-color: yellow;
+			}
+			.semaforo__colorVerde{
+
+				background-color: green;
+			}
+
+	.container-table{
+		
+		width:  80%;
+		margin:0 auto;	
+	}
+
+		.container-table td{
+			font-weight: bold;
+		}
+
+		.titulo-ficha{
+			text-align: center;
+			font-size: 1.5em;
+			background-color: red;
+		}
+
+		.td-semaforoColores > p {
+			
+			padding-top: 60px;
+			
+		}
+
+.back>p{
+	color:red;
+	font-size: 1.4em;
+	cursor: pointer;
+	background-color: white;
+}

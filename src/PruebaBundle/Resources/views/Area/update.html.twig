@@ -1,0 +1,88 @@
+{% extends '::base.html.twig'  %}
+
+{% block body %}
+
+
+<section class="contenedorRegistroASG" >
+
+	<div class="form-group containerBtnRegresar">
+		<a  style="margin-left:20px;" href="{{url('prueba_responsableAcuerdo')}}"><button class="btn btn-danger btn-lg" ><i class="icon-back"></i> Regresar</button></a>  		
+	</div>
+
+	<div class="form-group">
+		<p class="text-center tituloNuevoSG">EDITAR REPONSABLE</p>
+	</div>
+	<div style="width:40%; height:400px; margin:0 auto;">
+
+		<div class="form-group col-md-12  col-xs-12 col-lg-12">
+			<label>Nombre Area</label>
+			<input type="text" name="nombre"  id="nombre"  value="{{areaResponsable.nombre}}" class="form-control">
+		</div>
+
+		<div class="form-group col-xs-12  col-md-12 col-lg-12">
+			<label>Persona Responsable</label>
+			<input type="text" name="personaReponsable" value="{{areaResponsable.personaResponsable}}"  id="personaReponsable" class="form-control">
+		</div>
+
+		<div class="form-group col-xs-12 col-md-12 col-sm-12 col-lg-12" >
+			<label>Correo</label>
+			<input type="text" name="correo" id="correo" value="{{areaResponsable.correo}}" class="form-control">
+		</div>
+
+		<div class="form-group col-xs-12 col-md-12 col-sm-12 col-lg-12">
+			<button class="btn btn-success" id="boton-editar-responsable">Editar</button>
+			<img  id="load" width="50" height="40"  src="{{asset('img/loading.gif')}}" style="display:none;">
+		</div>
+	</div>
+
+	<div class="form-group col-xs-12 col-md-12 col-sm-12 col-lg-12">
+		<div class="containerAlertaRegistro">
+			<p>Se Edito Correctamente!</p>
+		</div>
+	</div>
+</section>
+
+<script>
+			
+	$("#boton-editar-responsable").on('click',function(){
+		editarResponsableAcuerdo();
+		
+	});
+
+	function editarResponsableAcuerdo(){
+
+		datos={
+			nombre: $("#nombre").val().toUpperCase(),
+			personaReponsable: $("#personaReponsable").val(),
+			correo: $("#correo").val()
+		}
+
+		$.ajax({
+
+			dataType: 'json',
+			type: 'POST',
+			url: "{{ path('prueba_responsableAcuerdoEditar', {'id': areaResponsable.id }) }}",
+			data:datos,
+			beforeSend:function(){
+				console.log('Enviando Mensaje');
+				$("#load").show();
+			},
+			success:function(data){
+				$("#load").hide();
+				if(data==1){
+					$('.containerAlertaRegistro').show('slow',function(){
+						setTimeout( () => $(this).hide('slow') ,3000);
+					});
+				}
+				console.log(data);						
+			},
+			error:function(error){
+				console.log(error);
+			}
+		});
+
+	}
+
+</script>
+
+{% endblock %}

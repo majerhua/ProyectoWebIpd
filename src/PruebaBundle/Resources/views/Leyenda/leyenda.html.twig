@@ -209,13 +209,11 @@
         		listaLeyendas();
 
         		$.ajax({
-
-        			url:"{{ url('prueba_indicadorajaxIndicador') }}",
+        			url:"{{ url('prueba_getIndicador') }}",
         			type:"GET",
         			dataType: 'json',
 
-        			 success:function(data){
-        			 		
+        			 success:function(data){		
         			 		var indicadores = JSON.parse(data);
         			 		insertarIndicadores(indicadores);
         			 },

@@ -3,33 +3,30 @@
 {% block body %}
 
 <section>
-	{#
-	{{dump(cantidadEnProceso)}}
-	
-	{{dump(cantidadImplementado)}}
-	{{dump(cantidadCancelado)}}
-	{{dump(cantidadNoAplica)}}
-	{{dump(cantidadSG)}}
-	
-{{dump(acuerdosSGAreaIpd)}}	
-	#}
+
 	<div class="contenedor-titulo">
-		<span>SEGUIMIENTO DE LOS ACUERDOS ADOPTADOS</span>
-		<span>EN REUNIONES DE SECRETARIA GENERAL</span>	
+		<img  class="image-responsive" src="{{asset('img/logoipd.png')}}">
+		<div >
+			<span>SEGUIMIENTO DE LOS ACUERDOS ADOPTADOS</span>
+			<span>EN REUNIONES DE SECRETARIA GENERAL</span>	
+		</div>
 	</div>
 
 	<div class="contenedor-table">
-
 		<div class="contenedor-boton-nuevo-sg">
 			<a  style="margin-left:20px;" href="{{url('prueba_principal')}}"><button class="btn btn-danger btn-lg" ><i class="icon-back"></i> Regresar</button></a>
-			<a  style="margin-left:20px;" href="{{url('prueba_nuevoAcuerdosSG')}}"><button class="btn btn-info btn-lg" ><i class="icon-plus-square-o"></i> Nuevo Seguimiento SG</button></a>
-			<button data-toggle="modal" data-target="#myModal" style="margin-left:20px;" class="btn btn-warning btn-lg btn-resena" ><i class="icon-pie-chart"></i> Reseña</button>	
+
+			{% if is_granted('ROLE_ADMIN') %}
+				<a  style="margin-left:20px;" href="{{url('prueba_nuevoAcuerdosSG')}}"><button class="btn btn-info btn-lg" ><i class="icon-plus-square-o"></i> Nuevo Seguimiento SG</button></a>
+			{% endif %}
+
+			<button data-toggle="modal" data-target="#myModal" style="margin-left:20px;" class="btn btn-warning btn-lg btn-resena" ><i class="icon-pie-chart"></i> Reseña</button>
 		</div>
 
 		<table  class="table table-responsive table-bordered table-sg" style="margin:10px;">
 
 			<thead>
-				<tr style="background-color:#cb2f1d; color:#fff; font-weight:bold;">
+				<tr class="table-row-title">
 					<td>
 						Sesion
 					</td>
@@ -62,13 +59,17 @@
 						Observaciones
 					</td>
 
-					<td>
-						Editar
-					</td>
+					{% if is_granted('ROLE_ADMIN') %}
 
-					<td>
-						Eliminar
-					</td>
+						<th>
+							Editar
+						</th>
+
+						<th>
+							Eliminar
+						</th>
+
+					{% endif %}
 
 				</tr>
 			</thead>
@@ -182,7 +183,7 @@
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal">&times;</button>
-		        <h4 class="modal-title" id="titulo_acuerdoSG">Areas Reponsables</h4>
+		        <h4 class="modal-title" id="titulo_acuerdoSG">Reponsables</h4>
 		      </div>
 		      <div class="modal-body">
 		        
@@ -205,12 +206,67 @@
 	</div>
 
 
+		<div id="modalMensajeResponsable" class="modal fade" role="dialog">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        <h4 class="modal-title" id="titulo_acuerdoSG">Mensaje</h4>
+		      </div>
+		      <div class="modal-body">
+		      	<label>Persona Responsable</label>
+		      	<input type="text" class="form-control" name="personaResponsable" id="correo-persona-responsable" >
+
+		      	<label>Correo</label>
+		        <input type="email"  class="form-control" name="correo" id="correo-enviar-responsable" >ç
+
+		        <label>Mensaje</label>
+				<textarea  class="form-control" id="correo-enviar-mensaje" ></textarea>
+
+				<button class="btn btn-primary" id="send-mail" >Enviar Mensaje</button>
+
+		      </div>
+		      <div class="modal-footer" style="background-color:#ac2d0f">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Salir</button>
+		      </div>
+		    </div>
+
+		  </div>
+		</div>
 </section>
 
 <script src="{{asset('js/push/push.min.js')}}"></script>
 <script src="{{asset('js/acuerdosSG/listarAreasResponsablesSG.js')}}"></script>
 <script>
 
+
+	$("#send-mail").on('click',function(){
+
+		datos={
+
+			'nombre':$("#correo-persona-responsable").val(),
+			'email': $("#correo-enviar-responsable").val(),
+			'mensaje': $('#correo-enviar-mensaje').val()
+		}
+
+		$.ajax({
+
+		type:"POST",
+		data:datos,
+		url:"{{ url('prueba_sendMail') }}",
+		dataType:'json',
+		success:function(data){
+				console.log(data);
+			},
+			error:function(error){
+				console.log(error);
+			}
+
+
+		});
+
+
+	});
 
 
 
@@ -307,7 +363,7 @@
 				if(arrayFecha[0] == anio ){
 					if(arrayFecha[1] == mes ){
 						if(arrayFecha[2] - dia < 4 ){
-
+							console.log("{{app.user.areaIpd}}");
 							{% for acusg in acuerdosSGAreaIpd %}
 
 								if({{acusg.acuerdoSG.id}} == valor.id && valor.baja==1){
@@ -316,7 +372,7 @@
 
 										Push.create((arrayFecha[2] - dia) + " DIAS RESTANTES",{
 											body: "Faltan solo"+ (arrayFecha[2] - dia) +"dias para cumplir el plazo del acuerdo {{acusg.acuerdoSG.acuerdos}}",
-											icon: "{{ asset('img/oscar.jpg') }}",
+											icon: "{{ asset('img/pilar.jpg') }}",
 											timeout: 1000
 										});
 										console.log("mamama");
@@ -332,7 +388,31 @@
 						let fechaAcuerdo = valor.fecha.split("-");
 						let fechaPlazo = valor.plazoEntrega.split("-");
 
-							$("#table_body").append('<tr value="'+valor.id+'" data-row="'+valor.id+'" >'+'<td>'+valor.sesion+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'</td>'+'<td>'+valor.agenda+'</td>'+'<td>'+valor.acuerdos+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" >ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal"  data-target="#myModal" value="'+valor.id+'" ><i class="icon-history"></i> Observaciones</button></td>'+'<td><a class="editar-sg" href="/acuerdosSG/update/'+valor.id+'"><button class="btn btn-success"><i class="icon-pencil-square-o" ></i> Editar</a></button></td>'+'<td><a href="/acuerdosSG/remove/'+valor.id+'" ><button class="btn btn-danger" ><i class="icon-trash"></i> Eliminar</button></a></td>'+'</tr>');							
+						
+
+
+						if(valor.baja=='1'){
+							
+							{% if is_granted('ROLE_ADMIN') %}	
+	 							var urlUpdate = "{{url('prueba_acuerdosSGUpdate',{id:'idAcu'})}}";
+	            				urlUpdate = urlUpdate.replace("idAcu", valor.id);
+
+					            var urlRemove = "{{url('prueba_acuerdosSGRemove',{id:'idAcu'})}}";
+	            				urlRemove = urlRemove.replace("idAcu", valor.id);
+
+								$("#table_body").append('<tr value="'+valor.id+'" data-row="'+valor.id+'" >'+'<td>'+valor.sesion+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'</td>'+'<td>'+valor.agenda+'</td>'+'<td>'+valor.acuerdos+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" >ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal"  data-target="#myModal" value="'+valor.id+'" ><i class="icon-history"></i> Observaciones</button></td>'+"<td><a class='editar-sg' href='"+urlUpdate+"'><button class='btn btn-success'><i class='icon-pencil-square-o' ></i> Editar</button></a></td>"+'<td><a href="'+urlRemove+'" ><button class="btn btn-danger" ><i class="icon-trash"></i> Eliminar</button></a></td>'+'</tr>');
+
+							{% else %}	
+
+									$("#table_body").append('<tr value="'+valor.id+'" data-row="'+valor.id+'" >'+'<td>'+valor.sesion+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'</td>'+'<td>'+valor.agenda+'</td>'+'<td>'+valor.acuerdos+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" >ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal"  data-target="#myModal" value="'+valor.id+'" ><i class="icon-history"></i> Observaciones</button></td></tr>');				
+
+							{%endif  %}	
+
+
+						}
+
+
+				           				
 					
 						});
 					resolve("jajaj");
@@ -347,12 +427,28 @@
 						{% for val in  acuerdosSGAreaIpd %}
 
 							if({{val.acuerdoSG.id}} == $(this).val() ){
-								
+
 								$(".listadoAreaResponsables").append("<p>{{val.areaIpd.nombre}}</p>");
+
+								{% if is_granted('ROLE_ADMIN') %}
+
+									$(".listadoAreaResponsables").append("<button class='btn sendMail btn-primary' data-toggle='modal' data-target='#modalMensajeResponsable' data-persona='{{val.areaIpd.personaResponsable}}' value='{{val.areaIpd.correo}}'>Enviar Mensaje</button></div>");
+
+								{% endif %}
 
 							}
 
 						{% endfor %}
+
+						var abrirModalMensajeResponsables  = document.querySelectorAll('.sendMail');
+
+						for (var i = 0; i < abrirModalMensajeResponsables.length; i++) {
+							
+							abrirModalMensajeResponsables[i].onclick=function(){
+								$("#correo-enviar-responsable").val($(this).val());
+								$("#correo-persona-responsable").val($(this).attr('data-persona'));
+							}
+						}
 
 					});
 

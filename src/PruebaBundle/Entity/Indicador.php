@@ -13,7 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Indicador
 {
 
-
     /**
      * @ORM\OneToMany(targetEntity="DetalleIndicador", mappedBy="indicador")
      */

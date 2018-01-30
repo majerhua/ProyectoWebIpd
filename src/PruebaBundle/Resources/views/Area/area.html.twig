@@ -1,0 +1,88 @@
+{% extends '::base.html.twig'  %}
+
+{% block body %}
+
+<section>
+	
+	<div class="contenedor-titulo">
+		<div>
+		<span>RESPONSABLES DE ACUERDOS</span>	
+		</div>
+	</div>
+	
+	<div class="contenedor-table">
+		<div class="contenedor-boton-nuevo-sg">
+			<a  style="margin-left:20px;" href="{{url('prueba_principal')}}"><button class="btn btn-danger btn-lg" ><i class="icon-back"></i> Regresar</button></a>
+			<a  style="margin-left:20px;" href="{{url('prueba_responsableAcuerdoNuevo')}}"><button class="btn btn-info btn-lg" ><i class="icon-plus-square-o"></i> Nuevo</button></a>
+		</div>
+
+		<table id="table-responsablesAcuerdo" class="table table-responsive table-bordered table-sg" style="margin:10px;">
+
+			<thead>
+				<tr style="background-color:#cb2f1d; color:#fff; font-weight:bold;">
+					<td>
+						Area
+					</td>
+					
+					<td>
+						Persona Responsable
+					</td>
+
+					<td>
+						Correo
+					</td>
+
+					<td>
+						Editar
+					</td>
+
+					<td>
+						Eliminar
+					</td>
+				</tr>
+			</thead>
+
+			<tbody id="table_body">
+				
+				{% for ra in responsablesAcuerdo %}
+					
+					{% if ra.tipo == '1' and ra.baja== '1' %}
+					<tr>
+						<td>
+							{{ra.nombre}}
+						</td>
+
+						<td>
+							{{ra.personaResponsable}}
+						</td>
+
+						<td>
+							{{ra.correo}}
+							
+						</td>
+						
+						<td>
+							<a href="{{ path('prueba_responsableAcuerdoEditar', {'id': ra.id }) }}"><button class="btn btn-success" >Editar</button></a>
+						</td>
+						
+						<td>
+							<a href="{{ path('prueba_responsableAcuerdoRemove', {'id': ra.id }) }}"><button class="btn btn-danger" >Eliminar</button></a>
+						</td>
+					</tr>					
+					{% endif %}
+				{% endfor %}
+
+			</tbody>
+
+		</table>
+	</div>
+
+
+</section>
+
+<script>
+	
+	$('#table-responsablesAcuerdo').DataTable();
+</script>
+
+{% endblock %}

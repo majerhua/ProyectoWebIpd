@@ -23,6 +23,10 @@
     			type:"GET",
     			dataType: 'json',
 
+                beforeSend:function(){
+                    $("#load").show();
+                },
+
     			 success:function(data){
     			 		
     			 		

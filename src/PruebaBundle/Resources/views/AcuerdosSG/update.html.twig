@@ -2,23 +2,7 @@
 
 {% block body %}
 
-
-	{#{{dump(acuerdosSG)}}
-	{{dump(acuerdosSG.areaIpd.id)}}
-	{{dump(observaciones)}}
-	{{cantidadObservaciones}}
-	{{dump(latestObservacion)}}
-	
-	{{dump(id)}}
-
-	{{dump(acuerdosSGAreaIpd)}}
-	{{dump(totalSGAreaIpd)}}
-
-	{{dump(areaIpdTotal)}}
-	#}
-
-
-<a href="/acuerdosSG"><button style="margin:10px 20px;"  class="btn btn-info btn-lg">Regresar</button></a>
+<a href="/acuerdosSG"><button style="margin:10px 20px;"  class="btn btn-danger btn-lg">Regresar</button></a>
 
 <div id="menssage-edit" class="	text-center" style="width:80%; background-color: rgba(55, 181, 108, 0.8); line-height:50px; margin:0 auto; color:white; font-weight:bold; font-size:1.2em;"></div>
 
@@ -53,7 +37,9 @@
 		<select  name="areaIpd" id="areaIpd"  class="form-control" multiple >
 		</select>
 		<label for="todo-area" >Todas las areas</label>
-		<input id="todo-area" type="checkbox" name="todo-area">	
+		<input id="todo-area" type="checkbox" name="todo-area">
+		<label>Seleccionar Otros</label>
+		<input id="todo-otros" type="checkbox" name="todo-otros">	
 	</div>
 
 
@@ -87,18 +73,14 @@
 
 <script>
 
-
-
 	$("#sesion").val("{{acuerdosSG.sesion}}");
 	$("#fecha").val( "{{acuerdosSG.fecha}}");
 	$("#agenda").val( "{{acuerdosSG.agenda}}");
 	$("#acuerdos").val( "{{acuerdosSG.acuerdos}}");
- 
 	$("#observaciones").val("{{observaciones[cantidadObservaciones-1].descripcion}}");
 	$("#plazoEntrega").val("{{acuerdosSG.plazoEntrega}}");
 
 	var sel = document.getElementById("estado");
-
 	
 	for (let i = 0; i < sel.length; i++) {
 		
@@ -114,10 +96,17 @@
 
 		if( {{id}} == {{acuSGA.acuerdoSG.id}} ){			
 
-			$("#areaIpd").append("<option selected='selected' value={{acuSGA.areaIpd.id}}>{{acuSGA.areaIpd.nombre}}</option>");
-			arrAreasIpd.push({{acuSGA.areaIpd.id}});
-		}
+			if("{{acuSGA.areaIpd.nombre}}" == 'OTROS' && "{{acuSGA.areaIpd.tipo}}" == '1' ){
 
+				$("#areaIpd").append("<option data-option='{{acuSGA.areaIpd.nombre}}' selected='selected' value={{acuSGA.areaIpd.id}}>{{acuSGA.areaIpd.personaResponsable}}</option>");
+				arrAreasIpd.push({{acuSGA.areaIpd.id}});
+			}
+			else if("{{acuSGA.areaIpd.nombre}}" != 'OTROS' && "{{acuSGA.areaIpd.tipo}}" == '1'){
+				$("#areaIpd").append("<option selected='selected' value={{acuSGA.areaIpd.id}}>{{acuSGA.areaIpd.nombre}}</option>");
+				arrAreasIpd.push({{acuSGA.areaIpd.id}});				
+			}
+			
+		}
 	{% endfor %}
 
 	c=-1;
@@ -132,8 +121,16 @@
 			a++;
 		}
 		
-		if( c != {{arit.id}} ){			
-			$("#areaIpd").append("<option  value={{arit.id}}>{{arit.nombre}}</option>");	
+		if( c != {{arit.id}} ){
+
+			if("{{arit.nombre}}" != 'OTROS' && "{{arit.tipo}}" == '1' && "{{arit.baja}}" == '1' ){
+
+				$("#areaIpd").append("<option  value={{arit.id}}>{{arit.nombre}}</option>");
+
+			}else if("{{arit.nombre}}" == 'OTROS' && "{{arit.tipo}}" == '1' && "{{arit.baja}}" == '1'){
+
+				$("#areaIpd").append("<option data-option='{{arit.nombre}}' value={{arit.id}}>{{arit.personaResponsable}}</option>");
+			}
 		}	
 
 	{% endfor %}
@@ -157,7 +154,7 @@
 
 			dataType: 'json',
 			type: 'POST',
-			url: "/acuerdosSG/update/{{id}}",
+			url: "{{url('prueba_acuerdosSGUpdate',{id:id})}}",
 			data:datos,
 
 			success:function(data){
@@ -202,7 +199,9 @@
 
 	function selecionarAreasAll(varBool){
 		for (var i = 0; i <areaIpdSelect.options.length ; i++) {
-			areaIpdSelect.options[i].selected=varBool;		
+			if($(areaIpdSelect.options[i]).attr('data-option') !='OTROS'){	
+				areaIpdSelect.options[i].selected=varBool;
+			}
 		}		
 	}
 
@@ -212,8 +211,28 @@
 		}		
 	}
 
-	
-</script>
+	var contOtros=0;
+	$( "#todo-otros" ).on( "click",function(){
 
+		if(contOtros==0){
+			selecionarOtrosAll(true);
+			contOtros++;
+		}else{
+			selecionarOtrosAll(false);
+			selecionarAreasInicio(arraySelectAreasInicio);
+			contOtros=0;
+		}		
+	});
+
+	function selecionarOtrosAll(varBool){
+		for (var i = 0; i <areaIpdSelect.options.length ; i++) {
+
+			if($(areaIpdSelect.options[i]).attr('data-option') =='OTROS'){
+				
+				areaIpdSelect.options[i].selected=varBool;
+			}	
+		}		
+	}	
+</script>
 
 {%  endblock %}

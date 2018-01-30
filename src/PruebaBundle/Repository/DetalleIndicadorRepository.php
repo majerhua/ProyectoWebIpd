@@ -10,4 +10,10 @@ namespace PruebaBundle\Repository;
  */
 class DetalleIndicadorRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function insertarDetalleIndicador($indicador,$nombre,$enero,$febrero,$marzo,$abril,$mayo,$junio,$julio,$agosto,$septiembre,$octubre,$noviembre,$diciembre, $tipo){
+
+        $query = "insert into detalle_indicador(indicador_id,nombre,enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre,tipo) values('$indicador','$nombre','$enero','$febrero','$marzo','$abril','$mayo','$junio','$julio','$agosto','$septiembre','$octubre','$noviembre','$diciembre', '$tipo')";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+	}
 }

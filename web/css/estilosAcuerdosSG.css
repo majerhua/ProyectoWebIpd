@@ -21,7 +21,7 @@
 
 
 
-  
+ 
   
 .contenedorRegistroASG{
 
@@ -58,7 +58,7 @@
 	}
 
 	.icon-back{
-		font-size: 45px;
+		font-size: 20px;
 		color: #fff;
 		text-decoration: none;
 	}
@@ -88,26 +88,52 @@
 			font-size: 1.2em;
 		}
 
-
-.contenedor-titulo{
+.table-row-title{
 	background-color:#cb2f1d;
-	height: 120px;
-	width: 100%; 
-	padding: 10px;
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	text-align: center;
-	
+	 color:#fff;
+	  font-weight:bold;
 }
 
-	.contenedor-titulo>span{
-		font-size: 1.7em;
-		color:#fff;
+
+.contenedor-titulo{
+	background-color: rgba(255, 162, 0, 0.5);
+	height: 120px;
+	width: 100%; 
+	align-items: center;
+	padding: 10px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	
+}
+	.contenedor-titulo>div{
+		width: 85%;
+		text-align: center;		
+	}
+
+	.contenedor-titulo>div>span{
+		font-size: 1.75em;
+		color:#cb2f1d;
+		text-shadow: 4px 6px 6px rgba(255,255,255,0.5);
 		width: 100%;
-		
 		font-weight: bold;
+		transition: font-size 2s;
 		font-family: 'Adamina', serif;
+	}
+
+	.contenedor-titulo>div>span:hover{
+		font-size: 1.85em;
+	}
+
+
+	.contenedor-titulo>img{
+		width: 10%;
+		transition: width 2s;
+	}
+
+	.contenedor-titulo>img:hover{
+		width: 10.5%;
 	}
 
 .contenedor-table{
@@ -122,9 +148,8 @@
 .contenedor-boton-nuevo-sg{
 	width: 100%;
 	padding-left: 15px;
+	padding-top: 10px;
 	padding-bottom: 20px;
-	display: flex;
-	flex-wrap: wrap;
 }
 
 	.editar-sg{
@@ -212,3 +237,28 @@
 		}
 
 /* FIN */
+
+
+.container-mensaje-area{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+	.container-mensaje-area>p{
+		width: 50%;
+		margin-top: 5px;
+	}
+
+	.container-mensaje-area>button{
+		margin-top: 3px;
+	}
+
+.listadoAreaResponsables{
+	display: flex;
+	flex-wrap: wrap;
+}
+
+	.listadoAreaResponsables>p{
+		width: 50%;
+	}

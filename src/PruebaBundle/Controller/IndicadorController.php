@@ -62,15 +62,12 @@ class IndicadorController extends Controller
 	}
 
 
-	    public function indicadorajaxAction(Request $request)
+    public function getIndicadorAction(Request $request)
     {
-        $jsonContent=null;
 
         if($request->isXmlHttpRequest())
         {
-
             $post = $this->getDoctrine()->getRepository(Indicador::class)->findAll(); 
-
             $encoders = array(new JsonEncoder());
             $normalizer = new ObjectNormalizer();
             $normalizer->setCircularReferenceLimit(1);
@@ -80,34 +77,10 @@ class IndicadorController extends Controller
             });
             $normalizers = array($normalizer);
             $serializer = new Serializer($normalizers, $encoders);
-
             $jsonContent = $serializer->serialize($post, 'json');
-
-
-
 
             return new JsonResponse($jsonContent);       
         }
-
-        $post = $this->getDoctrine()->getRepository(Indicador::class)->findAll(); 
-
-            $encoders = array(new JsonEncoder());
-            $normalizer = new ObjectNormalizer();
-            $normalizer->setCircularReferenceLimit(1);
-            // Add Circular reference handler
-            $normalizer->setCircularReferenceHandler(function ($object) {
-                return $object->getId();
-            });
-            $normalizers = array($normalizer);
-            $serializer = new Serializer($normalizers, $encoders);
-
-            $jsonContent = $serializer->serialize($post, 'json');
-
-
-
-
-    return new JsonResponse($jsonContent);          
-
     } 
 
 

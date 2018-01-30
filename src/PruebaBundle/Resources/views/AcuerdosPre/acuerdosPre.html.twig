@@ -6,22 +6,30 @@
 
 <section>
 	<div class="contenedor-titulo">
-		<span>SEGUIMIENTO DE LOS ACUERDOS ADOPTADOS</span>
-		<span>EN COMITE DE PRESIDENCIA</span>	
+		<img  class="image-responsive" src="{{asset('img/logoipd.png')}}">
+		<div>
+			<span>SEGUIMIENTO DE LOS ACUERDOS ADOPTADOS</span>
+			<span>EN COMITE DE PRESIDENCIA</span>	
+		</div>
 	</div>
 
 	<div class="contenedor-table">
 
 		<div class="contenedor-boton-nuevo-sg">
 			<a  style="margin-left:20px;" href="{{url('prueba_principal')}}"><button class="btn btn-danger btn-lg" ><i class="icon-back"></i> Regresar</button></a>
-			<a  style="margin-left:20px;" href="{{url('prueba_nuevoAcuerdosPre')}}"><button class="btn btn-info btn-lg" ><i class="icon-plus-square-o"></i> Nuevo Seguimiento SG</button></a>
+
+		{% if is_granted('ROLE_ADMIN') %}
+
+			<a  style="margin-left:20px;" href="{{url('prueba_nuevoAcuerdosPre')}}"><button class="btn btn-info btn-lg" ><i class="icon-plus-square-o"></i> Nuevo Seguimiento Pre</button></a>
+		{% endif %}
+	
 			<button data-toggle="modal" data-target="#myModal" style="margin-left:20px;" class="btn btn-warning btn-lg btn-resena" ><i class="icon-pie-chart"></i> Reseña</button>	
 		</div>
 
 		<table  class="table table-responsive table-bordered table-pre"  style="margin:10px;">
 
 			<thead>
-				<tr>
+				<tr class="table-row-title">
 
 					<th>
 						Comite
@@ -59,6 +67,8 @@
 					<th>
 						Historial Observ....
 					</th>
+					
+					{% if is_granted('ROLE_ADMIN') %}
 
 					<th>
 						Editar
@@ -67,6 +77,8 @@
 					<th>
 						Eliminar
 					</th>
+
+					{% endif %}
 
 				</tr>
 			</thead>
@@ -88,8 +100,11 @@
 		      </div>
 		      <div class="modal-body">
 		        <p class="titulo-modal">Historial de Observaciones</p>
+
 		        <div class="container-table-resena">
+
 		        	<table border="1" class="table-resena" >
+		        		
 		        		<tbody>
 				
 		        			<tr style="background-color:#95C11E">
@@ -187,11 +202,60 @@
 		</div>
 
 
+		<div id="modalMensajeResponsable" class="modal fade" role="dialog">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        <h4 class="modal-title" id="titulo_acuerdoSG">Mensaje</h4>
+		      </div>
+		      <div class="modal-body">
+
+		      	<label>Persona Responsable</label>
+		      	<input type="text" class="form-control" name="personaResponsable" id="correo-persona-responsable" >
+
+		      	<label>Correo</label>
+		        <input type="email"  class="form-control" name="correo" id="correo-enviar-responsable" >
+
+		        <label>Mensaje</label>
+				<textarea  class="form-control" id="correo-enviar-mensaje" ></textarea>
+
+				<button class="btn btn-primary" id="send-mail" >Enviar Mensaje</button>
+
+		      </div>
+		      <div class="modal-footer" style="background-color:#ac2d0f">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Salir</button>
+		      </div>
+		    </div>
+
+		  </div>
+		</div>
+
+
+
 </section>
 
 <script>
 
-
+	$("#send-mail").on('click',function(){
+		datos={
+			'nombre':$("#correo-persona-responsable").val(),
+			'email': $("#correo-enviar-responsable").val(),
+			'mensaje': $('#correo-enviar-mensaje').val()
+		}
+		$.ajax({
+		type:"POST",
+		data:datos,
+		url:"{{ url('prueba_sendMail') }}",
+		dataType:'json',
+		success:function(data){
+				console.log(data);
+			},
+			error:function(error){
+				console.log(error);
+			}
+		});
+	});
 
 	$(".btn-resena").on('click',function(){
 		$("#myChart").show();
@@ -201,7 +265,6 @@
 		$('.container-table-resena').show('slow');
 		$('.modal-title').empty();
 		$('.modal-title').append('Reseñas de los acuerdos de los comite de presidencia');
-
 
 			var CantidadImplementado = {{cantidadImplementado[0]['cantidadEstado']}}
 			var CantidadCancelado = {{cantidadCancelado[0]['cantidadEstado']}}
@@ -268,12 +331,10 @@
 
 			success:function(data){
 				var datosAcuerdosPre=JSON.parse(data);
-				
-				
+								
 				const promesa = new Promise(function(resolve,reject){
 					
 					datosAcuerdosPre.forEach(function(valor,index){
-
 
 						let fecha = new Date();
 						let dia = fecha.getDate();
@@ -308,8 +369,31 @@
 
 						let fechaAcuerdo = valor.fecha.split("-");
 						let fechaPlazo = valor.plazoEntrega.split("-");
+
+						if(valor.baja=='1'){
+
 						
-					$("#table_body").append('<tr value="'+valor.id+'" >'+'<td>'+valor.comite+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'<td>'+valor.acuerdos+'</td>'+'<td>'+valor.nroAcuerdo+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" >ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td>'+'<td>'+valor["observacionPre"][valor["observacionPre"].length-1].descripcion+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal" data-target="#myModal" value="'+valor.id+'" >ver historial</button></td>'+'<td><a href="/acuerdosPre/update/'+valor.id+'"><button class="btn btn-success" >Editar</button></a></td><td><a href="/acuerdosSG/remove/'+valor.id+'" ><button class="btn btn-danger" ><i class="icon-trash"></i> Eliminar</button></a></td>'+'</tr>');
+
+							{% if is_granted('ROLE_ADMIN') %}	
+
+	 							var urlUpdate = "{{url('prueba_acuerdosPreUpdate',{id:'idAcu'})}}";
+            					urlUpdate = urlUpdate.replace("idAcu", valor.id);
+
+				            	var urlRemove = "{{url('prueba_acuerdosPreRemove',{id:'idAcu'})}}";
+            					urlRemove = urlRemove.replace("idAcu", valor.id);
+
+							$("#table_body").append('<tr value="'+valor.id+'" >'+'<td>'+valor.comite+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'<td>'+valor.acuerdos+'</td>'+'<td>'+valor.nroAcuerdo+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" ><i class="icon-eye" ></i> ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td>'+'<td>'+valor["observacionPre"][valor["observacionPre"].length-1].descripcion+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal" data-target="#myModal" value="'+valor.id+'" ><i class="icon-eye" ></i> ver historial</button></td>'+'<td><a href="'+urlUpdate+'"><button class="btn btn-success" ><i class="icon-pencil-square-o" ></i> Editar</button></a></td><td><a href="'+urlRemove+'" ><button class="btn btn-danger" ><i class="icon-trash"></i> Eliminar</button></a></td>'+'</tr>');
+
+							
+							{% else %}
+
+
+							$("#table_body").append('<tr value="'+valor.id+'" >'+'<td>'+valor.comite+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'<td>'+valor.acuerdos+'</td>'+'<td>'+valor.nroAcuerdo+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" >ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td>'+'<td>'+valor["observacionPre"][valor["observacionPre"].length-1].descripcion+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal" data-target="#myModal" value="'+valor.id+'" >ver historial</button></td></tr>');
+
+							{% endif %}							
+						}
+
+
 
 					});
 
@@ -330,9 +414,25 @@
 								
 								$(".listadoAreaResponsables").append("<p>{{val.areaIpd.nombre}}</p>");
 
+								{% if is_granted('ROLE_ADMIN') %}
+
+								$(".listadoAreaResponsables").append("<button class='btn sendMail btn-primary' data-toggle='modal' data-target='#modalMensajeResponsable' data-persona='{{val.areaIpd.personaResponsable}}' value='{{val.areaIpd.correo}}'>Enviar Mensaje</button></div>");
+
+								{% endif %}
+
 							}
 
 						{% endfor %}
+
+						var abrirModalMensajeResponsables  = document.querySelectorAll('.sendMail');
+
+						for (var i = 0; i < abrirModalMensajeResponsables.length; i++) {
+							
+							abrirModalMensajeResponsables[i].onclick=function(){
+								$("#correo-enviar-responsable").val($(this).val());
+								$("#correo-persona-responsable").val($(this).attr('data-persona'));
+							}
+						}
 
 					});
 
@@ -380,7 +480,7 @@
 								url:"{{ url('prueba_observacionesPrePost') }}",
 								dataType:'json',
 								success:function(data){
-
+									
 									var data_observaciones = JSON.parse(data);	
 									var arrObs = new Array();
 									console.log(data_observaciones);
@@ -397,17 +497,12 @@
 										$("#table-body-observaciones").append("<tr>"+"<td>"+(i+1)+"</td>"+"<td>"+arrObs[i].descripcion+"<td>"+fechaObservacionMod[2]+' de '+ dataMeses[fechaObservacionMod[1]]+' del '+fechaObservacionMod[0]+"</td>"+"</td>"+"</tr>");
 									}
 									$("#titulo_acuerdoSG").empty();
-									$("#titulo_acuerdoSG").append(data_observaciones["areaIpd"].nombre);
+									//$("#titulo_acuerdoSG").append(data_observaciones["areaIpd"].nombre);
 
 
 									//$("#table-body-observaciones").append()
 									$("#titulo_acuerdoPre").empty();
-									$("#titulo_acuerdoPre").append(data_observaciones["areaIpd"].nombre);
-
-
-
-
-
+									//$("#titulo_acuerdoPre").append(data_observaciones["areaIpd"].nombre);
 
 								},
 								error:function(error){

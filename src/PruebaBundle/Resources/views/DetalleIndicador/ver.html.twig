@@ -26,14 +26,16 @@
       	</div>
     </nav>
 
-	<a  style="margin-left:20px;" href="/nuevo-detalle-indicador"><button class="btn btn-primary btn-lg" >Ingresar nuevo sub-indicador</button></a>
-	
+	<a  style="margin-left:20px;" href="{{url('prueba_nuevoDetalleIndicador',{tipo:1})}}"><button class="btn btn-primary btn-lg" >Ingresar Uno</button></a>
+
+	<a  style="margin-left:20px;" href="{{url('prueba_nuevoDetalleIndicador',{tipo:2})}}"><button class="btn btn-primary btn-lg" >Ingresar Doble</button></a>
+
 	
 	<div class="contenedor__leyenda">
 
 		<h2>Leyenda</h2>
 
-		<table class="table  table-responsive table-bordered"  width="100%">
+		<table  id="table-leyenda-detalleIndicador" class="table table-responsive table-bordered"  width="100%">
 			<thead>
 				<tr>
 					<th>Id Leyenda</th>
@@ -59,8 +61,8 @@
 
 </div>
 
-	<table  style="font-size:13px;"  class="table table-responsive" cellspacing="0" width="100%">
 
+	<table   class="table table-responsive "  width="100%">
 		<thead>
 			<tr>				
 				<!--<th>Indicador</th>-->
@@ -78,18 +80,19 @@
 				<th>Noviemb</th>
 				<th>Diciemb</th>
 				<th>Editar</th>
+				<th>Grafica</th>
 				<th>Ficha</th>
 			</tr>
 		</thead>
 		<tbody>
-{#		
+		
 	{% for indicador in indicadores %}
 
 		{% for detalleIndicador in detallesIndicador  %}
 
-			{% if detalleIndicador.indicador.id == indicador.id  %}
+			{% if detalleIndicador.indicador.id == indicador.id and detalleIndicador.tipo == '2'  %}
 
-				<tr  class="fila-pintar">
+				<tr  class="fila-pintar" data-id-indicador='{{indicador.id}}' >
 					<!--<td>{{detalleIndicador.indicador}}</td>-->
 					<td>{{detalleIndicador.nombre}}</td>
 					<td>{{detalleIndicador.enero}}</td>
@@ -105,8 +108,36 @@
 					<td>{{detalleIndicador.noviembre}}</td>
 					<td>{{detalleIndicador.diciembre}}</td>
 					<td><button  class="btn btn-success"><a href="{{ path('prueba_updateDetalleIndicador', {id:detalleIndicador.id}) }}">Editar</a></button></td>
-									
 				</tr>				
+			
+			{% elseif detalleIndicador.indicador.id == indicador.id and detalleIndicador.tipo == '1' %}
+					
+				{% for totalIndicador in totalIndicadores %}
+		
+					{%  if detalleIndicador.indicador.id == totalIndicador.indicador.id %}
+
+				<tr  class=" total fila-pintar"  data-id-indicador='{{indicador.id}}' data-indicador="{{totalIndicador.indicador.nombre}}">
+					<!--<td>{{detalleIndicador.indicador}}</td>-->
+					<td>{{detalleIndicador.nombre}}</td>
+					<td>{{detalleIndicador.enero}}</td>
+					<td>{{detalleIndicador.febrero}}</td>
+					<td>{{detalleIndicador.marzo}}</td>
+					<td>{{detalleIndicador.abril}}</td>
+					<td>{{detalleIndicador.mayo}}</td>
+					<td>{{detalleIndicador.junio}}</td>
+					<td>{{detalleIndicador.julio}}</td>
+					<td>{{detalleIndicador.agosto}}</td>
+					<td>{{detalleIndicador.septiembre}}</td>
+					<td>{{detalleIndicador.octubre}}</td>
+					<td>{{detalleIndicador.noviembre}}</td>
+					<td>{{detalleIndicador.diciembre}}</td>
+					<td><button  class="btn btn-success"><a href="{{ path('prueba_updateDetalleIndicador', {id:detalleIndicador.id}) }}">Editar</a></button></td>
+					<td><button class="btn btn-info" class="btn-ficha"  onclick="verGraficaTotal('{{totalIndicador.id}}')"  data-toggle="modal" data-target="#modalGraficos">Grafico</button></td>
+					<td><button class="btn btn-warning  btn-ficha-ver" onclick="verReportePdf('{{totalIndicador.indicador.id}}')">Reporte</button></td>									
+				</tr>
+
+					{% endif %}
+				{% endfor %}
 
 			{% endif %}
 						
@@ -115,8 +146,9 @@
 
 		{% for totalIndicador in totalIndicadores %}
 		
-			{%  if indicador.id == totalIndicador.indicador.id %}
-				<tr class="total fila-pintar" data-indicador="{{totalIndicador.indicador.nombre}}" >
+			{%  if indicador.id == totalIndicador.indicador.id and indicador.detallesIndicador[0].tipo == '2'  %}
+
+				<tr class="total fila-pintar" data-indicador="{{totalIndicador.indicador.nombre}}" data-id-indicador='{{indicador.id}}' >
 					<td>Total</td>
 					<td>{{totalIndicador.enero}}%</td>
 					<td>{{totalIndicador.febrero}}%</td>
@@ -130,129 +162,16 @@
 					<td>{{totalIndicador.octubre}}%</td>
 					<td>{{totalIndicador.noviembre}}%</td>
 					<td>{{totalIndicador.diciembre}}%</td>
-					<td><button class="btn btn-info" class="btn-ficha" data-toggle="modal" data-target="#modalGraficos" >Ver Grafico</button></td>
-					<td><button class="btn btn-warning  btn-ficha-ver" onclick="verReportePdf({{indicador.id}})">ver</button></td>
+					<td></td>
+					<td><button class="btn btn-info" class="btn-ficha"  onclick="verGraficaTotal('{{totalIndicador.id}}')"  data-toggle="modal" data-target="#modalGraficos">Grafico</button></td>
+					<td><button class="btn btn-warning  btn-ficha-ver" onclick="verReportePdf('{{totalIndicador.indicador.id}}')">Reporte</button></td>
+
 			{% endif %}
 
 		{% endfor %}
 
 	{% endfor %}
 
-#}
-
-	{% set cont = 0 %}	
-
-	{% for detalleIndicador in detallesIndicador  %}
-
-		{{detalleIndicador.indicador.id}}
-		
-		{% set cont = cont + 1 %}
-
-		<tr  class="fila-pintar">		
-			<!--<td>{{detalleIndicador.indicador}}</td>-->
-			<td>{{detalleIndicador.nombre}}</td>
-			<td>{{detalleIndicador.enero}}</td>
-			<td>{{detalleIndicador.febrero}}</td>
-			<td>{{detalleIndicador.marzo}}</td>
-			<td>{{detalleIndicador.abril}}</td>
-			<td>{{detalleIndicador.mayo}}</td>
-			<td>{{detalleIndicador.junio}}</td>
-			<td>{{detalleIndicador.julio}}</td>
-			<td>{{detalleIndicador.agosto}}</td>
-			<td>{{detalleIndicador.septiembre}}</td>
-			<td>{{detalleIndicador.octubre}}</td>
-			<td>{{detalleIndicador.noviembre}}</td>
-			<td>{{detalleIndicador.diciembre}}</td>
-			<td><button  class="btn btn-success"><a href="{{ path('prueba_updateDetalleIndicador', {id:detalleIndicador.id}) }}">Editar</a></button></td>
-								
-			</tr>						
-
-			{% if cont is divisibleby(2)  %}
-			
-				<tr class="total fila-pintar"  data-indicador="{{detallesIndicador[ cont - 1 ].indicador}}" >
-
-				<td style="display:none;" >{{detallesIndicador[ cont - 1 ].indicador}}</td>
-				<td>Total</td>
-
-				{% if detallesIndicador[ cont - 1 ].enero == 0 or detallesIndicador[ cont - 2 ].enero == 0 %}
-					<td>0% </td>
-				{% else %}
-					<td>{{ (( detallesIndicador[ cont - 1 ].enero / detallesIndicador[ cont - 2 ].enero ) * 100)|round }}% </td>
-				{% endif %}	
-
-				{% if detallesIndicador[ cont - 1 ].febrero == 0 or detallesIndicador[ cont - 2 ].febrero == 0 %}
-					<td>0% </td>
-				{% else %}
-				<td>{{ (( detallesIndicador[ cont - 1 ].febrero / detallesIndicador[ cont - 2 ].febrero ) * 100)|round }}%</td>
-				{% endif %}	
-
-				{% if detallesIndicador[ cont - 1 ].marzo == 0 or detallesIndicador[ cont - 2 ].marzo == 0 %}
-					<td>0% </td>
-				{% else %}
-				<td>{{ (( detallesIndicador[ cont - 1 ].marzo / detallesIndicador[ cont - 2 ].marzo ) * 100)|round }}%</td>
-				{% endif %}	
-				
-				{% if detallesIndicador[ cont - 1 ].abril == 0 or detallesIndicador[ cont - 2 ].abril == 0 %}
-					<td>0% </td>
-				{% else %}
-				<td>{{ (( detallesIndicador[ cont - 1 ].abril / detallesIndicador[ cont - 2 ].abril ) * 100)|round }}%</td>
-				{% endif %}	
-
-				{% if detallesIndicador[ cont - 1 ].mayo == 0 or detallesIndicador[ cont - 2 ].mayo == 0 %}
-					<td>0% </td>
-				{% else %}
-				<td>{{ (( detallesIndicador[ cont - 1 ].mayo / detallesIndicador[ cont - 2 ].mayo ) * 100)|round }}%</td>
-				{% endif %}
-
-				{% if detallesIndicador[ cont - 1 ].junio == 0 or detallesIndicador[ cont - 2 ].junio == 0 %}
-					<td>0% </td>
-				{% else %}
-				<td>{{ (( detallesIndicador[ cont - 1 ].junio / detallesIndicador[ cont - 2 ].junio ) * 100)|round }}%</td>
-				{% endif %}
-
-				{% if detallesIndicador[ cont - 1 ].julio == 0 or detallesIndicador[ cont - 2 ].julio == 0 %}
-					<td>0% </td>
-				{% else %}
-				<td>{{ (( detallesIndicador[ cont - 1 ].julio / detallesIndicador[ cont - 2 ].julio ) * 100)|round }}%</td>
-				{% endif %}
-
-				{% if detallesIndicador[ cont - 1 ].agosto == 0 or detallesIndicador[ cont - 2 ].agosto == 0 %}
-					<td>0% </td>
-				{% else %}
-				<td>{{ (( detallesIndicador[ cont - 1 ].agosto / detallesIndicador[ cont - 2 ].agosto ) * 100)|round }}%</td>
-				{% endif %}
-
-				{% if detallesIndicador[ cont - 1 ].septiembre == 0 or detallesIndicador[ cont - 2 ].septiembre == 0 %}
-					<td>0% </td>
-				{% else %}
-				<td>{{ (( detallesIndicador[ cont - 1 ].septiembre / detallesIndicador[ cont - 2 ].septiembre ) * 100)|round }} %</td>
-				{% endif %}
-
-				{% if detallesIndicador[ cont - 1 ].octubre == 0 or detallesIndicador[ cont - 2 ].octubre == 0 %}
-					<td>0% </td>
-				{% else %}
-				<td>{{ (( detallesIndicador[ cont - 1 ].octubre / detallesIndicador[ cont - 2 ].octubre ) * 100)|round }}%</td>
-				{% endif %}
-
-				{% if detallesIndicador[ cont - 1 ].noviembre == 0 or detallesIndicador[ cont - 2 ].noviembre == 0 %}
-					<td>0% </td>
-				{% else %}
-					<td>{{ (( detallesIndicador[ cont - 1 ].noviembre / detallesIndicador[ cont - 2 ].noviembre ) * 100)|round }}%</td>
-				{% endif %}	
-
-				{% if detallesIndicador[ cont - 1 ].diciembre == 0 or detallesIndicador[ cont - 2 ].diciembre == 0 %}
-					<td>0% </td>
-				{% else %}
-					<td>{{ (( detallesIndicador[ cont - 1 ].diciembre / detallesIndicador[ cont - 2 ].diciembre ) * 100)|round }}%</td>
-				{% endif %}	
-
-				<td><button class="btn btn-info" class="btn-ficha"  onclick="verGrafica('{{detallesIndicador[ cont - 1 ].indicador}}')"  data-toggle="modal" data-target="#modalGraficos">Grafico</button></td>
-				<td><button class="btn btn-warning  btn-ficha-ver" onclick="verReportePdf('{{detallesIndicador[ cont - 1 ].indicador.id}}')">Reporte</button></td>
-
-				</tr>							
-			{% endif %}
-
-		{% endfor %}
 	</tbody>
 
 	</table>
@@ -278,6 +197,39 @@
 
 <script type="text/javascript">
 	
+	function verGraficaTotal(idTotalIndicador){
+
+		$.ajax({
+			type:"POST",
+			data: {'idTotalIndicador': idTotalIndicador},
+			url: "{{path('prueba_postTotal')}}",
+			dataType:'json',
+			success:function(data){
+
+				var data= JSON.parse(data);
+				
+	            var ctx = document.getElementById('myChart').getContext('2d');
+				var chart = new Chart(ctx, {
+			    	type: 'bar',
+			    	data: {
+			        labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio","Agosto","septiembre","Octubre","Noviembre","Diciembre"],
+			        datasets: [{
+			            label: "My First dataset",
+			            backgroundColor: 'rgba(255, 86, 44, 0.8)',
+			            borderColor: 'rgb(255, 99, 132)',
+		            	data: [data.enero, data.febrero, data.marzo, data.abril, data.mayo, data.junio,data.julio, data.agosto, data.septiembre, data.octubre, data.noviembre,data.diciembre],
+			        	}]
+			    	},
+			    	options: {}
+				});
+				
+			},
+			error:function(error){
+				console.log(error);
+			}
+		});
+	}
+
 
 	function pintarRojoTable(obj){
 		$(obj).append("<div class='table_semaforo_rojo'></div>");
@@ -316,20 +268,34 @@
 	var leyenda_indicador = document.querySelectorAll(".leyenda-indicador");
 	
 
-	/*SE PINTAN LAS FILAS DE DIFERENTES COLORES DE 3 EN 3 FILAS*/
+	/*SE PINTAN LAS FILAS DE DIFERENTES FILAS*/
 	var fila_pintar = document.querySelectorAll(".fila-pintar");
-	for(var t=0; t<fila_pintar.length;t++){
 
-		$(fila_pintar[t]).css("backgroundColor","rgba(255, 113, 149, 0.5)");
 
-		if(t<3){
-			$(fila_pintar[t]).css("backgroundColor","rgba(255, 200, 170, 0.5)");
-		}
+	var coloresFila ={
 
-		else if(t>=3  && t<6){
-			$(fila_pintar[t]).css("backgroundColor","rgba(100, 113, 210, 0.5)");
-		}
+		1:'rgba(224, 44, 44, 0.7)',
+		2:'rgba(229, 100, 44, 0.7)',
+		3:'rgba(229, 100, 138, 0.7)',
+		4:'rgba(229, 234, 125, 0.7)',
+		5:'rgba(144, 50, 125, 0.7)',
+		6:'rgba(144, 50, 224, 0.6)',
+		7:'rgba(144, 50, 97, 0.6)',
+		8:'rgba(144, 228, 97, 0.6)',
+		9:'rgba(144, 228, 0, 0.3)'
 	}
+
+
+	{% for indicador in indicadores %}
+
+		for(var t=0; t<fila_pintar.length;t++){
+
+			if( $(fila_pintar[t]).attr('data-id-indicador') == '{{indicador.id}}' ){
+				$(fila_pintar[t]).css("backgroundColor",coloresFila[{{indicador.id}}]);
+			}
+		}
+
+	{% endfor %}
 
 	/*FIN*/
 
@@ -355,7 +321,7 @@
 				$(total_tr[i]).children("td").each(function(index,element){
 
 					td = $(this).text().replace("%","");
-					
+					console.log("td =>",td);
 					if(!isNaN( parseInt(td) ) || 1==1 ){
 
 						c++;
@@ -387,33 +353,35 @@
 								}
 							}	
 
-							else if(arr_amarillo[1]=="<="){
+						}
 
-								if(arr_rojo[1]=="<"){
-									if(parseInt(td) <= parseInt(arr_amarillo[0]) && parseInt(td) >= arr_rojo[0]){
-										pintarAmarilloTable(this);
-									}
-								}
+						else if(arr_amarillo[1]=="<="){
 
-								else if(arr_rojo[1]=="<="){
-									if(parseInt(td) <= parseInt(arr_amarillo[0]) && parseInt(td) > arr_rojo[0]){
+							if(arr_rojo[1]=="<"){
+								if(parseInt(td) <= parseInt(arr_amarillo[0]) && parseInt(td) >= arr_rojo[0]){
 										pintarAmarilloTable(this);
-									}
 								}
 							}
 
-							if(arr_verde[1]==">"){
-								if(parseInt(td) > parseInt(arr_verde[0]) ){
-									pintarVerdeTable(this);
-								}
-							}	
-
-							else if(arr_verde[1] == ">="){
-								if(parseInt(td) >= parseInt(arr_verde[0]) ){
-									pintarVerdeTable(this);
+							else if(arr_rojo[1]=="<="){
+								if(parseInt(td) <= parseInt(arr_amarillo[0]) && parseInt(td) > arr_rojo[0]){
+									pintarAmarilloTable(this);
 								}
 							}
 						}
+
+						if(arr_verde[1]==">"){
+							if(parseInt(td) > parseInt(arr_verde[0]) ){
+								pintarVerdeTable(this);
+							}
+						}	
+
+						else if(arr_verde[1] == ">="){
+							if(parseInt(td) >= parseInt(arr_verde[0]) ){
+								pintarVerdeTable(this);
+							}	
+						}
+					
 
 					}
 				});
@@ -423,41 +391,14 @@
 		data_total[i+1] = data_numeros;
 	}
 
-	function postTotalInicio(){
-		$.ajax({
-			type:"POST",
-			url: "{{path('prueba_postTotalInicio')}}" ,
-			data: {'total': data_total},
-			dataType: 'json',
-			success:function(dataTotalInicio){
-				console.log("Data Total Inicio => ",dataTotalInicio);
-			},
-			error: function(error){
-				console.log(error);
-			}
-		});	
-	}
-
-	postTotalInicio();
 
 	function verReportePdf(idIndicador){
-		$.ajax({
-			type:"POST",
-			url: "{{path('prueba_postTotal')}}" ,
-			data: {'total': data_total},
-			dataType: 'json',
-			success:function(dataTotal){
-				mensaje_total = dataTotal;
-				console.log("Data Total",dataTotal);
-				location.href ="/detalleindicador/graficos/"+idIndicador;
-			},
-			error: function(error){
-				console.log(error);
-			}
-		});	
+
+		location.href ="/detalleindicador/graficos/form/"+idIndicador;
 	}
 
 	function verGrafica(datos){
+
 		$.each(data_total,function(key,value){
 			console.log(value);
 			if(value[0]==datos){
@@ -465,25 +406,7 @@
 			}
 		});
 	}
-
-/*
-	function postTotal(datos_indicadores){
-		$.ajax({
-			type:"POST",
-			url: "{{path('prueba_postTotal')}}" ,
-			data: datos_indicadores,
-			dataType: 'json',
-			success:function(dataTotalIndicador){
-				console.log("Data Total Indicador => "+dataTotalIndicador);
-			},
-			error: function(error){
-				console.log(error);
-			}
-		});	
-	}
-*/
-
-//	postTotal(data_total);	
+	
 	function enviarTotalAjax(total_graficos){
 		$.ajax({
 			type:"POST",
@@ -512,7 +435,11 @@
 		});
 	}
 
+
+	$('#table-leyenda-detalleIndicador').DataTable();
+	$('#table-detalleIndicador-detalleIndicador').DataTable();
 	
 </script>
+<script src="{{asset('js/chart.js')}}"></script>
 {% endblock %}
 

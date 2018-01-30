@@ -2,23 +2,12 @@
 
 {% block body %}
 
-
-	{{dump(acuerdosPre)}}
-	{{dump(acuerdosPre.areaIpd.id)}}
-	{{dump(observaciones)}}
-	{{cantidadObservaciones}}
-
-	
-
-		<p>{{observaciones[cantidadObservaciones-1].descripcion}}</p>
-
-	
-<a href="/acuerdosPre"><button style="margin-left:30px;"  class="btn btn-info btn-lg">Regresar</button></a>
+<br>
+<a href="{{url('prueba_acuerdosPre')}}"><button style="margin-left:30px;"  class="btn btn-danger btn-lg"><i class="icon-back"></i> Regresar</button></a>
 
 <h2 class="text-center">SEGUIMIENTO DE LOS ACUERDOS DE LOS COMITES DE PRESIDENCIA</h2>
 
 <div style="width:70%; height:400px; margin:0 auto;">
-
 
 	<div class="form-group col-md-6 col-lg-6">
 		<label>Comite</label>
@@ -43,8 +32,12 @@
 
 	<div class="form-group col-md-6 col-sm-6 col-lg-6">
 		<label>Area Responsable</label>
-		<select  name="areaIpd" id="areaIpd"  class="form-control">
+		<select  name="areaIpd" id="areaIpd"  class="form-control" multiple >
 		</select>
+		<label for="todo-area" >Todas las areas</label>
+		<input id="todo-area" type="checkbox" name="todo-area">
+		<label>Seleccionar Otros</label>
+		<input id="todo-otros" type="checkbox" name="todo-otros">
 	</div>
 
 
@@ -70,7 +63,7 @@
 		<input type="date" name="plazoEntrega" id="plazoEntrega"  class="form-control">
 	</div>
 
-	<button class="btn btn-primary" id="boton-editar-acuerdosPre">Editar</button>
+	<button class="btn btn-success" id="boton-editar-acuerdosPre"><i class='icon-pencil-square-o' ></i> Editar</button>
 
 </div>
 
@@ -99,6 +92,51 @@ $(document).ready(function(){
 
 	console.log(sel[0].value);	
 
+	var arrAreasIpd= [];
+
+	{% for acuPreA in acuerdosPreAreaIpd  %}	
+
+		if( {{id}} == {{acuPreA.acuerdoPre.id}} ){			
+
+			if("{{acuPreA.areaIpd.nombre}}" == 'OTROS' && "{{acuPreA.areaIpd.tipo}}" == '1' ){
+
+				$("#areaIpd").append("<option data-option='{{acuPreA.areaIpd.nombre}}' selected='selected' value={{acuPreA.areaIpd.id}}>{{acuPreA.areaIpd.personaResponsable}}</option>");
+				arrAreasIpd.push({{acuPreA.areaIpd.id}});
+			}
+			else if("{{acuPreA.areaIpd.nombre}}" != 'OTROS' && "{{acuPreA.areaIpd.tipo}}" == '1'){
+				$("#areaIpd").append("<option selected='selected' value={{acuPreA.areaIpd.id}}>{{acuPreA.areaIpd.nombre}}</option>");
+				arrAreasIpd.push({{acuPreA.areaIpd.id}});				
+			}
+			
+		}
+	{% endfor %}
+
+	c=-1;
+
+	{% for arit in areaIpdTotal  %}	
+		a=0;
+		while(a<arrAreasIpd.length ){
+
+			if({{arit.id}} == arrAreasIpd[a]){
+				c=arrAreasIpd[a];
+			}
+			a++;
+		}
+		
+		if( c != {{arit.id}} ){
+
+			if("{{arit.nombre}}" != 'OTROS' && "{{arit.tipo}}" == '1' && "{{arit.baja}}" == '1' ){
+
+				$("#areaIpd").append("<option  value={{arit.id}}>{{arit.nombre}}</option>");
+
+			}else if("{{arit.nombre}}" == 'OTROS' && "{{arit.tipo}}" == '1' && "{{arit.baja}}" == '1'){
+
+				$("#areaIpd").append("<option data-option='{{arit.nombre}}' value={{arit.id}}>{{arit.personaResponsable}}</option>");
+			}
+		}	
+
+	{% endfor %}
+{#/*
 	$.ajax({
 		type:"GET",
 		url:"{{ url('prueba_getArea') }}",
@@ -122,7 +160,8 @@ $(document).ready(function(){
 		}
 
 	});	
-
+	*/
+#}
 
 
 
@@ -143,6 +182,7 @@ $(document).ready(function(){
 					nroAcuerdo: $("#nroAcuerdo").val(),
 					areaIpd: $("#areaIpd").val(),
 					estado: $("#estado").val(),
+					areasIpdInicio: arrAreasIpd,
 					observaciones: $("#observaciones").val(),
 					plazoEntrega: $("#plazoEntrega").val()
 
@@ -153,7 +193,7 @@ $(document).ready(function(){
 
 					dataType: 'json',
 					type: 'POST',
-					url: "/acuerdosPre/update/{{id}}",
+					url: "{{url('prueba_acuerdosPreUpdate',{id:id})}}",
 					data:datos,
 
 					success:function(data){
@@ -173,6 +213,82 @@ $(document).ready(function(){
 				});
 
 			}
+
+
+	var areaIpdSelect = document.getElementById("areaIpd");
+
+	var arraySelectAreasInicio = [];
+
+	for (var i = 0; i <areaIpdSelect.options.length ; i++) {
+		if(areaIpdSelect.options[i].selected == true){
+			arraySelectAreasInicio.push(i);
+		}		
+	}
+
+	var cont=0;
+
+	$( "#todo-area" ).on( "click",function(){
+
+		if(cont==0){
+
+			limpiarSelectAll();			
+			selecionarAreasAll(true);
+			cont++;
+		}else{
+
+			selecionarAreasAll(false);
+			selecionarAreasInicio(arraySelectAreasInicio);
+			cont=0;
+		}		
+
+	});
+
+	function limpiarSelectAll(){
+
+		for (var i = 0; i <areaIpdSelect.options.length ; i++) {	
+				areaIpdSelect.options[i].selected=false;
+		}		
+	}
+
+
+	function selecionarAreasAll(varBool){
+		for (var i = 0; i <areaIpdSelect.options.length ; i++) {
+			if($(areaIpdSelect.options[i]).attr('data-option') !='OTROS'){	
+				areaIpdSelect.options[i].selected=varBool;
+			}
+		}		
+	}
+
+	function selecionarAreasInicio(arraPos){
+		for (var i = 0; i <arraPos.length ; i++) {			
+			areaIpdSelect.options[arraPos[i]].selected=true;	
+		}		
+	}
+
+	var contOtros=0;
+	$( "#todo-otros" ).on( "click",function(){
+
+		if(contOtros==0){
+			limpiarSelectAll();
+			selecionarOtrosAll(false);
+			selecionarOtrosAll(true);
+			contOtros++;
+		}else{
+			selecionarOtrosAll(false);
+			selecionarAreasInicio(arraySelectAreasInicio);
+			contOtros=0;
+		}		
+	});
+
+	function selecionarOtrosAll(varBool){
+		for (var i = 0; i <areaIpdSelect.options.length ; i++) {
+
+			if($(areaIpdSelect.options[i]).attr('data-option') =='OTROS'){
+				
+				areaIpdSelect.options[i].selected=varBool;
+			}	
+		}		
+	}
 
 });
 

@@ -21,8 +21,6 @@ use PruebaBundle\Entity\AcuerdosPreAreaIpd;
 
 class AcuerdosPreController extends Controller
 {
-
-
 	public function acuerdosPreAction(Request $request)
     {
 
@@ -46,8 +44,6 @@ class AcuerdosPreController extends Controller
 
     public function acuerdosPreUpdateAction(Request $request, $id){
 
-
-
         if($request->isXmlHttpRequest()){
 
             $comite = $request->request->get('comite'); 
@@ -55,10 +51,10 @@ class AcuerdosPreController extends Controller
             $acuerdos = $request->request->get('acuerdos');
             $nroAcuerdo = $request->request->get('nroAcuerdo');
             $areaIpd = $request->request->get('areaIpd');
+            $areasIpdInicio = $request->request->get('areasIpdInicio');
             $estado = $request->request->get('estado'); 
             $observaciones = $request->request->get('observaciones');
             $plazoEntrega = $request->request->get('plazoEntrega');
-
 
             $hoy = date("Y-m-d");
             $em_ap = $this->getDoctrine()->getManager();
@@ -71,52 +67,67 @@ class AcuerdosPreController extends Controller
             $acuerdosPre->setEstado($estado);
             $acuerdosPre->setPlazoEntrega($plazoEntrega);
 
-            
             $em_ap->flush();
 
-
             $id_acuerdosPre=$acuerdosPre->getId();
+            $latestObservacion = $acuerdosPre->getObservacionPre()[count($acuerdosPre->getObservacionPre())-1];
 
+            if($observaciones != $latestObservacion->getDescripcion()){
 
-            $observacionesPre = new ObservacionesPre();
+                $observacionesPre = new ObservacionesPre();
+                $hoy = date("Y-m-d");
+                $observacionesPre->setDescripcion($observaciones);
+                $observacionesPre->setFecha($hoy);
+                //SE REALIZA LA BUSQUEDA DEL ULTIMO ACUERDO SG INGRESADO
+                $em =  $this->getDoctrine()->getRepository(AcuerdosPre::class);
+                $acuerdosPreN = $em->find($id_acuerdosPre);
+                //SE ASIGNA EL ULTIMO ACUERDO INGRESADO POR AJAX AL OBJETO OBSERVACIONESSG
+                $observacionesPre->setAcuerdoPre($acuerdosPreN);
+                //SE GUARDA EN LA BASE DE DATOS
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($observacionesPre);
+                $em->flush();
+            }
 
-            $observacionesPre->setDescripcion($observaciones);
-            $observacionesPre->setFecha($hoy);
-            $em =  $this->getDoctrine()->getRepository(AcuerdosPre::class);
+            if(count($areaIpd) >= count($areasIpdInicio)){
 
-            $acuerdosPreN = $em->find($id_acuerdosPre);
-            $observacionesPre->setAcuerdoPre($acuerdosPreN);
+                for ($i=0; $i < count($areaIpd) ; $i++) { 
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($observacionesPre);
-            $em->flush();
+                    $em = $this->getDoctrine()->getManager();
+                    if($i < count($areasIpdInicio)){
+                        $em->getRepository('PruebaBundle:AcuerdosPreAreaIpd')->updatePreAreaIpd($id, $areasIpdInicio[$i], $areaIpd[$i]);
+                    }else{
+                        $em->getRepository('PruebaBundle:AcuerdosPreAreaIpd')->insertPreAreaIpd($id,$areaIpd[$i]);
+                    }    
+                }
+            }
 
+            else if( count($areaIpd) < count($areasIpdInicio)  && count($areaIpd)> -1 ){
 
-            $em =  $this->getDoctrine()->getRepository(AcuerdosPre::class);
-            $acuerdosPreAll = $em->findAll();
+                for ($i=0; $i < count($areasIpdInicio) ; $i++) { 
 
-
-            $encoders = array(new JsonEncoder());
-            $normalizer = new ObjectNormalizer();
-            $normalizer->setCircularReferenceLimit(1);
-            // Add Circular reference handler
-            $normalizer->setCircularReferenceHandler(function ($object) {
-                return $object->getId();
-            });
-            $normalizers = array($normalizer);
-            $serializer = new Serializer($normalizers, $encoders);
-
-            $jsonContent = $serializer->serialize($acuerdosPreAll, 'json');
-
-
-            return new JsonResponse($jsonContent);
+                    $em = $this->getDoctrine()->getManager();
+                    if($i < count($areaIpd)){
+                        $em->getRepository('PruebaBundle:AcuerdosPreAreaIpd')->updatePreAreaIpd($id, $areasIpdInicio[$i], $areaIpd[$i]);
+                    }else{
+                        $em->getRepository('PruebaBundle:AcuerdosPreAreaIpd')->removePreAreaIpd($id, $areasIpdInicio[$i]);
+                    }    
+                }
+            }
 
         }
 
         $em = $this->getDoctrine()->getManager();
         $acuerdosPre = $em->getRepository(AcuerdosPre::class)->find($id);
+        $areaIpdTotal = $em->getRepository(AreaIpd::class)->findAll();
+        $acuerdosPreTotal = $em->getRepository(AcuerdosPre::class)->findAll();
+        $acuerdosPreAreaIpd = $em->getRepository(AcuerdosPreAreaIpd::class)->findAll();
+        $countAcuerdosPreAreaIpd = $em->getRepository('PruebaBundle:AcuerdosPreAreaIpd')->getCantidadPreAreaIpd($id);
+        $latestObservacion = $acuerdosPre->getObservacionPre()[count($acuerdosPre->getObservacionPre())-1];
+        $em = $this->getDoctrine()->getManager();
+        $acuerdosPre = $em->getRepository(AcuerdosPre::class)->find($id);
 
-        return $this->render('PruebaBundle:AcuerdosPre:update.html.twig',array("acuerdosPre" => $acuerdosPre , "observaciones" => $acuerdosPre->getObservacionPre(), "cantidadObservaciones" => count($acuerdosPre->getObservacionPre()) , 'id' => $id ) );
+        return $this->render('PruebaBundle:AcuerdosPre:update.html.twig',array("acuerdosPre" => $acuerdosPre , "observaciones" => $acuerdosPre->getObservacionPre(), "cantidadObservaciones" => count($acuerdosPre->getObservacionPre()) , 'id' => $id, "latestObservacion" => $latestObservacion->getDescripcion(), "acuerdosPreAreaIpd" => $acuerdosPreAreaIpd, "acuerdosPreTotal" => $acuerdosPreTotal, "areaIpdTotal" => $areaIpdTotal, "totalPreAreaIpd" =>$countAcuerdosPreAreaIpd[0]['total'] ));
     }
 
 	public function acuerdosPreNuevoAction(Request $request)
@@ -176,7 +187,6 @@ class AcuerdosPreController extends Controller
                 $acuerdosPreAreaIpd->setAcuerdoPre($acuerdosPreN);
                 $em->persist($acuerdosPreAreaIpd);
                 $em->flush();
-
             }
 
 			return new JsonResponse("1");
@@ -208,6 +218,47 @@ class AcuerdosPreController extends Controller
 		return new JsonResponse($jsonContent);
 
 	}
+
+    public function acuerdosPreRemoveAction(Request $request,$id){
+
+        if($request->isXmlHttpRequest()){
+            
+            $baja = $request->request->get('baja');
+            $id = $request->request->get('id');
+
+            $em = $this->getDoctrine()->getManager(); 
+            $acuerdosSG = $em->getRepository(AcuerdosPre::class)->find($id);
+
+            $acuerdosSG->setBaja($baja);
+            $em->flush();
+
+            $jsonContent="1";
+            return new JsonResponse($jsonContent);
+        }
+
+
+        return $this->render('PruebaBundle:AcuerdosPre:remove.html.twig', array("id" => $id));
+    }
+
+    
+        public function sendemailAction(Request $request){
+
+            if($request->isXmlHttpRequest()){
+
+                $nombre = $request->request->get('nombre');
+                $email= $request->request->get('email');
+                $mensaje=$request->request->get('mensaje');
+                            
+                $subject = 'Notificacion Secretaria General';
+                $message = 'Usted tiene un acuerdo pendiente de implementación, informar a la Secretaría General su cumplimiento'."\r\n"."\r\n".'COMENTARIO: '."\r\n"."\r\n". $mensaje ;
+                $headers = 'From: pilar@ipd.gob.pe' . "\r\n" .
+                    'X-Mailer: PHP/' . phpversion();
+                mail($email, $subject, $message, $headers);
+                return new JsonResponse("enviado");
+        }
+    }
+
+    
     
 
     

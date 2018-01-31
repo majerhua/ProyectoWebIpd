@@ -29,11 +29,6 @@ class AreaIpd
      */
     private $acuerdoPreAreaIpd;
 
-     /**
-     * @ORM\OneToMany(targetEntity="Indicador", mappedBy="areaIpd")
-     */
-    private $indicadores;
-
 
     /**
      * @var int
@@ -114,47 +109,7 @@ class AreaIpd
     {
         return $this->nombre;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->indicadores = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
-    /**
-     * Add indicadore
-     *
-     * @param \PruebaBundle\Entity\Indicador $indicadore
-     *
-     * @return AreaIpd
-     */
-    public function addIndicadore(\PruebaBundle\Entity\Indicador $indicadore)
-    {
-        $this->indicadores[] = $indicadore;
-
-        return $this;
-    }
-
-    /**
-     * Remove indicadore
-     *
-     * @param \PruebaBundle\Entity\Indicador $indicadore
-     */
-    public function removeIndicadore(\PruebaBundle\Entity\Indicador $indicadore)
-    {
-        $this->indicadores->removeElement($indicadore);
-    }
-
-    /**
-     * Get indicadores
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getIndicadores()
-    {
-        return $this->indicadores;
-    }
 
     public function __toString(){
         return $this->nombre;
@@ -362,4 +317,14 @@ class AreaIpd
     {
         return $this->baja;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->usuarios = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->acuerdoSGAreaIpd = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->acuerdoPreAreaIpd = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
 }

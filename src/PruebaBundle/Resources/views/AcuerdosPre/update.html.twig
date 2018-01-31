@@ -2,70 +2,85 @@
 
 {% block body %}
 
-<br>
-<a href="{{url('prueba_acuerdosPre')}}"><button style="margin-left:30px;"  class="btn btn-danger btn-lg"><i class="icon-back"></i> Regresar</button></a>
 
-<h2 class="text-center">SEGUIMIENTO DE LOS ACUERDOS DE LOS COMITES DE PRESIDENCIA</h2>
+<section class="contenedorRegistroASG">
 
-<div style="width:70%; height:400px; margin:0 auto;">
-
-	<div class="form-group col-md-6 col-lg-6">
-		<label>Comite</label>
-		<input type="number" name="comite"  id="comite" class="form-control">
-	</div>
-
-	<div class="form-group col-md-6 col-lg-6">
-		<label>Fecha</label>
-		<input type="date" name="fecha"  id="fecha" class="form-control">
-	</div>
-
-	<div class="form-group col-md-6 col-sm-6 col-lg-6">
-		<label>Acuerdos Adoptados</label>
-		<input type="text" name="acuerdos"  id="acuerdos"  class="form-control">
-	</div>
-
-	<div class="form-group col-md-6 col-sm-6 col-lg-6" >
-		<label>N° del acuerdo</label>
-		<input type="number" name="nroAcuerdo" id="nroAcuerdo"  class="form-control">
-	</div>
-
-
-	<div class="form-group col-md-6 col-sm-6 col-lg-6">
-		<label>Area Responsable</label>
-		<select  name="areaIpd" id="areaIpd"  class="form-control" multiple >
-		</select>
-		<label for="todo-area" >Todas las areas</label>
-		<input id="todo-area" type="checkbox" name="todo-area">
-		<label>Seleccionar Otros</label>
-		<input id="todo-otros" type="checkbox" name="todo-otros">
-	</div>
-
-
-	<div class="form-group col-md-6 col-sm-6 col-lg-6">
-		<label>Estado</label>
-		
-		<select name="estado" id="estado"  class="form-control">
-			<option value="En Proceso">En Proceso</option>
-			<option value="Implementado" >Implementado</option>
-			<option value="Cancelado">Cancelado</option>
-		</select>
-	</div>
-
-
-	<div class="form-group col-md-6 col-sm-6 col-lg-6">
-		<label>Observaciones</label>
-		<textarea type="text" name="observaciones" id="observaciones" class="form-control"></textarea>
-	</div>
-
-
-	<div class="form-group col-md-6 col-sm-6 col-lg-6">
-		<label>Plazo de Entrega</label>
-		<input type="date" name="plazoEntrega" id="plazoEntrega"  class="form-control">
-	</div>
-
-	<button class="btn btn-success" id="boton-editar-acuerdosPre"><i class='icon-pencil-square-o' ></i> Editar</button>
-
+<div class="form-group">
+	<a  href="{{url('prueba_acuerdosPre')}}"><button style="margin-left:30px;"  class="btn btn-danger btn-lg"><i class="icon-back"></i> Regresar </button></a>
 </div>
+
+<div class="form-group" >
+	<p class="text-center tituloNuevo"> SEGUIMIENTO DE LOS ACUERDOS DE LOS COMITES DE PRESIDENCIA</p>
+</div>
+
+	<div class="containerForm">
+
+		<div class="form-group col-md-6 col-lg-6">
+			<label>Comite</label>
+			<input type="number" name="comite"  id="comite" class="form-control">
+		</div>
+
+		<div class="form-group col-md-6 col-lg-6">
+			<label>Fecha</label>
+			<input type="date" name="fecha"  id="fecha" class="form-control">
+		</div>
+
+		<div class="form-group col-md-6 col-sm-6 col-lg-6">
+			<label>Acuerdos Adoptados</label>
+			<input type="text" name="acuerdos"  id="acuerdos"  class="form-control">
+		</div>
+
+		<div class="form-group col-md-6 col-sm-6 col-lg-6" >
+			<label>N° del acuerdo</label>
+			<input type="number" name="nroAcuerdo" id="nroAcuerdo"  class="form-control">
+		</div>
+
+
+		<div class="form-group col-md-6 col-sm-6 col-lg-6">
+			<label>Area Responsable</label>
+			<select  name="areaIpd" id="areaIpd"  class="form-control" multiple >
+			</select>
+			<label for="todo-area" >Todas las areas</label>
+			<input id="todo-area" type="checkbox" name="todo-area">
+			<label>Seleccionar Otros</label>
+			<input id="todo-otros" type="checkbox" name="todo-otros">
+
+			<div class="form-group">
+				<label>Plazo de Entrega</label>
+				<input type="date" name="plazoEntrega" id="plazoEntrega"  class="form-control">
+			</div>
+		</div>
+
+		<div class="form-group col-md-6 col-sm-6 col-lg-6">
+			<label>Estado</label>
+			
+			<select name="estado" id="estado"  class="form-control">
+				<option value="En Proceso">En Proceso</option>
+				<option value="Implementado" >Implementado</option>
+				<option value="Cancelado">Cancelado</option>
+			</select>
+		</div>
+
+
+		<div class="form-group col-md-6 col-sm-6 col-lg-6">
+			<label>Observaciones</label>
+			<textarea type="text" name="observaciones" id="observaciones" rows="4" class="form-control"></textarea>
+		</div>
+
+		<div class="form-group col-xs-12 col-md-12 col-sm-12 col-lg-12">
+			<button class="btn btn-success" id="boton-editar-acuerdosPre"><i class='icon-pencil-square-o' ></i> Editar</button>
+			<img  id="load" width="50" height="40"  src="{{asset('img/loading.gif')}}" style="display:none;">
+		</div>
+
+		<div class="form-group col-xs-12 col-md-12 col-sm-12 col-lg-12">
+	  	 	<div class="containerAlertaRegistro">
+			  <p>Acuerdo Actualizado</p>
+		   </div>
+	    </div>
+
+	</div>
+
+</section>
 
 <script>
 
@@ -136,33 +151,6 @@ $(document).ready(function(){
 		}	
 
 	{% endfor %}
-{#/*
-	$.ajax({
-		type:"GET",
-		url:"{{ url('prueba_getArea') }}",
-		dataType:'json',
-		success:function(data){
-		console.log(JSON.parse(data));
-		JSON.parse(data).forEach(function(valor,index){
-
-			if(valor.id == {{ acuerdosPre.areaIpd.id }} ){
-				$("#areaIpd").append("<option selected='selected' value='"+valor.id+"'>"+valor.nombre+"</option>");
-			}else{
-				$("#areaIpd").append("<option value='"+valor.id+"'>"+valor.nombre+"</option>");
-			}
-
-			
-		});
-
-		},
-		error:function(error){
-			console.log(error);
-		}
-
-	});	
-	*/
-#}
-
 
 
 		$("#boton-editar-acuerdosPre").on('click',function(){
@@ -188,21 +176,22 @@ $(document).ready(function(){
 
 				}
 
-
 				$.ajax({
-
 					dataType: 'json',
 					type: 'POST',
 					url: "{{url('prueba_acuerdosPreUpdate',{id:id})}}",
 					data:datos,
-
+					beforeSend:function(){
+						$("#load").show();
+					},
 					success:function(data){
-						var datosAcuerdosPre=JSON.parse(data);
 						
-
-							console.log(datosAcuerdosPre);	
-							
-
+						if(data == '1'){
+							$("#load").hide();
+							$('.containerAlertaRegistro').show('slow',function(){
+								setTimeout( () => $(this).hide('slow') ,5000);
+							});
+						}
 					},
 
 					error:function(error){

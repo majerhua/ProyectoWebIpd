@@ -4,13 +4,19 @@
 
 <br>
 
+
+
 <section>
+
+	<div class="form-group">
+		<a  href="{{url('prueba_acuerdosPre')}}"><button style="margin-left:30px;"  class="btn btn-danger btn-lg"><i class="icon-back"></i> Regresar </button></a>
+	</div>
 
 	<div class="form-group">
 		<p class="text-center tituloNuevo">SEGUIMIENTO DE LOS ACUERDOS DE LOS COMITES DE PRESIDENCIA</p>
 	</div>
 
-	<div style="width:70%; height:400px; margin:0 auto;">
+	<div  class="containerForm" >
 
 		<div class="form-group col-md-6 col-lg-6">
 			<label>Comite</label>
@@ -34,13 +40,20 @@
 
 
 		<div class="form-group col-md-6 col-sm-6 col-lg-6">
+
 			<label>Area Responsable</label>
 			<select  name="areaIpd" id="areaIpd"  class="form-control" multiple >
 			</select>
 			<label>Seleccionar Todas las Areas</label>
 			<input id="todo-area" type="checkbox" name="todo-area">
+
 			<label>Seleccionar Otros</label>
 			<input id="todo-otros" type="checkbox" name="todo-area">
+
+			<div class="form-group" >
+				<label>Plazo de Entrega</label>
+				<input type="date" name="plazoEntrega" id="plazoEntrega"  class="form-control">
+			</div>
 		</div>
 
 
@@ -57,25 +70,22 @@
 
 		<div class="form-group col-md-6 col-sm-6 col-lg-6">
 			<label>Observaciones</label>
-			<textarea type="text" name="observaciones" id="observaciones" class="form-control"></textarea>
+			<textarea  rows="4" type="text" name="observaciones" placeholder="Ingrese su observación....." id="observaciones" class="form-control"></textarea>
 		</div>
 
-
-	<div class="form-group col-md-6 col-sm-6 col-lg-6"  >
-		<label>Plazo de Entrega</label>
-		<input type="date" name="plazoEntrega" id="plazoEntrega"  class="form-control">
+	<div class="form-group col-xs-12 col-md-12 col-sm-12 col-lg-12">
+		<button class="btn btn-primary" id="boton-enviar-acuerdosPre"><i class="icon-plus-square"></i> Registrar</button>
+		<img  id="load" width="50" height="40"  src="{{asset('img/loading.gif')}}" style="display:none;">
 	</div>
-
-	<button class="btn btn-primary" id="boton-enviar-acuerdosPre"><i class="icon-plus-square"></i> Registrar</button>
-
-
-</div>
 
 	<div class="form-group col-xs-12 col-md-12 col-sm-12 col-lg-12">
 		<div class="containerAlertaRegistro">
 			<p>Acuerdo Registrado</p>
 		</div>
 	</div>
+
+</div>
+
 <script>
 		
 	$.ajax({
@@ -122,8 +132,12 @@
 			type: 'POST',
 			url: "{{url('prueba_nuevoAcuerdosPre')}}",
 			data:datos,
+			beforeSend:function(){
+				$("#load").show();
+			},
 			success:function(data){
 				if(data==1){
+					$("#load").hide();
 					$('.containerAlertaRegistro').show('slow',function(){
 						setTimeout( () => $(this).hide('slow') ,5000);
 					});

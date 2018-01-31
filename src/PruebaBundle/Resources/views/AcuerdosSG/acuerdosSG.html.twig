@@ -100,7 +100,7 @@
 
 
 								{% if cantidadImplementado[0]['cantidadEstado'] != 0 %}
-		        					<td>{{(cantidadImplementado[0]['cantidadEstado'] / cantidadSG[0]['cantidadEstado']) * 100|round}}%</td>
+		        					<td>{{((cantidadImplementado[0]['cantidadEstado'] / cantidadSG[0]['cantidadEstado']) * 100)|round}}%</td>
 		        				{% else %}
 		        					<td>0%</td>
 		        				{% endif %}
@@ -122,7 +122,7 @@
 
 		        				<td>{{cantidadEnProceso[0]['cantidadEstado']}}</td>
 		        				{% if cantidadEnProceso[0]['cantidadEstado'] != 0 %}
-		        					<td>{{(cantidadEnProceso[0]['cantidadEstado'] / cantidadSG[0]['cantidadEstado']) * 100|round}}%</td>
+		        					<td>{{((cantidadEnProceso[0]['cantidadEstado'] / cantidadSG[0]['cantidadEstado']) * 100)|round}}%</td>
 		        				{% else %}
 									<td>0%</td>
 		        				{% endif %}	
@@ -133,7 +133,7 @@
 
 		        				<td>{{cantidadNoAplica[0]['cantidadEstado']}}</td>
 								{% if cantidadNoAplica[0]['cantidadEstado'] != 0 %}
-		        					<td>{{(cantidadNoAplica[0]['cantidadEstado'] / cantidadSG[0]['cantidadEstado']) * 100|round}}%</td>
+		        					<td>{{((cantidadNoAplica[0]['cantidadEstado'] / cantidadSG[0]['cantidadEstado']) * 100)|round}}%</td>
 
 		        				{% else %}
 		        					<td>0%</td>
@@ -144,7 +144,7 @@
 		        				<td>Total</td>
 		        				<td>{{cantidadSG[0]['cantidadEstado']}}</td>
 		        				{% if cantidadSG[0]['cantidadEstado'] != 0 %}
-		        					<td>{{(cantidadSG[0]['cantidadEstado'] / cantidadSG[0]['cantidadEstado']) * 100|round}}%</td>
+		        					<td>{{((cantidadSG[0]['cantidadEstado'] / cantidadSG[0]['cantidadEstado']) * 100)|round}}%</td>
 		        				{% else %}
 									<td>0%</td>
 		        				{% endif %}

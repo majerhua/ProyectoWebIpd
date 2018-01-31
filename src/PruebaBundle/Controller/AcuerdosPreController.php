@@ -115,6 +115,8 @@ class AcuerdosPreController extends Controller
                 }
             }
 
+            return new JsonResponse("1");
+
         }
 
         $em = $this->getDoctrine()->getManager();

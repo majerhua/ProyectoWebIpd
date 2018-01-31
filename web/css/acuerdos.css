@@ -31,7 +31,7 @@
 
 	.listadoAreaResponsables>p{
 		width: 50%;
-		font-family: 'Open Sans';
+		
 		font-weight: bold;
 		text-align: center;
 		font-family: 'Open Sans';
@@ -51,8 +51,8 @@
 
 	.tituloNuevo{
 		font-size: 2em;
-		color: #FFF;
-		text-shadow: 5px 5px 5px rgba(0,0,0,1);
+		color: #cb2f1d;
+		text-shadow: 5px 5px 7px rgba(0,0,0,0.5);
 		font-weight: bold;
 		font-family: 'Adamina', serif;
 		transition: font-size 2s, color 4s;
@@ -75,39 +75,14 @@
 	margin:0 auto;
 }
 
-
-	.estiloFormElement{
-    	border:none;
-    	outline: none;
-    	color:white;
-    	font-weight: bold;
-    	background: transparent;
-    	box-shadow: none;
-    	border-bottom: 1.5px solid white;		
-	}
-
-	.container-form-SG label{
-		text-shadow: 5px 3px 8px rgba(0,0,0,1);
-		color:#fff;
-		font-weight: bold;
-	}
-
-	.container-form-SG input:focus {
-    	background: transparent;
-    	border:none;
-    	outline: none;
-    	color:white;
-    	font-weight: bold;
-    	box-shadow: none;
-    	border-bottom:4px solid #00A09A;
-	}
-	.focusElementForm:focus {
-    	background: transparent;
-    	border:none;
-    	outline: none;
-    	color:white;
-    	font-weight: bold;
-    	box-shadow: none;
-    	border-bottom:4px solid #00A09A;
-	}
-
+label{
+	color:black;
+}
+.containerForm{
+	font-family: 'Open Sans';
+	font-size: 1.02em;
+	width:70%; 
+	height:400px; 
+	padding-top: 8px;
+	margin:0 auto;
+}

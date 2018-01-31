@@ -2,13 +2,20 @@
 
 {% block body %}
 
-<a href="/acuerdosSG"><button style="margin:10px 20px;"  class="btn btn-danger btn-lg">Regresar</button></a>
 
-<div id="menssage-edit" class="	text-center" style="width:80%; background-color: rgba(55, 181, 108, 0.8); line-height:50px; margin:0 auto; color:white; font-weight:bold; font-size:1.2em;"></div>
 
-<h2 class="text-center">SEGUIMIENTO DE LOS ACUERDOS ADOPTADOS EN REUNIONES DE SECRETARIA GENERAL</h2>
+<section class="contenedorRegistroASG" >
 
-<div style="width:70%; height:400px; margin:0 auto;">
+<div class="form-group">
+	<a  href="{{url('prueba_acuerdosSG')}}"><button style="margin-left:30px;"  class="btn btn-danger btn-lg"><i class="icon-back"></i> Regresar </button></a>
+</div>
+
+<div class="form-group" >
+	<p class="text-center tituloNuevo"> ACUERDOS ADOPTADOS EN REUNIONES DE SECRETARIA GENERAL</p>
+</div>
+
+
+<div class="containerForm">
 
 
 	<div class="form-group col-md-6 col-lg-6">
@@ -39,7 +46,12 @@
 		<label for="todo-area" >Todas las areas</label>
 		<input id="todo-area" type="checkbox" name="todo-area">
 		<label>Seleccionar Otros</label>
-		<input id="todo-otros" type="checkbox" name="todo-otros">	
+		<input id="todo-otros" type="checkbox" name="todo-otros">
+
+		<div class="form-group">
+			<label>Plazo de Entrega</label>
+			<input type="date" name="plazoEntrega" id="plazoEntrega"  class="form-control">
+		</div>	
 	</div>
 
 
@@ -57,18 +69,21 @@
 
 	<div class="form-group col-md-6 col-sm-6 col-lg-6">
 		<label>Observaciones</label>
-		<textarea type="text" name="observaciones" id="observaciones" class="form-control"></textarea>
+		<textarea type="text" name="observaciones" id="observaciones" rows="4" placeholder="Ingresar nueva observación..." class="form-control"></textarea>
 	</div>
 
-
-	<div class="form-group col-md-6 col-sm-6 col-lg-6">
-		<label>Plazo de Entrega</label>
-		<input type="date" name="plazoEntrega" id="plazoEntrega"  class="form-control">
+	<div class="form-group col-xs-12 col-md-12 col-sm-12 col-lg-12">
+		<button class="btn btn-success" id="boton-editar-acuerdosSG"><i class='icon-pencil-square-o'></i> Editar</button>
+		<img  id="load" width="50" height="40"  src="{{asset('img/loading.gif')}}" style="display:none;">
 	</div>
 
-	<div class="form-group col-md-6 col-sm-6 col-lg-6" >
-		<button class="btn btn-success" id="boton-editar-acuerdosSG">Editar</button>
-	</div>
+	<div class="form-group col-xs-12 col-md-12 col-sm-12 col-lg-12">
+  	 	<div class="containerAlertaRegistro">
+		  <p>Acuerdo Actualizado</p>
+	   </div>
+    </div>
+
+
 </div>
 
 <script>
@@ -156,9 +171,16 @@
 			type: 'POST',
 			url: "{{url('prueba_acuerdosSGUpdate',{id:id})}}",
 			data:datos,
-
+			beforeSend:function(){
+				$("#load").show();
+			},
 			success:function(data){
 				
+				$("#load").hide();
+				$('.containerAlertaRegistro').show('slow',function(){
+					setTimeout( () => $(this).hide('slow') ,5000);
+				});
+
 				$("#menssage-edit").append(data);
 				console.log(data);		
 			},

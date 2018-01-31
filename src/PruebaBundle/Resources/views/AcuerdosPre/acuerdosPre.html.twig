@@ -76,7 +76,7 @@
 
 
 								{% if cantidadImplementado[0]['cantidadEstado'] != 0 %}
-		        					<td>{{(cantidadImplementado[0]['cantidadEstado'] / cantidadPre[0]['cantidadEstado']) * 100|round}}%</td>
+		        					<td>{{((cantidadImplementado[0]['cantidadEstado'] / cantidadPre[0]['cantidadEstado']) * 100)|round}}%</td>
 		        				{% else %}
 		        					<td>0%</td>
 		        				{% endif %}
@@ -95,10 +95,9 @@
 		        			<tr style="background-color:#00A09A">
 		        				<td>En proceso</td>
 
-
 		        				<td>{{cantidadEnProceso[0]['cantidadEstado']}}</td>
 		        				{% if cantidadEnProceso[0]['cantidadEstado'] != 0 %}
-		        					<td>{{(cantidadEnProceso[0]['cantidadEstado'] / cantidadPre[0]['cantidadEstado']) * 100|round}}%</td>
+		        					<td>{{((cantidadEnProceso[0]['cantidadEstado'] / cantidadPre[0]['cantidadEstado']) * 100)|round}}%</td>
 		        				{% else %}
 									<td>0%</td>
 		        				{% endif %}	
@@ -108,13 +107,11 @@
 		        				<td>Total</td>
 		        				<td>{{cantidadPre[0]['cantidadEstado']}}</td>
 		        				{% if cantidadPre[0]['cantidadEstado'] != 0 %}
-		        					<td>{{(cantidadPre[0]['cantidadEstado'] / cantidadPre[0]['cantidadEstado']) * 100|round}}%</td>
+		        					<td>{{((cantidadPre[0]['cantidadEstado'] / cantidadPre[0]['cantidadEstado']) * 100)|round}}%</td>
 		        				{% else %}
 									<td>0%</td>
 		        				{% endif %}
 		        			</tr>
-
-		        			
 		        		</tbody>
 		        	</table>
 		        </div>
@@ -455,12 +452,9 @@
 									$("#table-body-observaciones").append("<tr>"+"<td>"+(i+1)+"</td>"+"<td>"+arrObs[i].descripcion+"<td>"+fechaObservacionMod[2]+' de '+ dataMeses[fechaObservacionMod[1]]+' del '+fechaObservacionMod[0]+"</td>"+"</td>"+"</tr>");
 								}
 								$("#titulo_acuerdoSG").empty();
-								//$("#titulo_acuerdoSG").append(data_observaciones["areaIpd"].nombre);
-
-
-								//$("#table-body-observaciones").append()
+	
 								$("#titulo_acuerdoPre").empty();
-								//$("#titulo_acuerdoPre").append(data_observaciones["areaIpd"].nombre);
+
 
 							},
 							error:function(error){
@@ -477,7 +471,6 @@
 
 
 		},
-		//data-toggle="modal" data-target="#myModal"
 		error:function(error){
 			console.log(error);
 		}

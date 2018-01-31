@@ -6,11 +6,11 @@
 	
 	<div class="carta_remove">
 		
-		<p>
+		<p class="mensaje_remove">
 			Estas seguro en eliminar acuerdo?
 		</p>
-
-		<div >
+		<img  id='load' width='50' height='40'  src={{asset('img/loading.gif')}} style="display:none;">
+		<div  class="container_button_opcion">
 			<button class="btn btn-danger" id="btn-remove-si" >Si</button>
 			<a href="{{url('prueba_acuerdosPre')}}"><button class="btn btn-success" id="btn-remove-no" >No</button></a>
 		</div>
@@ -30,18 +30,25 @@
 
 function AcuerdosSGRemove(){
 
+	datos = {
+		'baja':'0',
+		'id': {{id}}
+	}
+
 	$.ajax({
 		dataType: 'json',
 		type: 'POST',
 		url: "{{url('prueba_acuerdosPreRemove', {id:id} ) }}",
-		data:{
-			'baja':'0',
-			'id': {{id}}
+		data:datos,
+		beforeSend:function(){
+			$(".mensaje_remove").remove();
+			$(".container_button_opcion").remove();
+			$("#load").show();
 		},
 		success:function(data){
 
 			if(data==1){
-
+				$("#load").hide();
 				$(".carta_remove").empty();
 				$(".carta_remove").append("<p>Se Removio Correctamente!</p>");
 				$(".carta_remove").append("<a href={{url('prueba_acuerdosPre')}} ><button class='btn btn-info'>Regresar</button></a>");	

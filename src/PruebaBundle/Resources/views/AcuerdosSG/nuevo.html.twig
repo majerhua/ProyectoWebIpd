@@ -2,36 +2,36 @@
 
 {% block body %}
 
-<section class="contenedorRegistroASG" style="background-image: url({{ asset('img/nuevo3.jpg') }}); background-size: cover; height: 100vh;" >
+<section class="contenedorRegistroASG" >
 
 	<div class="form-group">
 		<a  href="{{url('prueba_acuerdosSG')}}"><button style="margin-left:30px;"  class="btn btn-danger btn-lg"><i class="icon-back"></i> Regresar </button></a>
 	</div>
 
-	<div class="form-group containerTituloNuevo" >
-		<p class="text-center tituloNuevo">REGISTRAR NUEVO SEGUIMIENTO DE ACUERDOS ADOPTADOS EN REUNIONES DE SECRETARIA GENERAL</p>
+	<div class="form-group" >
+		<p class="text-center tituloNuevo"> ACUERDOS ADOPTADOS EN REUNIONES DE SECRETARIA GENERAL</p>
 	</div>
 
-	<div class="container-form container-form-SG ">
+	<div class="containerForm">
 
 		<div class="form-group col-md-6  col-xs-12 col-lg-6">
 			<label>Sesion</label>
-			<input type="number" name="sesion"  id="sesion" class="form-control focusElementForm">
+			<input type="number" name="sesion"  id="sesion" class="form-control ">
 		</div>
 
 		<div class="form-group col-xs-12  col-md-6 col-lg-6">
 			<label>Fecha</label>
-			<input type="date" name="fecha"  id="fecha" class="form-control focusElementForm">
+			<input type="date" name="fecha"  id="fecha" class="form-control ">
 		</div>
 
 		<div class="form-group col-xs-12 col-md-6 col-sm-6 col-lg-6" >
 			<label>Agenda</label>
-			<input type="text" name="agenda" id="agenda"  class="form-control focusElementForm">
+			<input type="text" name="agenda" id="agenda"  class="form-control ">
 		</div>
 
 		<div class="form-group col-xs-12 col-md-6 col-sm-6 col-lg-6">
 			<label>Acuerdos Adoptados</label>
-			<input type="text" name="acuerdos"  id="acuerdos"  class="form-control focusElementForm">
+			<input type="text" name="acuerdos"  id="acuerdos"  class="form-control ">
 		</div>
 
 		<div class="form-group col-xs-12 col-md-6 col-sm-6 col-lg-6" >
@@ -45,10 +45,10 @@
 			<label>Seleccionar Otros</label>
 			<input id="todo-otros" type="checkbox" name="todo-area">	
 
-			
+			<div class="form-group" >
 			<label>Plazo de Entrega</label>
 			<input type="date" name="plazoEntrega" id="plazoEntrega"  class="form-control">
-		
+			</div>
 		</div>
 
 
@@ -67,11 +67,12 @@
 
 		<div class="form-group col-xs-12 col-md-6 col-sm-6 col-lg-6">
 			<label>Observaciones</label>
-			<textarea type="text" name="observaciones" id="observaciones" placeholder="Ingrese su observación....." class="form-control focusElementForm" rows="4" ></textarea>
+			<textarea type="text" name="observaciones" id="observaciones" placeholder="Ingrese su observación....." class="form-control " rows="4" ></textarea>
 		</div>
 
 		<div class="form-group col-xs-12 col-md-6 col-sm-12 col-lg-12">
 			<button class="btn btn-primary" id="boton-registrar-acuerdosSG"><i class="icon-plus-square"></i> Registrar</button>
+			<img  id="load" width="50" height="40"  src="{{asset('img/loading.gif')}}" style="display:none;">
 		</div>
 
 		<div class="form-group col-xs-12 col-md-12 col-sm-12 col-lg-12">
@@ -137,11 +138,12 @@
 			url: "{{url('prueba_nuevoAcuerdosSG')}}",
 			data:datos,
 			beforeSend:function(){
-				console.log('Enviando Mensaje');
+				$("#load").show();
 			},
 			success:function(data){
 
 				if(data==1){
+					$("#load").hide();
 					$('.containerAlertaRegistro').show('slow',function(){
 						setTimeout( () => $(this).hide('slow') ,5000);
 					});

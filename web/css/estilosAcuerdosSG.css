@@ -60,19 +60,19 @@
 /* fin*/
 
 	.containerAlertaRegistro{
-/*		background-color: rgba(110, 220, 110, 0.8);
-*/		width: 40%;
+		background-color: rgba(110, 220, 110, 0.9);
+*/		width: 35%;
 		border-radius: 5px;
 		display: none;
 		margin:0 auto;
-		line-height: 55px;
+		line-height: 45px;
 	}
 
 		.containerAlertaRegistro>p{
 			color:#fff;
 			font-weight: bold;
 			text-align: center;
-			font-size: 1.2em;
+			font-size: 1.1em;
 		}
 
 .table-row-title{

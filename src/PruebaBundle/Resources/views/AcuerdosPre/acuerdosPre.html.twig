@@ -2,8 +2,6 @@
 
 {% block body %}
 
-
-
 <section>
 	<div class="contenedor-titulo">
 		<img  class="image-responsive" src="{{asset('img/logoipd.png')}}">
@@ -21,65 +19,29 @@
 		{% if is_granted('ROLE_ADMIN') %}
 
 			<a  style="margin-left:20px;" href="{{url('prueba_nuevoAcuerdosPre')}}"><button class="btn btn-info btn-lg" ><i class="icon-plus-square-o"></i> Nuevo Seguimiento Pre</button></a>
+
 		{% endif %}
 	
-			<button data-toggle="modal" data-target="#myModal" style="margin-left:20px;" class="btn btn-warning btn-lg btn-resena" ><i class="icon-pie-chart"></i> Reseña</button>	
+		<button data-toggle="modal" data-target="#myModal" style="margin-left:20px;" class="btn btn-warning btn-lg btn-resena" ><i class="icon-pie-chart"></i> Reseña</button>	
+
 		</div>
 
 		<table  class="table table-responsive table-bordered table-pre"  style="margin:10px;">
-
 			<thead>
 				<tr class="table-row-title">
-
-					<th>
-						Comite
-					</th>
-					
-					<th>
-						Fecha
-					</th>
-
-					<th>
-						Acuerdos Adoptados
-					</th>
-
-
-					<th>
-						N° del Acuerdo
-					</th>
-
-					<th>
-						Responsables
-					</th>
-
-					<th>
-						Estado
-					</th>
-
-					<th>
-						Plazo de Entrega
-					</th>
-
-					<th>
-						Observaciones
-					</th>
-
-					<th>
-						Historial Observ....
-					</th>
-					
+					<th>Comite</th>
+					<th>Fecha</th>
+					<th>Acuerdos Adoptados</th>
+					<th>N° del Acuerdo</th>
+					<th>Responsables</th>
+					<th>Estado</th>
+					<th>Plazo de Entrega</th>
+					<th>Observaciones</th>
 					{% if is_granted('ROLE_ADMIN') %}
 
-					<th>
-						Editar
-					</th>
-
-					<th>
-						Eliminar
-					</th>
-
+						<th>Editar</th>
+						<th>Eliminar</th>
 					{% endif %}
-
 				</tr>
 			</thead>
 
@@ -90,6 +52,7 @@
 
 		</table>
 
+	</div>
 
 		<div id="myModal" class="modal fade" role="dialog">
 		  <div class="modal-dialog">
@@ -176,9 +139,6 @@
 		  </div>
 		</div>
 
-
-	</div>
-
 		<div id="modalAreas" class="modal fade" role="dialog">
 		  <div class="modal-dialog">
 		    <div class="modal-content">
@@ -200,8 +160,7 @@
 
 		  </div>
 		</div>
-
-
+	
 		<div id="modalMensajeResponsable" class="modal fade" role="dialog">
 		  <div class="modal-dialog">
 		    <div class="modal-content">
@@ -218,9 +177,9 @@
 		        <input type="email"  class="form-control" name="correo" id="correo-enviar-responsable" >
 
 		        <label>Mensaje</label>
-				<textarea  class="form-control" id="correo-enviar-mensaje" ></textarea>
-
-				<button class="btn btn-primary" id="send-mail" >Enviar Mensaje</button>
+				<textarea  placeholder="Escribe aquí..." class="form-control" id="correo-enviar-mensaje" ></textarea>
+				<br>
+				<button class="btn btn-primary" id="send-mail" > <i class="icon-paper-plane-o" ></i> Enviar</button>
 
 		      </div>
 		      <div class="modal-footer" style="background-color:#ac2d0f">
@@ -230,7 +189,6 @@
 
 		  </div>
 		</div>
-
 
 
 </section>
@@ -308,224 +266,222 @@
 
 	});
 
-		var dataMeses = {
-			"01": "Enero",
-			"02": "Febrero",
-			"03": "Marzo",
-			"04": "Abril",
-			"05": "Mayo",
-			"06": "Junio",
-			"07": "Julio",
-			"08": "Agosto",
-			"09": "Septiembre",
-			"10": "Octubre",
-			"11": "Noviembre",
-			"12": "Diciembre"
-		}
+	var dataMeses = {
+		"01": "Enero",
+		"02": "Febrero",
+		"03": "Marzo",
+		"04": "Abril",
+		"05": "Mayo",
+		"06": "Junio",
+		"07": "Julio",
+		"08": "Agosto",
+		"09": "Septiembre",
+		"10": "Octubre",
+		"11": "Noviembre",
+		"12": "Diciembre"
+	}
 
-		$.ajax({
+	$.ajax({
 
-			dataType: 'json',
-			type: 'GET',
-			url: "{{url('prueba_getAcuerdosPre')}}",
+		dataType: 'json',
+		type: 'GET',
+		url: "{{url('prueba_getAcuerdosPre')}}",
 
-			success:function(data){
-				var datosAcuerdosPre=JSON.parse(data);
-								
-				const promesa = new Promise(function(resolve,reject){
-					
-					datosAcuerdosPre.forEach(function(valor,index){
-
-						let fecha = new Date();
-						let dia = fecha.getDate();
-						let mes = fecha.getMonth()+1;
-						let anio = fecha.getFullYear();
-						let arrayFecha = valor.plazoEntrega.split("-");
-
-						if(arrayFecha[0] == anio ){
-							if(arrayFecha[1] == mes ){
-								if(arrayFecha[2] - dia < 4 ){
-
-									{% for acupr in acuerdosPreAreaIpd %}
-
-										if({{acupr.acuerdoPre.id}} == valor.id && valor.baja==1){
-
-											if("{{acupr.areaIpd.nombre}}" == "{{app.user.areaIpd}}"){
-
-												Push.create((arrayFecha[2] - dia) + " DIAS RESTANTES",{
-													body: "Faltan solo"+ (arrayFecha[2] - dia) +"dias para cumplir el plazo del acuerdo {{acupr.acuerdoPre.acuerdos}}",
-													icon: "{{ asset('img/oscar.jpg') }}",
-													timeout: 1000
-												});
-												console.log("mamama");
-											}						
-										} 
-
-									{% endfor %}
-
-								}
-							}
-						}
-
-						let fechaAcuerdo = valor.fecha.split("-");
-						let fechaPlazo = valor.plazoEntrega.split("-");
-
-						if(valor.baja=='1'){
-
-						
-
-							{% if is_granted('ROLE_ADMIN') %}	
-
-	 							var urlUpdate = "{{url('prueba_acuerdosPreUpdate',{id:'idAcu'})}}";
-            					urlUpdate = urlUpdate.replace("idAcu", valor.id);
-
-				            	var urlRemove = "{{url('prueba_acuerdosPreRemove',{id:'idAcu'})}}";
-            					urlRemove = urlRemove.replace("idAcu", valor.id);
-
-							$("#table_body").append('<tr value="'+valor.id+'" >'+'<td>'+valor.comite+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'<td>'+valor.acuerdos+'</td>'+'<td>'+valor.nroAcuerdo+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" ><i class="icon-eye" ></i> ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td>'+'<td>'+valor["observacionPre"][valor["observacionPre"].length-1].descripcion+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal" data-target="#myModal" value="'+valor.id+'" ><i class="icon-eye" ></i> ver historial</button></td>'+'<td><a href="'+urlUpdate+'"><button class="btn btn-success" ><i class="icon-pencil-square-o" ></i> Editar</button></a></td><td><a href="'+urlRemove+'" ><button class="btn btn-danger" ><i class="icon-trash"></i> Eliminar</button></a></td>'+'</tr>');
-
+		success:function(data){
+			var datosAcuerdosPre=JSON.parse(data);
 							
-							{% else %}
+			const promesa = new Promise(function(resolve,reject){
+				
+				datosAcuerdosPre.forEach(function(valor,index){
 
+					let fecha = new Date();
+					let dia = fecha.getDate();
+					let mes = fecha.getMonth()+1;
+					let anio = fecha.getFullYear();
+					let arrayFecha = valor.plazoEntrega.split("-");
 
-							$("#table_body").append('<tr value="'+valor.id+'" >'+'<td>'+valor.comite+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'<td>'+valor.acuerdos+'</td>'+'<td>'+valor.nroAcuerdo+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" >ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td>'+'<td>'+valor["observacionPre"][valor["observacionPre"].length-1].descripcion+'</td>'+'<td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal" data-target="#myModal" value="'+valor.id+'" >ver historial</button></td></tr>');
+					if(arrayFecha[0] == anio ){
+						if(arrayFecha[1] == mes ){
+							if(arrayFecha[2] - dia < 4 ){
 
-							{% endif %}							
-						}
+								{% for acupr in acuerdosPreAreaIpd %}
 
+									if({{acupr.acuerdoPre.id}} == valor.id && valor.baja==1){
 
+										if("{{acupr.areaIpd.nombre}}" == "{{app.user.areaIpd}}"){
 
-					});
+											Push.create((arrayFecha[2] - dia) + " DIAS RESTANTES",{
+												body: "Faltan solo"+ (arrayFecha[2] - dia) +"dias para cumplir el plazo del acuerdo {{acupr.acuerdoPre.acuerdos}}",
+												icon: "{{ asset('img/oscar.jpg') }}",
+												timeout: 1000
+											});
+											console.log("mamama");
+										}						
+									} 
 
-					resolve("a");
-
-				});
-
-				promesa.then(function(response){
-					
-
-					$(".btn-areas-reponsables").on('click',function(){
-
-						$(".listadoAreaResponsables").empty();
-
-						{% for val in  acuerdosPreAreaIpd %}
-
-							if({{val.acuerdoPre.id}} == $(this).val() ){
-								
-								$(".listadoAreaResponsables").append("<p>{{val.areaIpd.nombre}}</p>");
-
-								{% if is_granted('ROLE_ADMIN') %}
-
-								$(".listadoAreaResponsables").append("<button class='btn sendMail btn-primary' data-toggle='modal' data-target='#modalMensajeResponsable' data-persona='{{val.areaIpd.personaResponsable}}' value='{{val.areaIpd.correo}}'>Enviar Mensaje</button></div>");
-
-								{% endif %}
+								{% endfor %}
 
 							}
-
-						{% endfor %}
-
-						var abrirModalMensajeResponsables  = document.querySelectorAll('.sendMail');
-
-						for (var i = 0; i < abrirModalMensajeResponsables.length; i++) {
-							
-							abrirModalMensajeResponsables[i].onclick=function(){
-								$("#correo-enviar-responsable").val($(this).val());
-								$("#correo-persona-responsable").val($(this).attr('data-persona'));
-							}
-						}
-
-					});
-
-					var refRow = document.querySelectorAll('#table_body> tr');
-					var botonRemove = document.querySelectorAll('.btn-remove');
-					for (var i = 0; i < botonRemove.length; i++) {
-						botonRemove[i].onclick=function(){
-
-							if(confirm("Esta seguro en Eliminar Acuerdo ?")){
-								
-
-								for (var i = 0; i < refRow.length; i++) {
-						
-									if($(refRow[i]).attr('data-row')==this.value){
-										//AcuerdosSGRemove(this.value);
-										$(refRow[i]).css('display','none');
-
-									}
-						
-								}	
-							}
-
 						}
 					}
 
-					console.log(response);
-					$(".table-pre").attr('id','table-acuerdosPre');
-					$('#table-acuerdosPre').DataTable();
-					var btn_historial =  document.querySelectorAll(".btn-historial-observacion");
+					let fechaAcuerdo = valor.fecha.split("-");
+					let fechaPlazo = valor.plazoEntrega.split("-");
 
-					for(var i=0; i<btn_historial.length;i++){
+					if(valor.baja=='1'){
 
-						btn_historial[i].onclick=function(){
+					
 
-							$("#myChart").hide();
-							$('.titulo-modal').empty();
-							$('.table-head').show();
-							$('.titulo-modal').append('Historial Observaciones');
-							$(".container-table-resena").hide('slow');
+						{% if is_granted('ROLE_ADMIN') %}	
 
-							$.ajax({
+ 							var urlUpdate = "{{url('prueba_acuerdosPreUpdate',{id:'idAcu'})}}";
+        					urlUpdate = urlUpdate.replace("idAcu", valor.id);
 
-								type:"POST",
-								data:{ id : this.value },
-								url:"{{ url('prueba_observacionesPrePost') }}",
-								dataType:'json',
-								success:function(data){
+			            	var urlRemove = "{{url('prueba_acuerdosPreRemove',{id:'idAcu'})}}";
+        					urlRemove = urlRemove.replace("idAcu", valor.id);
+
+						$("#table_body").append('<tr value="'+valor.id+'" >'+'<td>'+valor.comite+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'<td>'+valor.acuerdos+'</td>'+'<td>'+valor.nroAcuerdo+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" ><i class="icon-eye" ></i> ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td><td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal" data-target="#myModal" value="'+valor.id+'" ><i class="icon-eye" ></i> ver historial</button></td><td><a href="'+urlUpdate+'"><button class="btn btn-success" ><i class="icon-pencil-square-o" ></i> Editar</button></a></td><td><a href="'+urlRemove+'" ><button class="btn btn-danger" ><i class="icon-trash"></i> Eliminar</button></a></td>'+'</tr>');
+
+						
+						{% else %}
+
+
+						$("#table_body").append('<tr value="'+valor.id+'" >'+'<td>'+valor.comite+'</td>'+'<td>'+fechaAcuerdo[2]+' de '+ dataMeses[fechaAcuerdo[1]]+' del '+fechaAcuerdo[0]+'<td>'+valor.acuerdos+'</td>'+'<td>'+valor.nroAcuerdo+'</td>'+'<td><button class="btn btn-areas-reponsables btn-info" value="'+valor.id+'"  data-toggle="modal" data-target="#modalAreas" >ver</button></td>'+'<td>'+valor.estado+'</td>'+'<td>'+fechaPlazo[2]+' de '+ dataMeses[fechaPlazo[1]]+' del '+fechaPlazo[0]+'</td><td><button class="btn btn-warning btn-historial-observacion" data-toggle="modal" data-target="#myModal" value="'+valor.id+'" >ver historial</button></td></tr>');
+
+						{% endif %}							
+					}
+
+
+
+				});
+
+				resolve("a");
+
+			});
+
+			promesa.then(function(response){
+				
+
+				$(".btn-areas-reponsables").on('click',function(){
+
+					$(".listadoAreaResponsables").empty();
+
+					{% for val in  acuerdosPreAreaIpd %}
+
+						if({{val.acuerdoPre.id}} == $(this).val() ){
+							
+							$(".listadoAreaResponsables").append("<p>{{val.areaIpd.nombre}}</p>");
+
+							{% if is_granted('ROLE_ADMIN') %}
+
+							$(".listadoAreaResponsables").append("<button class='btn sendMail btn-primary' data-toggle='modal' data-target='#modalMensajeResponsable' data-persona='{{val.areaIpd.personaResponsable}}' value='{{val.areaIpd.correo}}'><i class='icon-mail'></i> Enviar Mensaje</button>");
+
+							{% endif %}
+
+						}
+
+					{% endfor %}
+
+					var abrirModalMensajeResponsables  = document.querySelectorAll('.sendMail');
+
+					for (var i = 0; i < abrirModalMensajeResponsables.length; i++) {
+						
+						abrirModalMensajeResponsables[i].onclick=function(){
+							$("#correo-enviar-responsable").val($(this).val());
+							$("#correo-persona-responsable").val($(this).attr('data-persona'));
+						}
+					}
+
+				});
+
+				var refRow = document.querySelectorAll('#table_body> tr');
+				var botonRemove = document.querySelectorAll('.btn-remove');
+				for (var i = 0; i < botonRemove.length; i++) {
+					botonRemove[i].onclick=function(){
+
+						if(confirm("Esta seguro en Eliminar Acuerdo ?")){
+							
+
+							for (var i = 0; i < refRow.length; i++) {
+					
+								if($(refRow[i]).attr('data-row')==this.value){
+									//AcuerdosSGRemove(this.value);
+									$(refRow[i]).css('display','none');
+
+								}
+					
+							}	
+						}
+
+					}
+				}
+
+				console.log(response);
+				$(".table-pre").attr('id','table-acuerdosPre');
+				$('#table-acuerdosPre').DataTable();
+				var btn_historial =  document.querySelectorAll(".btn-historial-observacion");
+
+				for(var i=0; i<btn_historial.length;i++){
+
+					btn_historial[i].onclick=function(){
+
+						$("#myChart").hide();
+						$('.titulo-modal').empty();
+						$('.table-head').show();
+						$('.titulo-modal').append('Historial Observaciones');
+						$(".container-table-resena").hide('slow');
+
+						$.ajax({
+
+							type:"POST",
+							data:{ id : this.value },
+							url:"{{ url('prueba_observacionesPrePost') }}",
+							dataType:'json',
+							success:function(data){
+								
+								var data_observaciones = JSON.parse(data);	
+								var arrObs = new Array();
+								console.log(data_observaciones);
+								$("#table-body-observaciones").empty();
+
+								data_observaciones["observacionPre"].forEach(function(valor,index){
+									console.log(valor);
+									arrObs.push(valor);
 									
-									var data_observaciones = JSON.parse(data);	
-									var arrObs = new Array();
-									console.log(data_observaciones);
-									$("#table-body-observaciones").empty();
+								});
 
-									data_observaciones["observacionPre"].forEach(function(valor,index){
-										console.log(valor);
-										arrObs.push(valor);
-										
-									});
-
-									for(var i = arrObs.length-1; i >=0 ; i--) {
-										let fechaObservacionMod = arrObs[i].fecha.split("-");
-										$("#table-body-observaciones").append("<tr>"+"<td>"+(i+1)+"</td>"+"<td>"+arrObs[i].descripcion+"<td>"+fechaObservacionMod[2]+' de '+ dataMeses[fechaObservacionMod[1]]+' del '+fechaObservacionMod[0]+"</td>"+"</td>"+"</tr>");
-									}
-									$("#titulo_acuerdoSG").empty();
-									//$("#titulo_acuerdoSG").append(data_observaciones["areaIpd"].nombre);
-
-
-									//$("#table-body-observaciones").append()
-									$("#titulo_acuerdoPre").empty();
-									//$("#titulo_acuerdoPre").append(data_observaciones["areaIpd"].nombre);
-
-								},
-								error:function(error){
-									console.log(error);
+								for(var i = arrObs.length-1; i >=0 ; i--) {
+									let fechaObservacionMod = arrObs[i].fecha.split("-");
+									$("#table-body-observaciones").append("<tr>"+"<td>"+(i+1)+"</td>"+"<td>"+arrObs[i].descripcion+"<td>"+fechaObservacionMod[2]+' de '+ dataMeses[fechaObservacionMod[1]]+' del '+fechaObservacionMod[0]+"</td>"+"</td>"+"</tr>");
 								}
+								$("#titulo_acuerdoSG").empty();
+								//$("#titulo_acuerdoSG").append(data_observaciones["areaIpd"].nombre);
 
 
-							});
+								//$("#table-body-observaciones").append()
+								$("#titulo_acuerdoPre").empty();
+								//$("#titulo_acuerdoPre").append(data_observaciones["areaIpd"].nombre);
 
-						}
+							},
+							error:function(error){
+								console.log(error);
+							}
+
+
+						});
+
 					}
+				}
 
-				});
-
-
-			},
-			//data-toggle="modal" data-target="#myModal"
-			error:function(error){
-				console.log(error);
-			}
+			});
 
 
-		});
+		},
+		//data-toggle="modal" data-target="#myModal"
+		error:function(error){
+			console.log(error);
+		}
+	});
 
 </script>
 <script src="{{asset('js/chart.js')}}"></script>

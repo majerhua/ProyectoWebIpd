@@ -2,45 +2,53 @@
 
 {% block body %}
 
-<section class="contenedorRegistroASG" >
-
-	<div class="form-group containerBtnRegresar">
-		<a  style="margin-left:20px;" href="{{url('prueba_acuerdosSG')}}"><button class="btn btn-danger btn-lg" ><i class="icon-back"></i> Regresar</button></a>  		
-	</div>
+<section class="contenedorRegistroASG" style="background-image: url({{ asset('img/nuevo3.jpg') }}); background-size: cover; height: 100vh;" >
 
 	<div class="form-group">
-		<p class="text-center tituloNuevoSG">REGISTRAR NUEVO SEGUIMIENTO DE ACUERDOS ADOPTADOS EN REUNIONES DE SECRETARIA GENERAL</p>
+		<a  href="{{url('prueba_acuerdosSG')}}"><button style="margin-left:30px;"  class="btn btn-danger btn-lg"><i class="icon-back"></i> Regresar </button></a>
 	</div>
-	<div style="width:70%; height:400px; margin:0 auto;">
+
+	<div class="form-group containerTituloNuevo" >
+		<p class="text-center tituloNuevo">REGISTRAR NUEVO SEGUIMIENTO DE ACUERDOS ADOPTADOS EN REUNIONES DE SECRETARIA GENERAL</p>
+	</div>
+
+	<div class="container-form container-form-SG ">
 
 		<div class="form-group col-md-6  col-xs-12 col-lg-6">
 			<label>Sesion</label>
-			<input type="number" name="sesion"  id="sesion" class="form-control">
+			<input type="number" name="sesion"  id="sesion" class="form-control focusElementForm">
 		</div>
 
 		<div class="form-group col-xs-12  col-md-6 col-lg-6">
 			<label>Fecha</label>
-			<input type="date" name="fecha"  id="fecha" class="form-control">
+			<input type="date" name="fecha"  id="fecha" class="form-control focusElementForm">
 		</div>
 
 		<div class="form-group col-xs-12 col-md-6 col-sm-6 col-lg-6" >
 			<label>Agenda</label>
-			<input type="text" name="agenda" id="agenda"  class="form-control">
+			<input type="text" name="agenda" id="agenda"  class="form-control focusElementForm">
 		</div>
 
 		<div class="form-group col-xs-12 col-md-6 col-sm-6 col-lg-6">
 			<label>Acuerdos Adoptados</label>
-			<input type="text" name="acuerdos"  id="acuerdos"  class="form-control">
+			<input type="text" name="acuerdos"  id="acuerdos"  class="form-control focusElementForm">
 		</div>
 
-		<div class="form-group col-xs-12 col-md-6 col-sm-6 col-lg-6">
-			<label>Area Responsable</label>
-			<select  name="areaIpd" id="areaIpd"  class="form-control" multiple >
+		<div class="form-group col-xs-12 col-md-6 col-sm-6 col-lg-6" >
+
+			<label>Responsable</label>
+			<select  name="areaIpd" id="areaIpd"  class="form-control " multiple >
 			</select>
+
 			<label>Seleccionar Todas las Areas</label>
 			<input id="todo-area" type="checkbox" name="todo-area">
 			<label>Seleccionar Otros</label>
 			<input id="todo-otros" type="checkbox" name="todo-area">	
+
+			
+			<label>Plazo de Entrega</label>
+			<input type="date" name="plazoEntrega" id="plazoEntrega"  class="form-control">
+		
 		</div>
 
 
@@ -59,24 +67,19 @@
 
 		<div class="form-group col-xs-12 col-md-6 col-sm-6 col-lg-6">
 			<label>Observaciones</label>
-			<textarea type="text" name="observaciones" id="observaciones" class="form-control"></textarea>
+			<textarea type="text" name="observaciones" id="observaciones" placeholder="Ingrese su observación....." class="form-control focusElementForm" rows="4" ></textarea>
 		</div>
 
-
-		<div class="form-group col-xs-12 col-md-6 col-sm-6 col-lg-6">
-			<label>Plazo de Entrega</label>
-			<input type="date" name="plazoEntrega" id="plazoEntrega"  class="form-control">
+		<div class="form-group col-xs-12 col-md-6 col-sm-12 col-lg-12">
+			<button class="btn btn-primary" id="boton-registrar-acuerdosSG"><i class="icon-plus-square"></i> Registrar</button>
 		</div>
 
-		<div class="form-group col-xs-12 col-md-6 col-sm-6 col-lg-6">
-		<button class="btn btn-primary" id="boton-registrar-acuerdosSG"><i class="icon-plus-square"></i> Registrar</button>
-		</div>
-	</div>
+		<div class="form-group col-xs-12 col-md-12 col-sm-12 col-lg-12">
+		   <div class="containerAlertaRegistro">
+			  <p>Acuerdo Registrado</p>
+		   </div>
+	    </div>
 
-	<div class="form-group col-xs-12 col-md-12 col-sm-12 col-lg-12">
-		<div class="containerAlertaRegistro">
-			<p>Acuerdo Registrado</p>
-		</div>
 	</div>
 </section>
 

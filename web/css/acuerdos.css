@@ -1,0 +1,113 @@
+@font-face {
+  src: url('../fonts/Adamina/Adamina-Regular.ttf');
+
+  font-family: 'Adamina';
+
+}
+
+@font-face {
+  src: url('../fonts/Cambo/Cambo-Regular.ttf');
+
+  font-family: 'Cambo';
+
+}
+
+@font-face {
+  src: url('../fonts/Open_Sans/OpenSans-Regular.ttf');
+
+ font-family: 'Open Sans';
+
+}
+
+
+/*MODAL RESPONSABLES */
+
+.listadoAreaResponsables{
+	
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+	.listadoAreaResponsables>p{
+		width: 50%;
+		font-family: 'Open Sans';
+		font-weight: bold;
+		text-align: center;
+		font-family: 'Open Sans';
+		margin-top: 5px;
+	}
+
+	.listadoAreaResponsables>button{
+		margin-top: 5px;
+	}
+
+/*FIN */
+
+.containerTituloNuevo{
+	
+	height: 90px;
+}
+
+	.tituloNuevo{
+		font-size: 2em;
+		color: #FFF;
+		text-shadow: 5px 5px 5px rgba(0,0,0,1);
+		font-weight: bold;
+		font-family: 'Adamina', serif;
+		transition: font-size 2s, color 4s;
+	}
+
+	.tituloNuevo:hover{
+		font-size: 2.02em;
+		color: #95C11E;
+	}
+
+/* CONTENEDOR FORM ACUERDOS */
+
+.container-form{
+	width:70%;
+	font-family: 'Open Sans';
+    
+	padding: 10px 0;
+	color: #fff;
+	height: 62vh;
+	margin:0 auto;
+}
+
+
+	.estiloFormElement{
+    	border:none;
+    	outline: none;
+    	color:white;
+    	font-weight: bold;
+    	background: transparent;
+    	box-shadow: none;
+    	border-bottom: 1.5px solid white;		
+	}
+
+	.container-form-SG label{
+		text-shadow: 5px 3px 8px rgba(0,0,0,1);
+		color:#fff;
+		font-weight: bold;
+	}
+
+	.container-form-SG input:focus {
+    	background: transparent;
+    	border:none;
+    	outline: none;
+    	color:white;
+    	font-weight: bold;
+    	box-shadow: none;
+    	border-bottom:4px solid #00A09A;
+	}
+	.focusElementForm:focus {
+    	background: transparent;
+    	border:none;
+    	outline: none;
+    	color:white;
+    	font-weight: bold;
+    	box-shadow: none;
+    	border-bottom:4px solid #00A09A;
+	}
+

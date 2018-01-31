@@ -21,40 +21,47 @@
 
 
 
-  
+ 
   
 .contenedorRegistroASG{
 
 	background-color: #fff;
 	height: 100vh;
+	padding: 20px;
 	width: 100%;	
 }
 
 
 	.containerBtnRegresar{
-		padding-left: 10px;
-		padding-top: 15px;
+		margin-bottom: 0;
 	}
 
-	.tituloNuevoSG{
-		font-size: 2em;
-		color: #cb2f1d;
-		text-shadow: 5px 5px 5px rgba(0,0,0,0.2);
-		font-weight: bold;
-		
-		font-family: 'Adamina', serif;
-		transition: font-size 2s;
-	}
 
 
 	.tituloNuevoSG:hover{
 		font-size: 2.02em;
 	}
 
+/* estilos aurora */
+
+	.icon-back{
+		font-size: 20px;
+		color: #fff;
+		text-decoration: none;
+	}
+
+	.icon-back:hover{
+		color: #cb2f1d;
+	    text-decoration: none;
+
+
+	}
+
+/* fin*/
 
 	.containerAlertaRegistro{
-		background-color: rgba(110, 220, 110, 0.8);
-		width: 40%;
+/*		background-color: rgba(110, 220, 110, 0.8);
+*/		width: 40%;
 		border-radius: 5px;
 		display: none;
 		margin:0 auto;
@@ -128,9 +135,8 @@
 .contenedor-boton-nuevo-sg{
 	width: 100%;
 	padding-left: 15px;
+	padding-top: 10px;
 	padding-bottom: 20px;
-	display: flex;
-	flex-wrap: wrap;
 }
 
 	.editar-sg{
@@ -235,11 +241,3 @@
 		margin-top: 3px;
 	}
 
-.listadoAreaResponsables{
-	display: flex;
-	flex-wrap: wrap;
-}
-
-	.listadoAreaResponsables>p{
-		width: 50%;
-	}
